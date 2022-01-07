@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DxObject" Collapsed="true">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAkAAAAIAAEAAAAQCBgEMAABACiBAAAAE=</HashCode>
+      <FileName>DxObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sample" Collapsed="true">
+    <Position X="4" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAABACABAAAAE=</HashCode>
+      <FileName>Sample.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rect" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAQAAACAAAAAAAAAIACAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Box" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAQAAAAIAAAAAAAAIACAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Collision" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgEAAQAAAAAAAAAAQACAAAAAAAAAAAAAAAAAAAAgABA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Core" Collapsed="true">
+    <Position X="4" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAAAAACAAAAAAAAAAAAAAAAAAAgBACABAAEAE=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Core.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Device" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBAAAAAAAAACIiAAAAABAACAAAAAAEAGAAEAAAACAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Device.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector2" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAEAAAAQBAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Vector2.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Vector3" Collapsed="true">
+    <Position X="3.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAEAAAAQBAAAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Vector3.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Window" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAACAAAAQAAAAAAAAAASAAAIAAAgAACAggAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Window.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="SimpleVertex" Collapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>DxObject.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="float2" Collapsed="true">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Vector2.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="float3" Collapsed="true">
+    <Position X="3.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Vector3.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="Type" Collapsed="true">
+    <Position X="12" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>D:\LJS\LJS\LJS\CoreLib\include\Collision.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

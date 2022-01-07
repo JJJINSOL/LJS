@@ -1,0 +1,8 @@
+//이전 쉐이더 결과를 받아서 입력값을 처리
+//픽셀 쉐이더 1픽셀마다 호출됨
+//SV_TARGET = 레지스터(저장소), vertex 와 다름
+
+float4 PS(float4 p : POSITION) : SV_TARGET
+{
+	return float4(1,0,0,1);
+}

@@ -1,0 +1,96 @@
+#include "Vector2.h"
+Vector2::Vector2()
+{
+	x = y = 0.0f;
+}
+Vector2::Vector2(float x, float y)
+{
+	this->x = x;
+	this->y = y;
+}
+Vector2::Vector2(const Vector2& v)
+{
+	x = v.x;
+	y = v.y;
+}
+
+Vector2 Vector2:: operator + (const Vector2& v)
+{
+	Vector2 vec;
+	vec.x = this->x + v.x;
+	vec.y = this->y + v.y;
+	return vec;
+}
+Vector2 Vector2:: operator - (const Vector2& v)
+{
+	Vector2 vec;
+	vec.x = this->x - v.x;
+	vec.y = this->y - v.y;
+	return vec;
+}
+Vector2 Vector2:: operator * (float num)
+{
+	Vector2 vec;
+	vec.x = x * num;
+	vec.y = y * num;
+	return vec;
+}
+Vector2 Vector2:: operator / (float num)
+{
+	Vector2 vec;
+	vec.x = x / num;
+	vec.y = y / num;
+	return vec;
+}
+bool Vector2:: operator == (const Vector2& v)
+{
+	if (fabs(x - v.x) < 0.0001f)
+	{
+		if (fabs(y - v.y) < 0.0001f)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+bool Vector2:: operator != (const Vector2& v)
+{
+	if (fabs(x - v.x) < 0.0001f)
+	{
+		if (fabs(y - v.y) < 0.0001f)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+float Vector2::Length()
+{
+	float len = sqrt(pow(x, 2) + pow(y, 2));
+	return len;
+}
+
+Vector2 Vector2::Normal()
+{
+	Vector2 vec;
+	float d = 1.0f / Length();
+	vec.x = x * d;
+	vec.y = y * d;
+	return vec;
+}
+Vector2 Vector2::Normalize()
+{
+	float d = 1.0f / Length();
+	x = x * d;
+	y = y * d;
+	return *this;
+}
+Vector2 Normalize(Vector2& v)
+{
+	Vector2 vec;
+	float d = 1.0f / v.Length();
+	vec.x = v.x * d;
+	vec.y = v.y * d;
+	return vec;
+}
