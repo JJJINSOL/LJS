@@ -38,7 +38,7 @@ bool Sample:: Init()
 	//"192.168.0.28"
 	//"49.142.62.169"
 	m_net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.28");
-	return true;
+	return true; 
 }
 bool Sample:: Frame()
 {
