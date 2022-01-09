@@ -16,7 +16,7 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			packet << 999 << "ÀÌÁø¼Ö" << 50 << buffer;
 			m_net.SendMsg(m_net.m_sock, packet.m_upacket);
 
-			SendMessageA(m_edit, WM_GETTEXT, 0, (LPARAM)"");
+			SendMessageA(m_edit, WM_SETTEXT, 0, (LPARAM)"");
 		}break;
 		}
 	}break;
@@ -37,7 +37,7 @@ bool Sample:: Init()
 	m_net.Initnetwork();
 	//"192.168.0.28"
 	//"49.142.62.169"
-	m_net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.28");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "49.142.62.169");
 	return true; 
 }
 bool Sample:: Frame()
@@ -46,7 +46,8 @@ bool Sample:: Frame()
 	if (count > 0 && m_chatcount != count)
 	{
 		m_chatcount = count;
-		SendMessageA(m_listbox, LB_RESETCONTENT, 0, 0);
+		
+		SendMessage(m_listbox, LB_RESETCONTENT, 0, 0);
 		list<Packet> ::iterator iter;
 		if (m_net.m_playuser.m_packetpool.size() > 20)
 		{
@@ -58,6 +59,7 @@ bool Sample:: Frame()
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.damage >> recvdata.message;
 			SendMessageA(m_listbox, LB_RESETCONTENT, 0, (LPARAM)recvdata.message);
+			//iter = m_Net.m_PlayerUser.m_packetPool.erase(iter);
 			(*iter).Reset();
 		}
 	}

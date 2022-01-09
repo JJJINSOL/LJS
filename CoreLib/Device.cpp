@@ -2,6 +2,7 @@
 
 HRESULT Device:: InitDevice()
 {
+	//S_OK - 함수가 성공하였음을 의미
 	HRESULT hr = S_OK;
 	CreateDevice();
 	CreateRenderTargetView();
@@ -31,12 +32,12 @@ bool Device::CreateDevice()
 	//백버퍼를 어떤 용도로 사용할 것인가? 렌더 타켓 으로 씀
 	m_SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 
-	//멀티 샘플링
+	//멀티 샘플링 - 거친 이미지를 부드럽게 해주는것
 	m_SwapChainDesc.SampleDesc.Count = 1;
 
 	//화면의 주사율(1초에 모니터가 몇번 깜빡이는지) 1/60
 	m_SwapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
-	m_SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+	m_SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1; //분모
 
 	//버퍼를 출력할 윈도우
 	m_SwapChainDesc.OutputWindow = m_hWnd;

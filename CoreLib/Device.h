@@ -4,6 +4,7 @@ class Device : public Window
 {
 public:
 	ID3D11Device* m_pd3dDevice;	// 디바이스 객체
+	// 디바이스 컨텍스트 = 화면 출력에 필요한 모든 정보를 가진 구조체, GDI에 의해 관리
 	ID3D11DeviceContext* m_pImmediateContext;// 다비이스 컨텍스트 객체
 	IDXGISwapChain* m_pSwapChain;	// 스왑체인 객체
 	ID3D11RenderTargetView* m_pRenderTargetView;// 메인 랜더타켓 뷰

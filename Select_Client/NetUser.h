@@ -5,6 +5,7 @@
 #include <list>
 #include <WinSock2.h>
 #include "Packet.h"
+#include "Std.h"
 #pragma comment (lib, "ws2_32.lib")
 using namespace std;
 class NetUser

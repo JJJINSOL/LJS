@@ -9,10 +9,13 @@ LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_DESTROY: //WM_DESTORY = 창을 닫을 때 응용 프로그램에서 창에 할당한 자원을 해제하거나 후처리 작업을 할 수 있게 전달하는 윈도우 메시지
     {
         //메시지 큐에 WM_QUIT 메시지를 붙임
+        //큐에 WM_QUIT를 붙임으로써 시스템에게 이 스레드가 종료될것을 알려줌
         PostQuitMessage(0);
     }break;
     default:
         //DefWindowProc = 윈도우의 공통적인 동작을 처리(ex. 창의 크기 축소, 확대 등)
+        //WndProc에서 처리하지 않은 나머지 메시지에 관한 처리
+        //그래서 윈도우의 이동, 크기 변경 같은 것들은 처리를 직접 해줄 필요가 없거 얘한테 넘기기
         return DefWindowProc(hWnd, msg, wParam, lParam);
     }
     return 0;
@@ -48,7 +51,7 @@ BOOL Window::WinRegisterClass(HINSTANCE hInstance)
 //2. 윈도우 생성
 BOOL Window::SetWindow(const WCHAR* szTitle, int iWidth, int iHeight )
 {
-    //시작점,가로,세로
+    //left / top / right / bottom
     RECT rt = { 0,0, iWidth , iHeight };
 
     //윈도우 창크기 조정 세팅

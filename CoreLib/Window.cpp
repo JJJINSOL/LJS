@@ -1,12 +1,13 @@
 #include "Window.h"
 RECT g_rtClient;
-HWND g_hWnd;
+HWND g_hwnd;
 Window* g_pWindow = nullptr;
 //윈도우 프로시저, 윈도우의 각종 메세지 처리 함수
 //(1인자 - 핸들 / 2인자 - 메세지 / 3인자 - 핸들,정수 받아들일때 / 4인자 - 포인터값 전달) 
 //WM = 윈도우 메세지
-LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT  CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+    g_pWindow -> MsgProc(hwnd, msg, wparam, lparam);
     switch (msg)
     {
     case WM_DESTROY: //WM_DESTORY = 창을 닫을 때 응용 프로그램에서 창에 할당한 자원을 해제하거나 후처리 작업을 할 수 있게 전달하는 윈도우 메시지
@@ -16,8 +17,13 @@ LRESULT  CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     }break;
     default:
         //DefWindowProc = 윈도우의 공통적인 동작을 처리(ex. 창의 크기 축소, 확대 등)
-        return DefWindowProc(hWnd, msg, wParam, lParam);
+        return DefWindowProc(hwnd, msg, wparam, lparam);
     }
+    return 0;
+}
+
+LRESULT  Window::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
     return 0;
 }
 //1. 윈도우 클래스 등록 / 허가 (운영체제)
@@ -41,7 +47,12 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     wc.hInstance = hInstance;
 
     //sz = 스트링 / L = LONG / 운영체제 등록 이름 / 설정된 이름 모두 곳곳마다 같아야함
-    wc.lpszClassName = L"KGCA_Window";
+    wc.lpszClassName = L"LJS_WINDOW";
+
+    //Stock = 미리 만들어져서 가지고 있는것
+    //윈도우 클래스 백그라운드
+    wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
+
     if (RegisterClass(&wc) == false)
     {
         return FALSE;
@@ -59,7 +70,7 @@ BOOL Window::SetWindow(const WCHAR* szTitle, int iWidth, int iHeight)
 
     //(lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam)
     m_hWnd = CreateWindow(
-        L"KGCA_Window",
+        L"LJS_WINDOW",
         szTitle,
         WS_OVERLAPPEDWINDOW,
         0, 0,
@@ -73,7 +84,7 @@ BOOL Window::SetWindow(const WCHAR* szTitle, int iWidth, int iHeight)
     {
         return FALSE;
     }
-
+    g_hwnd = m_hWnd;
     //윈도우 클라이언트 영역에서의 좌표값 반환
     GetClientRect(m_hWnd, &m_rtClient);
 
@@ -102,4 +113,8 @@ bool Window::WinRun()
     }
 
     return true;
+}
+Window:: Window()
+{
+    g_pWindow = this;
 }

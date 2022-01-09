@@ -15,9 +15,11 @@ public:
 	BOOL  SetWinClass(HINSTANCE hInstance);
 	//2. 윈도우 생성
 	BOOL  SetWindow(const WCHAR* szTitle = L"Sample", int iWidth = 800, int iHeight = 600);
+	virtual LRESULT  MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
 	bool  WinRun();
 
-	Window() {}
+	Window();
 	virtual ~Window() {}
 };
 

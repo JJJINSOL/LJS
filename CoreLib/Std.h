@@ -1,4 +1,5 @@
 #pragma once
+#include <winsock2.h>
 #include <windows.h>
 #include <vector>
 #include <list>
@@ -10,15 +11,15 @@
 using namespace std;
 
 extern RECT g_rtClient;
-extern HWND g_hWnd;
+extern HWND g_hwnd;
 
 #define GAME_START int WINAPI wWinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow ){   Sample core;   
 #define GAME_WIN(s,x,y) if (core.SetWinClass(hInstance) == FALSE) return 1;   if (core.SetWindow(L#s, x, y) == FALSE) return 1;   core.GameRun();    return 1;}
 
 //int WINAPI wWinMain(HINSTANCE hInstance,
-//	HINSTANCE hPrevInstance,
-//	LPWSTR    lpCmdLine,
-//	int       nCmdShow)
+//					  HINSTANCE hPrevInstance,
+//					  LPWSTR lpCmdLine,
+//					  int nCmdShow)
 //{
 //	TWindow win;
 // ------------------------------------------------------------------------
