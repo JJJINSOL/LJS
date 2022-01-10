@@ -141,10 +141,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="NetUser.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="NetUser.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
   </ItemGroup>

@@ -35,9 +35,10 @@ bool Sample:: Init()
 	SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
 
 	m_net.Initnetwork();
+	//"192.168.0.12"
 	//"192.168.0.28"
 	//"49.142.62.169"
-	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "49.142.62.169");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "192.168.0.28");
 	return true; 
 }
 bool Sample:: Frame()
@@ -58,7 +59,7 @@ bool Sample:: Frame()
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.damage >> recvdata.message;
-			SendMessageA(m_listbox, LB_RESETCONTENT, 0, (LPARAM)recvdata.message);
+			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.message);
 			//iter = m_Net.m_PlayerUser.m_packetPool.erase(iter);
 			(*iter).Reset();
 		}

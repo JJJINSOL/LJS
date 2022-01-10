@@ -144,8 +144,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>copy "*.h" "../../CoreLib/include/"
-copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\CoreLib\\Lib\\"
+      <Command>copy "*.h" "../../TCoreLib/include/"
+copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\CoreLib\\lib\\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
