@@ -8,6 +8,13 @@
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment	(lib, "CoreLib")
 #pragma comment	(lib, "ws2_32.lib")
+
+#ifdef _DEBUG
+#pragma comment	(lib, "CoreLib_d.lib")
+#else
+#pragma comment	(lib, "CoreLib_r.lib")
+#endif
+
 using namespace std;
 
 extern RECT g_rtClient;

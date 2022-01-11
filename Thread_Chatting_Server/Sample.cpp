@@ -124,7 +124,7 @@ DWORD WINAPI RecvThread(LPVOID param)
 	SOCKET sock = (SOCKET)param;
 	while (1)
 	{
-		//뮤텍스에서는 waitfor - release 사이가 임계구역이 됨!
+		//뮤텍스에서는 waitfor(대기함수) - release 사이가 임계구역이 됨!
 		WaitForSingleObject(g_Mutex, INFINITE);
 		//DWORD dwID = GetCurrentThreadId();
 		//std::cout << dwID << std::endl;

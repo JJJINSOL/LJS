@@ -5,6 +5,10 @@
 #include "Packet.h"
 #pragma comment	(lib, "ws2_32.lib")
 using namespace std;
+// 이벤트 핸들
+HANDLE g_hConnectEvent;
+//세마포어 핸들
+HANDLE g_ExecuteSemaphore;
 int SendMsg(SOCKET sock, char* msg, WORD type)
 {
 	//1. 패킷 생성
@@ -144,6 +148,12 @@ DWORD WINAPI SendThread(LPVOID parameter)
 	int end = 0;
 	while (1)
 	{
+		DWORD dwRet = WaitForSingleObject(g_hConnectEvent, INFINITE);
+		//WAIT_OBJECT_0 - 기다리던 이벤트가 시그널이 되면
+		if (dwRet != WAIT_OBJECT_0)
+		{
+			break;
+		}
 		ZeroMemory(&buffer, sizeof(char) * 256);
 		//한글자씩 읽는것이 아니라 문자열 단위로 읽음!
 		fgets(buffer, 256, stdin);
@@ -167,6 +177,12 @@ DWORD WINAPI RecvThread(LPVOID parameter)
 	SOCKET sock = (SOCKET)parameter;
 	while (1)
 	{
+		DWORD dwRet = WaitForSingleObject(g_hConnectEvent, INFINITE);
+		//WAIT_OBJECT_0 - 기다리던 이벤트가 시그널이 되면
+		if (dwRet != WAIT_OBJECT_0)
+		{
+			break;
+		}
 		UPACKET packet;
 		int i = RecvPacketHeader(sock, packet);
 		//i가 -1 = 문제있음(비정상종료) / 0 == 나감 / 1 == 성공
@@ -190,27 +206,28 @@ DWORD WINAPI RecvThread(LPVOID parameter)
 
 void main()
 {
+	//이벤트 - 쓰레드끼리 상호작용 가능하게 해주는 객체 / 수동리셋(TRUE)
+	//수동리셋 - 쓰레드 일괄 / 자동리셋 - 쓰레드 1개만
+	//(보안 속성, 리셋타입, 이벤트 초기 상태, 이벤트 이름)
+	g_hConnectEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	
+	
+	//세마포어 - 특정 오브젝트 생성시 카운터
+	//(보안속성, 임계영역 개수, 임계영역 접근 개수, 이벤트 이름)
+	g_ExecuteSemaphore = CreateSemaphore(NULL, 3, 3, L"ExecuteA");
+	
+	if (WaitForSingleObject(g_ExecuteSemaphore, 0) == WAIT_TIMEOUT)
+	{
+		CloseHandle(g_ExecuteSemaphore);
+		MessageBox(NULL, L"이미 3개의 인스턴트가 실행중입니다.", L"알림", MB_OK);
+		return;
+	}
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
 		return;
 	}
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sa;
-	ZeroMemory(&sa, sizeof(sa));
-	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
-	sa.sin_addr.s_addr = inet_addr("192.168.0.12");
-	//sa.sin_addr.s_addr = inet_addr("49.142.62.169");
-	int con = connect(sock, (sockaddr*)&sa, sizeof(sa));
-	if (con == SOCKET_ERROR)
-	{
-		return;
-	}
-	cout << "접속 성공!" << endl;
-
-	u_long on = 1;
-	ioctlsocket(sock, FIONBIO, &on);
 
 	//스레드 생성++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//1. WinAPI  (+ 2. c++11 로도 스레드 생성 가능)
@@ -221,10 +238,34 @@ void main()
 
 	DWORD recvThreadId;
 	HANDLE recvthread = CreateThread(0, 0, RecvThread, (LPVOID)sock, 0, &recvThreadId);
+
+	Sleep(1000);
+
+	SOCKADDR_IN sa;
+	ZeroMemory(&sa, sizeof(sa));
+	sa.sin_family = AF_INET;
+	sa.sin_port = htons(10000);
+	sa.sin_addr.s_addr = inet_addr("192.168.0.28");
+	//"192.168.0.12"
+	//"49.142.62.169"
+	int con = connect(sock, (sockaddr*)&sa, sizeof(sa));
+	if (con == SOCKET_ERROR)
+	{
+		return;
+	}
+	cout << "접속 성공!" << endl;
+
+	SetEvent(g_hConnectEvent);
+
+	u_long on = 1;
+	ioctlsocket(sock, FIONBIO, &on);
+
+	
 	//메인 스레드 작업
 	while (1)
 	{
 		Sleep(1);
+		//ResetEvent(g_hConnectEvent);
 	}
 	cout << "접속 종료" << endl;
 
@@ -234,4 +275,5 @@ void main()
 	CloseHandle(recvthread);
 	closesocket(sock);
 	WSACleanup();
+	CloseHandle(g_hConnectEvent);
 }
