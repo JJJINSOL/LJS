@@ -1,5 +1,5 @@
 #include "Server.h"
-bool Server:: Init()
+bool Server::InitServer(int port)
 {
 	InitializeCriticalSection(&g_cs);
 
@@ -14,15 +14,15 @@ bool Server:: Init()
 	SOCKADDR_IN sa;
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
+	sa.sin_port = htons(port);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 	int a = bind(m_listensock, (sockaddr*)&sa, sizeof(sa));
 	if (a == SOCKET_ERROR) return false;
 	a = listen(m_listensock, SOMAXCONN);
 	if (a == SOCKET_ERROR) return false;
 
-	SOCKADDR_IN clientaddr;
-	int len = sizeof(clientaddr);
+	//SOCKADDR_IN clientaddr;
+	//int len = sizeof(clientaddr);
 
 	cout << "서버 가동중~" << endl;
 

@@ -13,7 +13,7 @@ public:
 	int Broadcast(NetUser& user);
 	int RecvUser(NetUser& user);
 
-	bool Init();
+	bool InitServer(int port);
 	bool Run();
 	bool Release();
 };

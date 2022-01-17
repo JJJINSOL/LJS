@@ -1,7 +1,7 @@
 #include "NetUser.h"
 void NetUser:: set(SOCKET sock, SOCKADDR_IN addr)
 {
-	m_connect == true;
+	m_connect = true;
 	ZeroMemory(m_recvbuffer, sizeof(char) * 2048);
 	m_packetpos = 0;
 	m_writepos = 0;
