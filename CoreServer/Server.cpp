@@ -32,40 +32,10 @@ bool Server::InitServer(int port)
 }
 bool Server:: Run()
 {
-	SOCKADDR_IN clientAddr;
-	int len = sizeof(clientAddr);
-	while (1)
-	{
-		SOCKET clientsock = accept(m_listensock, (sockaddr*)&clientAddr, &len);
-		if (clientsock == SOCKET_ERROR)
-		{
-			int error = WSAGetLastError();
-			if (error != WSAEWOULDBLOCK)
-			{
-				cout << "ERRORCODE = " << error << endl;
-				break;
-			}
-		}
-		else
-		{
-			NetUser user;
-			user.set(clientsock, clientAddr);
-
-			//EnterCriticalSection(&g_cs);
-			WaitForSingleObject(g_Mutex, INFINITE);
-			g_userlist.push_back(user);
-			//LeaveCriticalSection(&g_cs);
-			ReleaseMutex(g_Mutex);
-
-			cout << "ip = " << inet_ntoa(clientAddr.sin_addr)
-				<< " port = " << ntohs(clientAddr.sin_port)
-				<< "  " << endl;
-			u_long on = 1;
-			ioctlsocket(clientsock, FIONBIO, &on);
-			cout << g_userlist.size() << "명 접속중!" << endl;
-		}
-		Sleep(1);
-	}
+	return true;
+}
+bool Server:: AddUser(SOCKET socr, SOCKADDR_IN clientAddr)
+{
 	return true;
 }
 bool Server:: Release()
@@ -126,28 +96,28 @@ int Server:: SendMsg(SOCKET sock, UPACKET& packet)
 	return sendsize;
 }
 //한 유저가 입력한 메세지를 다른 유저에게 다 전송하는 함수
-int Server:: Broadcast(NetUser& user)
+int Server:: Broadcast(NetUser* user)
 {
 	//유저의 패킷풀의 사이즈가 0보다 크면 전송할 패킷이 있다는 소리
-	if (user.m_packetpool.size() > 0)
+	if (user->m_packetpool.size() > 0)
 	{
 		//iterator - 반복자
 		list<Packet>::iterator iter;
 		//패킷은 여러개로 쪼개져 전송되니 그 쪼개진 모든 패킷 패킷풀에 있는데 그거 첨부터 끝까지 훑기
-		for (iter = user.m_packetpool.begin(); iter != user.m_packetpool.end();)
+		for (iter = user->m_packetpool.begin(); iter != user->m_packetpool.end();)
 		{
 			//패킷1 모든 유저한테 보내기 ->패킷2 모든 유저한테 보내기 -> ~ -> 마지막 패킷까지
-			for (NetUser& senduser : g_userlist)
+			for (NetUser* senduser : g_userlist)
 			{
-				int i = SendMsg(senduser.m_sock, (*iter).m_upacket);
+				int i = SendMsg(senduser->m_sock, (*iter).m_upacket);
 				//보낸게 0이면 유저 연결이 안되어 있다는것
 				if (i <= 0)
 				{
-					senduser.m_connect = false;
+					senduser->m_connect = false;
 				}
 			}
 			//보낸 패킷은 지우자
-			iter = user.m_packetpool.erase(iter);
+			iter = user->m_packetpool.erase(iter);
 		}
 	}
 	return 1;
@@ -168,6 +138,6 @@ int Server:: RecvUser(NetUser& user)
 		}
 		return 2;
 	}
-	user.DispatchRead(recvbuffer, recvbyte);
+	user.DispatchRecv(recvbuffer, recvbyte);
 	return 1;
 }

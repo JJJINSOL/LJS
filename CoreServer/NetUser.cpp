@@ -1,4 +1,36 @@
 #include "NetUser.h"
+int NetUser:: Recv()
+{
+	//비동기 로드
+	m_wsaRecvBuffer.len = sizeof(char) * 256;
+	m_wsaRecvBuffer.buf = m_szRecv;
+	m_ovRecv.type = 1000;
+	DWORD dwRead;
+	DWORD lpFlags = 0;
+	BOOL ret = WSARecv(m_sock,&m_wsaRecvBuffer,1,&dwRead,&lpFlags,(WSAOVERLAPPED*)&m_ovRecv,nullptr);
+	return 0;
+}
+int NetUser:: Dispatch(DWORD dwTrans, OV* tov)
+{
+	if (m_connect == false)
+	{
+		return 0;
+	}
+	if (tov->type == 1000)
+	{
+		if (!DispatchRecv(m_szRecv, dwTrans))
+		{
+		}
+		Recv();
+	}
+	if (tov->type == 2000)
+	{
+		if (!DispatchSend(dwTrans))
+		{
+		}
+	}
+	return 1;
+}
 void NetUser:: set(SOCKET sock, SOCKADDR_IN addr)
 {
 	m_connect = true;
@@ -12,7 +44,7 @@ void NetUser:: set(SOCKET sock, SOCKADDR_IN addr)
 	m_name = inet_ntoa(addr.sin_addr);
 	m_port = ntohs(addr.sin_port);
 }
-int NetUser:: DispatchRead(char* recvbuffer, int recvbyte)
+int NetUser:: DispatchRecv(char* recvbuffer, int recvbyte)
 {
 	if (m_writepos + recvbyte >= 2048)
 	{
@@ -51,4 +83,23 @@ int NetUser:: DispatchRead(char* recvbuffer, int recvbyte)
 		}
 	}
 	return 1;
+}
+
+int NetUser:: DispatchSend(DWORD dwTrans)
+{
+	return 0;
+}
+
+bool NetUser:: DisConnect()
+{
+	closesocket(m_sock);
+	return true;
+}
+NetUser::NetUser()
+{
+
+}
+NetUser::~NetUser()
+{
+
 }

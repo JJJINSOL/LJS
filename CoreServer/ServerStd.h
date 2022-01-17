@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 #include <list>
-
+#include <ws2tcpip.h> // inet_ntop
 #pragma comment (lib, "ws2_32.lib")
 
 #ifdef _DEBUG

@@ -143,11 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Accepter.cpp" />
+    <ClCompile Include="ChatUser.cpp" />
+    <ClCompile Include="LobbyServer.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="ServerObj.cpp" />
-    <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="ThreadRecv.cpp" />
-    <ClCompile Include="ThreadSend.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreServer\CoreServer.vcxproj">
@@ -155,10 +154,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ServerObj.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="ThreadRecv.h" />
-    <ClInclude Include="ThreadSend.h" />
+    <ClInclude Include="Accepter.h" />
+    <ClInclude Include="ChatUser.h" />
+    <ClInclude Include="LobbyServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
