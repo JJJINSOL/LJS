@@ -27,9 +27,14 @@ bool Server:: InitServer(int port)
 	u_long on = 1;
 	ioctlsocket(m_socket, FIONBIO, &on);
 
+	//m_server = this;
+
 	return true;
 }
-
+bool Server:: AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
+{
+	return true;
+}
 Server:: Server()
 {
 

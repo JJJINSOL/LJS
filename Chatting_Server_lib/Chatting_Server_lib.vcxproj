@@ -126,6 +126,10 @@
       </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "*.h" "../../chatting/include/Chatting_Server_lib"
+copy "..\\..\\output\\Debug\\Chatting_Server_lib.lib" "..\\..\\chatting\\lib\\Chatting_Server_lib.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>

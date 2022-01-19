@@ -8,10 +8,10 @@ public:
 	bool m_start;
 	LPVOID m_param;
 
-	void Create(LPVOID param);
+	//void Create(LPVOID param);
 
 	virtual bool Run();
-	static unsigned int WINAPI Runner(LPVOID param);
+	//static unsigned int WINAPI Runner(LPVOID param);
 
 	Thread();
 	~Thread();
