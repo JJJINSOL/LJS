@@ -56,6 +56,7 @@ bool LobbyServer::AddUser(SOCKET sock, SOCKADDR_IN clientAddr)
 	LeaveCriticalSection(&m_cs);
 
 	::CreateIoCompletionPort((HANDLE)sock, g_hIOCP, (ULONG_PTR)user, 0);
+	//이거 없으면 채팅 안됨
 	user->Recv();
 
 	char ip[INET_ADDRSTRLEN];
