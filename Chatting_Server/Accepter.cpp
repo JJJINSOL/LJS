@@ -21,7 +21,7 @@ bool Accepter:: Run(LPVOID iserver)
 		else
 		{
 			server->AddUser(clientsock, clientAddr);
-			cout << "立加肯丰" << endl;
+			cout <<server->m_userlist.size() <<"疙 立加吝" << endl;
 		}
 		Sleep(1);
 	}
