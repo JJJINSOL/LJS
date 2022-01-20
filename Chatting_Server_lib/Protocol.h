@@ -14,6 +14,7 @@ typedef struct {
 }UPACKET;
 
 typedef struct {
+	char name[20];
 	char msg[2048];
 }CahtMSG;
 
