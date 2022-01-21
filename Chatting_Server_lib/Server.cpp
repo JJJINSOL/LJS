@@ -35,6 +35,10 @@ bool Server:: AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
 {
 	return true;
 }
+int Broadcast(User* user)
+{
+	return 1;
+}
 Server:: Server()
 {
 

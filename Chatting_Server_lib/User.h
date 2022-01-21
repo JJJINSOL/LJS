@@ -1,10 +1,7 @@
 #pragma once
 #include "Obj_Server.h"
-typedef struct {
-	OVERLAPPED ov;
-	int type;
-}NewOV;
-class User : public Obj_Server
+#include "Message.h"
+class User : public Obj_Server,public Message
 {
 public:
 	SOCKET m_sock;
@@ -15,8 +12,8 @@ public:
 
 	bool m_connect;
 
-	NewOV m_recv;
-	NewOV m_send;
 	void UserSet(SOCKET sock, SOCKADDR_IN clientaddr);
+	int Dispatch(DWORD trans, NewOV* ov);
+	bool Recv();
 };
 

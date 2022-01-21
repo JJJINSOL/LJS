@@ -149,6 +149,7 @@ copy "..\\..\\output\\Debug\\Chatting_Server_lib.lib" "..\\..\\chatting\\lib\\Ch
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Message.h" />
     <ClInclude Include="Obj_Server.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
@@ -158,6 +159,7 @@ copy "..\\..\\output\\Debug\\Chatting_Server_lib.lib" "..\\..\\chatting\\lib\\Ch
     <ClInclude Include="User.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="Obj_Server.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Server.cpp" />

@@ -16,6 +16,7 @@ public:
 
 	virtual bool InitServer(int port);
 	virtual bool AddUser(SOCKET sock, SOCKADDR_IN clientaddr);
+	int Broadcast(User* user);
 	Server();
 	~Server();
 };

@@ -66,6 +66,7 @@ bool ChattingServer::AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
     LeaveCriticalSection(&m_cs);
 
     CreateIoCompletionPort((HANDLE)sock, m_hServer, (ULONG_PTR)user, 0);
+    user->Recv();
 
     cout << "ip = " << inet_ntoa(clientaddr.sin_addr)
         << " port = "<< ntohs(clientaddr.sin_port)

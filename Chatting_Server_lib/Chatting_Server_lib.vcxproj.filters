@@ -36,6 +36,9 @@
     <ClInclude Include="Obj_Server.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Message.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -51,6 +54,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Obj_Server.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Message.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
