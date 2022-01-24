@@ -1,7 +1,7 @@
 #pragma once
-#include "Obj_Server.h"
+#include "Std_Server.h"
 #include "Message.h"
-class User : public Obj_Server,public Message
+class User : public Message
 {
 public:
 	SOCKET m_sock;
@@ -13,7 +13,7 @@ public:
 	bool m_connect;
 
 	void UserSet(SOCKET sock, SOCKADDR_IN clientaddr);
-	int Dispatch(DWORD trans, NewOV* ov);
+	bool Dispatch(DWORD trans, NewOV* ov);
 	bool Recv();
 };
 

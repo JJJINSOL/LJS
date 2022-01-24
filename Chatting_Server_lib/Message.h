@@ -1,12 +1,12 @@
 #pragma once
-#include "Std_Server.h"
+#include "Obj_Server.h"
 #include "Packet.h"
-#include <ws2def.h>
+
 typedef struct {
 	OVERLAPPED ov;
 	int type;
 }NewOV;
-class Message
+class Message : public Obj_Server
 {
 public:
 	NewOV m_ovrecv;
@@ -17,9 +17,9 @@ public:
 	char m_szSend[256];
 
 	char m_recvBuffer[2048];
-	int  m_packetPos = 0;
-	int  m_writePos = 0;
-	int  m_readPos = 0;
+	int  m_packetPos;
+	int  m_writePos;
+	int  m_readPos;
 
 	list<Packet> m_packetPool;
 

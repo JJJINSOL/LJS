@@ -8,4 +8,7 @@ void main()
 
 	Accepter accept;
 	accept.Run(&server);
+
+	server.Run();
+	server.Release();
 }

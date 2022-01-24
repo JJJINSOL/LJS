@@ -21,11 +21,11 @@ DWORD WINAPI WorkThread(LPVOID param)
         {
             if (trans == 0 && nov->type == 1000)
             {
-                return 0;
+                user->m_connect = false;
             }
             else
             {
-                
+                user->Dispatch(trans, nov);
             }
         }
         else
@@ -51,7 +51,45 @@ bool ChattingServer::InitServer(int port)
     }
     return true;
 }
+bool ChattingServer:: Run()
+{
+    while (1)
+    {
+        EnterCriticalSection(&m_cs);
 
+        for (User* user : m_userlist)
+        {
+            ChattingUser* chatuser = (ChattingUser*)user;
+            if (chatuser->m_packetPool.size() > 0)
+            {
+                Broadcast(user);
+            }
+        }
+        list<User*>::iterator iter;
+        for (iter = m_userlist.begin(); iter != m_userlist.end();)
+        {
+            if ((*iter)->m_connect == false)
+            {
+                delete(*iter);
+                iter = m_userlist.erase(iter);
+            }
+            else
+            {
+                iter++;
+            }
+        }
+
+        LeaveCriticalSection(&m_cs);
+        Sleep(1);
+    }
+    return true;
+}
+bool ChattingServer:: Release()
+{
+    Server::Release();
+    CloseHandle(m_hServer);
+    return true;
+}
 bool ChattingServer::AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
 {
     ChattingUser* user = new ChattingUser;

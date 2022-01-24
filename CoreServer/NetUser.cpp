@@ -2,7 +2,7 @@
 int NetUser:: Recv()
 {
 	//비동기 로드
-	m_wsaRecvBuffer.len = sizeof(char) * 256;
+	m_wsaRecvBuffer.len = sizeof(char) * 256; //256
 	m_wsaRecvBuffer.buf = m_szRecv;
 	m_ovRecv.type = 1000;
 	DWORD dwRead;

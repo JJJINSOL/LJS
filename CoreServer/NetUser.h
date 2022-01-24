@@ -28,7 +28,7 @@ public:
 	//WSABUF - 구조체/버퍼와 버퍼 크기
 	WSABUF m_wsaRecvBuffer;
 	WSABUF m_wsaSendBuffer;
-	char m_szRecv[256];
+	char m_szRecv[256];//256
 	char m_szSend[256];
 
 	char m_recvbuffer[2048];

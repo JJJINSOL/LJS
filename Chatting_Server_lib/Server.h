@@ -1,10 +1,6 @@
 #pragma once
-#include <WinSock2.h>
-#pragma comment (lib, "ws2_32.lib")
 #include "User.h"
-#include <Windows.h>
-#include <iostream>
-#include <list>
+#include "Std_Server.h"
 using namespace std;
 class Server : public User
 {
@@ -15,8 +11,10 @@ public:
 	//LPVOID m_server;
 
 	virtual bool InitServer(int port);
+	virtual bool Run();
+	virtual bool Release();
 	virtual bool AddUser(SOCKET sock, SOCKADDR_IN clientaddr);
-	int Broadcast(User* user);
+	bool Broadcast(User* user);
 	Server();
 	~Server();
 };

@@ -4,7 +4,8 @@ class Packet
 {
 public:
 	UPACKET m_upacket;
-	Packet();
+	char* m_offset;
+	Packet(WORD type);
 	~Packet();
 };
 

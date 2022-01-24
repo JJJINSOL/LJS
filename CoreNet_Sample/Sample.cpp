@@ -39,7 +39,7 @@ bool Sample::Init()
 	//"192.168.0.12"
 	//"192.168.0.90"
 	//"27.35.45.57"
-	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "27.35.76.122");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "27.35.76.134");
 	return true;
 }
 bool Sample::Frame()
