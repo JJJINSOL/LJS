@@ -14,7 +14,7 @@ int Message::RecvMsg(char* recvbuffer, int recvbyte)
 	//메시지 내용이 있다면
 	if (recvbyte >= PACKET_HEADER_SIZE)
 	{
-		UPACKET* upacket = (UPACKET*)m_recvBuffer;
+		UPACKET* upacket = (UPACKET*)&m_recvBuffer[m_packetPos];
 		while (upacket->p_header.len >= m_readPos)
 		{
 			Packet packet(upacket->p_header.type);
@@ -37,7 +37,7 @@ int Message:: SendMsg(SOCKET sock, UPACKET& packet)
 	int sendsize = 0;
 	while (sendsize < packet.p_header.len)
 	{
-		int sendbyte = send(sock,msg,packet.p_header.len-sendsize,0);
+		int sendbyte = send(sock,&msg[sendsize],packet.p_header.len-sendsize,0);
 		if (sendbyte == SOCKET_ERROR)
 		{
 			if (WSAGetLastError() != WSAEWOULDBLOCK)

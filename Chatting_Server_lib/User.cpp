@@ -6,8 +6,9 @@ void User:: UserSet(SOCKET sock, SOCKADDR_IN clientaddr)
 	m_sockaddr = clientaddr;
 	m_ip = inet_ntoa(clientaddr.sin_addr);
 	m_port = ntohs(clientaddr.sin_port);
-	m_name = "";
+	//m_name = "";
 
+	ZeroMemory(m_recvBuffer, sizeof(char) * 2048);
 	m_packetPos = 0;
 	m_writePos = 0;
 	m_readPos = 0;
