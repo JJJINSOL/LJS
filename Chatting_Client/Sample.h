@@ -1,9 +1,11 @@
 #pragma once
 #include "Core.h"
 #include "AsyncSelect.h"
+#include "Message.h"
 class Sample : public Core
 {
 	AsyncSelect m_net;
+	Message m_msg;
 	HWND m_edit;
 	HWND m_button;
 	HWND m_listbox;

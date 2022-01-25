@@ -25,7 +25,6 @@ struct ChatMsg
 {
 	int index;
 	char name[20];
-	int damage;
 	char message[256];
 };
 #pragma pack(pop)

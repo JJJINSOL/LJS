@@ -88,7 +88,7 @@ Packet::Packet()
 Packet::Packet(const Packet& ipacket)
 {
 	m_upacket.p_header = ipacket.m_upacket.p_header;
-	memcpy(m_upacket.msg, ipacket.m_upacket.msg, sizeof(char) * 4096);
+	memcpy(m_upacket.msg, ipacket.m_upacket.msg, sizeof(char) * 2048);
 	m_offset = m_upacket.msg;
 }
 Packet::Packet(WORD type)

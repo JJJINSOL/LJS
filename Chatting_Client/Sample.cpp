@@ -13,8 +13,8 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_edit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet packet(PACKET_CHAT_MSG);
-			packet << 999 << "이진솔" << 50 << buffer;
-			m_net.SendMsg(m_net.m_sock, packet.m_upacket);
+			packet << 970214 << "이진솔"<< buffer;
+			m_msg.SendMsg(m_net.m_sock, packet.m_upacket);
 
 			SendMessageA(m_edit, WM_SETTEXT, 0, (LPARAM)"");
 		}break;
@@ -38,27 +38,28 @@ bool Sample::Init()
 	//"192.168.0.12"
 	//"192.168.0.90"
 	//"27.35.45.57"
-	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "192.168.0.90");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "49.142.62.157");
 	return true;
 }
 bool Sample::Frame()
 {
-	int count = m_net.m_playuser.m_packetpool.size();
+	int count = m_net.m_user.m_packetPool.size();
 	if (count > 0 && m_chatcount != count)
 	{
 		m_chatcount = count;
 
 		SendMessage(m_listbox, LB_RESETCONTENT, 0, 0);
 		list<Packet> ::iterator iter;
-		if (m_net.m_playuser.m_packetpool.size() > 20)
+		if (m_net.m_user.m_packetPool.size() > 20)
 		{
-			m_net.m_playuser.m_packetpool.pop_front();
+			m_net.m_user.m_packetPool.pop_front();
 		}
-		for (iter = m_net.m_playuser.m_packetpool.begin(); iter != m_net.m_playuser.m_packetpool.end(); iter++)
+		for (iter = m_net.m_user.m_packetPool.begin(); iter != m_net.m_user.m_packetPool.end(); iter++)
 		{
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
-			(*iter) >> recvdata.index >> recvdata.name >> recvdata.damage >> recvdata.message;
+			(*iter) >> recvdata.index >> recvdata.name >> recvdata.message;
+			//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.name);
 			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.message);
 			//iter = m_Net.m_PlayerUser.m_packetPool.erase(iter);
 			(*iter).Reset();

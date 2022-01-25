@@ -36,3 +36,50 @@ int Message::ReadMsg(char* recvbuffer, int recvbyte)
 	}
 	return 1;
 }
+int Message::SendMsg(SOCKET sock, char* msg, WORD type)
+{
+	//1. 패킷 생성
+	UPACKET packet;
+	//패킷 구조체 메모리 정리
+	ZeroMemory(&packet, sizeof(packet));
+	packet.p_header.len = strlen(msg) + PACKET_HEADER_SIZE;
+	packet.p_header.type = type;
+	memcpy(packet.msg, msg, strlen(msg));
+	//2. 패킷 전송
+	//무엇을 보내고 받을때 직접 바로 보내는 것이 아니라, 운영체제 버퍼에 거쳐보냄
+	//운영체제 sendbuffer/recvbuffer 꽉 차면 보내기 받기 안됨
+	char* pmsg = (char*)&packet;
+	int sendsize = 0;
+	do
+	{
+		int sendbyte = send(sock, &pmsg[sendsize], packet.p_header.len - sendsize, 0);
+		if (sendbyte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				//비정상적인 종료
+				return -1;
+			}
+		}
+		sendsize += sendbyte;
+	} while (sendsize < packet.p_header.len);
+	return sendsize;
+}
+int Message::SendMsg(SOCKET sock, UPACKET& upacket)
+{
+	char* msg = (char*)&upacket;
+	int sendsize = 0;
+	do {
+		int iSendByte = send(sock, &msg[sendsize],
+			upacket.p_header.len - sendsize, 0);
+		if (iSendByte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				return -1;
+			}
+		}
+		sendsize += iSendByte;
+	} while (sendsize < upacket.p_header.len);
+	return sendsize;
+}

@@ -7,7 +7,7 @@ bool AsyncSelect:: Connect(HWND hwnd, int protocol, int port, const char* ip)
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(port);
 	sa.sin_addr.s_addr = inet_addr(ip);
-	m_playuser.m_sock = m_sock;
+	m_user.m_sock = m_sock;
 
 	//WSAAsyncSelect - 윈도우 메세지 형태로 비동기적으로 소켓과 관련된 네트워크 이벤트 처리를 함
 	//정해진 시간이 아니라 무작위로 메시지 큐에 메시지 날아옴
@@ -41,7 +41,7 @@ LRESULT AsyncSelect:: MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		}break;
 		case FD_READ:
 		{
-			RecvUser(m_playuser);
+			RecvUser(m_user);
 		}break;
 		case FD_WRITE:
 		{

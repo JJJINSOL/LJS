@@ -1,6 +1,6 @@
 #pragma once
-#include "Packet.h"
 #include "NetStd.h"
+#include "Packet.h"
 class Message
 {
 public:
@@ -12,5 +12,7 @@ public:
 	list<Packet> m_packetPool;
 
 	int ReadMsg(char* recvbuffer, int recvbyte);
+	int SendMsg(SOCKET sock, char* msg, WORD type);
+	int SendMsg(SOCKET sock, UPACKET& upacket);
 };
 
