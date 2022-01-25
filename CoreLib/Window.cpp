@@ -38,7 +38,8 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
     //CS = 클래스 / CS_HREDRAW = 윈도우의 이동이나 크기 조절시 클라이언트의 가로의 크기가 변경되면 다시 그림
     //              CS_VREDRAW = 윈도우의 이동이나 크기 조절시 클라이언트의 세로의 크기가 변경되면 다시 그림
     //즉, 가로 세로 크기 변경 가능
-    wc.style = CS_HREDRAW | CS_VREDRAW;
+    //wc.style = CS_HREDRAW | CS_VREDRAW;
+    //wc.style = WS_THICKFRAME;
 
     //lp = 포인터 / 함수 주소 / 윈도우 프로시저
     wc.lpfnWndProc = WndProc;
@@ -51,7 +52,7 @@ BOOL Window::SetWinClass(HINSTANCE hInstance)
 
     //Stock = 미리 만들어져서 가지고 있는것
     //윈도우 클래스 백그라운드
-    wc.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
+    wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
 
     if (RegisterClass(&wc) == false)
     {

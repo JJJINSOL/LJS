@@ -1,7 +1,7 @@
 #pragma once
 #include <windows.h>
 #define PACKET_HEADER_SIZE 4
-#define PACKET_CHAT_MSG 500
+#define PACKET_CHAT_MSG 1000
 #pragma pack(push,1)
 typedef struct {
 	WORD len;

@@ -7,6 +7,7 @@ void main()
 	server.InitServer(10000);
 
 	Accepter accept(&server);
+	//accept.Run();
 
 	server.Run();
 	server.Release();

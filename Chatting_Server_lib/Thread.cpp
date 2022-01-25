@@ -1,5 +1,5 @@
 #include "Thread.h"
-unsigned int WINAPI Thread:: Runner(LPVOID param)
+DWORD WINAPI Runner(LPVOID param)
 {
 	Thread* thread = (Thread*)param;
 	if (thread != nullptr)
@@ -12,8 +12,8 @@ unsigned int WINAPI Thread:: Runner(LPVOID param)
 void Thread:: Create(LPVOID param)
 {
 	if (m_start != false) return;
-	//_beginthreadex - <process.h>
-	m_thread = _beginthreadex(nullptr,0,Runner,this,0,&m_id);
+	DWORD id;
+	m_thread = CreateThread(nullptr, 0, Runner, this, 0, &id);
 	m_start = true;
 	m_param = param;
 }
@@ -23,7 +23,7 @@ bool Thread:: Run()
 }
 void Thread:: Detach()
 {
-	CloseHandle((HANDLE)m_thread);
+	CloseHandle(m_thread);
 }
 Thread:: Thread()
 {
@@ -38,5 +38,5 @@ Thread::Thread(LPVOID pValue)
 }
 Thread:: ~Thread()
 {
-	CloseHandle((HANDLE)m_thread);
+	CloseHandle(m_thread);
 }
