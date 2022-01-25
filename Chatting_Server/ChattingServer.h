@@ -1,7 +1,7 @@
 #pragma once
 #include "Server.h"
 #include "ChattingUser.h"
-//#include 
+
 #define THREAD_MAX 3
 class ChattingServer : public Server
 {

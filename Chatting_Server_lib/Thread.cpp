@@ -1,5 +1,5 @@
 #include "Thread.h"
-unsigned int WINAPI Runner(LPVOID param)
+unsigned int WINAPI Thread:: Runner(LPVOID param)
 {
 	Thread* thread = (Thread*)param;
 	if (thread != nullptr)
@@ -29,6 +29,12 @@ Thread:: Thread()
 {
 	m_start = false;
 	m_param = nullptr;
+}
+Thread::Thread(LPVOID pValue)
+{
+	m_start = false;
+	m_param = nullptr;
+	Create(pValue);
 }
 Thread:: ~Thread()
 {

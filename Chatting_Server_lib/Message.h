@@ -23,7 +23,7 @@ public:
 
 	list<Packet> m_packetPool;
 
-
+public:
 	int SendMsg(SOCKET sock, UPACKET& packet);
 	int RecvMsg(char* recvbuffer, int recvbyte);
 	

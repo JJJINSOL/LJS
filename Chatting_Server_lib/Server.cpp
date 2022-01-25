@@ -60,7 +60,8 @@ bool Server::Broadcast(User* user)
 			//패킷1 모든 유저한테 보내기 ->패킷2 모든 유저한테 보내기 -> ~ -> 마지막 패킷까지
 			for (User* senduser : m_userlist)
 			{
-				int i = SendMsg(senduser->m_sock, (*iter).m_upacket);
+				Message m;
+				int i = m.SendMsg(senduser->m_sock, (*iter).m_upacket);
 				//보낸게 0이면 유저 연결이 안되어 있다는것
 				if (i <= 0)
 				{

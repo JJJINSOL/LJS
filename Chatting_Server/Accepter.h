@@ -1,10 +1,13 @@
 #pragma once
-#include "ChattingServer.h"
-class Accepter : public ChattingServer
+#include "Thread.h"
+#include "Server.h"
+class Accepter : public Thread
 {
 public:
-	bool Run(LPVOID iserver);
+	bool Run();
+
 	Accepter();
+	Accepter(LPVOID value);
 	~Accepter();
 };
 

@@ -1,8 +1,9 @@
 #pragma once
 #include "User.h"
 #include "Std_Server.h"
+#include "Message.h"
 using namespace std;
-class Server : public User
+class Server : public Obj_Server
 {
 public:
 	list<User*> m_userlist;

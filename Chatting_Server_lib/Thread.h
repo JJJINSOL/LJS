@@ -14,6 +14,7 @@ public:
 	static unsigned int WINAPI Runner(LPVOID param);
 
 	Thread();
+	Thread(LPVOID pValue);
 	~Thread();
 };
 

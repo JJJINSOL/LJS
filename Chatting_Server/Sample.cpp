@@ -6,8 +6,7 @@ void main()
 	ChattingServer server;
 	server.InitServer(10000);
 
-	Accepter accept;
-	accept.Run(&server);
+	Accepter accept(&server);
 
 	server.Run();
 	server.Release();

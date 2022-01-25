@@ -1,7 +1,7 @@
 #include "Accepter.h"
-bool Accepter:: Run(LPVOID iserver)
+bool Accepter:: Run()
 {
-	Server* server = (Server*)iserver;
+	Server* server = (Server*)m_param;
 	SOCKET sock = server->m_socket;
 	SOCKADDR_IN clientAddr;
 	int len = sizeof(clientAddr);
@@ -30,6 +30,10 @@ bool Accepter:: Run(LPVOID iserver)
 Accepter:: Accepter() 
 {
 	//Run(server);
+}
+Accepter:: Accepter(LPVOID value) : Thread(value)
+{
+
 }
 Accepter:: ~Accepter()
 {
