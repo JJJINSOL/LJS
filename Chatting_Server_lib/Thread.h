@@ -11,9 +11,7 @@ public:
 	void Create(LPVOID param);
 	void Detach();
 	virtual bool Run();
-	//static unsigned int WINAPI Runner(LPVOID param);
 
-	Thread();
 	Thread(LPVOID pValue);
 	~Thread();
 };

@@ -1,7 +1,6 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "ChattingServer.h"
 #include <ws2ipdef.h>
-//#include <WS2tcpip.h>
 DWORD WINAPI WorkThread(LPVOID param)
 {
     DWORD trans;
@@ -56,22 +55,27 @@ bool ChattingServer:: Run()
     while (1)
     {
         EnterCriticalSection(&m_cs);
-
-        for (User* user : m_userlist)
+        list<User*>::iterator iter;
+        for (iter = m_userlist.begin(); iter != m_userlist.end();)
         {
-            ChattingUser* chatuser = (ChattingUser*)user;
+            ChattingUser* chatuser = (ChattingUser*)*iter;
             if (chatuser->m_packetPool.size() > 0)
             {
-                Broadcast(user);
+                Broadcast(*iter);
             }
+            iter++;
         }
-        list<User*>::iterator iter;
         for (iter = m_userlist.begin(); iter != m_userlist.end();)
         {
             if ((*iter)->m_connect == false)
             {
+                ChattingUser* chatuser = (ChattingUser*)*iter;
+                //clientaddr.sin_addr
+                cout << "ip = " << chatuser->m_ip
+                     << "  접속 해제!" << endl;
                 delete(*iter);
                 iter = m_userlist.erase(iter);
+                cout << m_userlist.size() << "명 접속중입니다." << endl;
             }
             else
             {
@@ -109,6 +113,6 @@ bool ChattingServer::AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
     cout << "ip = " << inet_ntoa(clientaddr.sin_addr)
         << " port = "<< ntohs(clientaddr.sin_port)
         <<"  " << endl;
-
+    cout << m_userlist.size() << "명 접속중입니다." << endl;
     return true;
 }

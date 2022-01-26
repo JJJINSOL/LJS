@@ -1,4 +1,5 @@
 #include "Thread.h"
+
 DWORD WINAPI Runner(LPVOID param)
 {
 	Thread* thread = (Thread*)param;
@@ -24,11 +25,6 @@ bool Thread:: Run()
 void Thread:: Detach()
 {
 	CloseHandle(m_thread);
-}
-Thread:: Thread()
-{
-	m_start = false;
-	m_param = nullptr;
 }
 Thread::Thread(LPVOID pValue)
 {

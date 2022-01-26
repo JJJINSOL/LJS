@@ -1,7 +1,7 @@
 #include "Accepter.h"
 bool Accepter:: Run()
 {
-	Server* server = (Server*)m_param;
+	ChattingServer* server = (ChattingServer*)m_param;
 	SOCKET sock = server->m_socket;
 	SOCKADDR_IN clientAddr;
 	int len = sizeof(clientAddr);
@@ -9,19 +9,17 @@ bool Accepter:: Run()
 	{
 		//accpet(서버/클라/크기)
 		SOCKET clientsock = accept(sock,(sockaddr*)&clientAddr,&len);
+		
 		if (clientsock == SOCKET_ERROR)
 		{
-			int error = WSAGetLastError();
-			if (error != WSAEWOULDBLOCK)
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
 			{
-				cout << "ErrorCode = " << error << endl;
 				break;
 			}
 		}
 		else
 		{
 			server->AddUser(clientsock, clientAddr);
-			cout <<server->m_userlist.size() <<"명 접속중" << endl;
 		}
 		Sleep(1);
 	}

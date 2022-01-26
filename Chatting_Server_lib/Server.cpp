@@ -22,6 +22,7 @@ bool Server:: InitServer(int port)
 	ret = listen(m_socket, SOMAXCONN);
 	if (ret == SOCKET_ERROR)return false;
 	cout << "서버 가동중!" << endl;
+	cout << m_userlist.size() << "명 접속중입니다." << endl;
 
 	//non-blocking 소켓
 	u_long on = 1;
@@ -57,9 +58,11 @@ bool Server::Broadcast(User* user)
 		//패킷은 여러개로 쪼개져 전송되니 그 쪼개진 모든 패킷 패킷풀에 있는데 그거 첨부터 끝까지 훑기
 		for (iter = user->m_packetPool.begin(); iter != user->m_packetPool.end();)
 		{
+			list<User*>::iterator suser;
 			//패킷1 모든 유저한테 보내기 ->패킷2 모든 유저한테 보내기 -> ~ -> 마지막 패킷까지
-			for (User* senduser : m_userlist)
+			for (suser = m_userlist.begin(); suser != m_userlist.end();)
 			{
+				User* senduser = (User*)*suser;
 				Message m;
 				int i = m.SendMsg(senduser->m_sock, (*iter).m_upacket);
 				//보낸게 0이면 유저 연결이 안되어 있다는것
@@ -67,6 +70,7 @@ bool Server::Broadcast(User* user)
 				{
 					senduser->m_connect = false;
 				}
+				suser++;
 			}
 			//보낸 패킷은 지우자
 			iter = user->m_packetPool.erase(iter);
