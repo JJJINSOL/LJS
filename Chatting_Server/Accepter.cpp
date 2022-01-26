@@ -25,10 +25,6 @@ bool Accepter:: Run()
 	}
 	return true;
 }
-Accepter:: Accepter() 
-{
-	//Run(server);
-}
 Accepter:: Accepter(LPVOID value) : Thread(value)
 {
 

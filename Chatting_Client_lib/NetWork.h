@@ -8,7 +8,6 @@ public:
 	NetUser m_user;
 
 	bool Initnetwork();
-	bool Initserver(int protocal, int port, const char* ip);
 	bool Closenetwork();
 
 	int RecvUser(NetUser& user);
