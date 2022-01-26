@@ -11,10 +11,10 @@ class Sample : public Core
 	HWND m_listbox;
 	int m_chatcount;
 public:
-	virtual bool Init() override;
-	virtual bool Frame() override;
-	virtual bool Render() override;
-	virtual bool Release() override;
+	bool Init() override;
+	bool Frame() override;
+	bool Render() override;
+	bool Release() override;
 	virtual LRESULT  MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 public:
 	Sample();

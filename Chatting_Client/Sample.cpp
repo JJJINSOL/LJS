@@ -1,4 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Sample.h"
+
 LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
@@ -59,8 +61,19 @@ bool Sample::Frame()
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.message;
-			//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.name);
+			
+			//char* buffer = { 0, };
+			//char* buffer[30] = { 0, };
+			//char a[] = "[";
+			//char b[] = "] ";
+			//*buffer = strcat(a, recvdata.name);
+			//*buffer = strcat(*buffer, b);
+			//buffer = strcat(buffer, recvdata.message);
+			
+			//packet << "[" << recvdata.name << "] " << recvdata.message;
+			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.name);
 			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.message);
+			//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)buffer);
 			//iter = m_Net.m_PlayerUser.m_packetPool.erase(iter);
 			(*iter).Reset();
 		}

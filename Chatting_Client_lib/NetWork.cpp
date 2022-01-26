@@ -36,29 +36,6 @@ bool NetWork:: Closenetwork()
 	WSACleanup();
 	return true;
 }
-//int NetWork:: AddUser(SOCKET sock)
-//{
-//	SOCKADDR_IN clientaddr;
-//	int len = sizeof(clientaddr);
-//	SOCKET clientsock = accept(sock, (sockaddr*)&clientaddr, &len);
-//	if (clientsock == SOCKET_ERROR)
-//	{
-//		return -1;
-//	}
-//	else
-//	{
-//		NetUser user;
-//		user.set(clientsock, clientaddr);
-//		userlist.push_back(user);
-//
-//		cout << "ip = " << inet_ntoa(clientaddr.sin_addr)
-//			<< " port = " << ntohs(clientaddr.sin_port)
-//			<< "  " << endl;
-//
-//		cout << userlist.size() << "명 접속중!" << endl;
-//	}
-//	return 1;
-//}
 int NetWork:: RecvUser(NetUser& user)
 {
 	char recvbuffer[1024] = { 0, };

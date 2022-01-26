@@ -27,7 +27,6 @@ public:
 	Packet& operator >> (string data);
 
 	Packet();
-	Packet(const Packet& ipacket);
 	Packet(WORD type);
 	~Packet();
 };

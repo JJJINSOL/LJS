@@ -1,14 +1,9 @@
 #pragma once
-//#define _WINSOCK_DEPRECATED_NO_WARNINGS
-//#include <iostream>
-//#include <string>
-//#include <list>
-//#include <WinSock2.h>
+
 #include "NetStd.h"
 #include "Packet.h"
 #include "Message.h"
-//#pragma comment (lib, "ws2_32.lib")
-//using namespace std;
+
 class NetUser : public Message
 {
 public:
@@ -19,8 +14,7 @@ public:
 
 	bool m_connect = false;
 
-	
 	void set(SOCKET sock, SOCKADDR_IN addr);
-	//int DispatchRead(char* recvbuffer, int recvbyte);
+
 };
 
