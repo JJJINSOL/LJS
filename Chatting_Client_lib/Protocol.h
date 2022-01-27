@@ -23,7 +23,7 @@ typedef struct
 
 struct ChatMsg
 {
-	int index;
+	char index[4];
 	char name[20];
 	char message[256];
 };

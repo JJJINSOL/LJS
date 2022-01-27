@@ -15,7 +15,7 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_edit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet packet(PACKET_CHAT_MSG);
-			packet << 970214 << "이진솔"<< buffer;
+			packet << "123" << "이진솔"<< buffer;
 			m_msg.SendMsg(m_net.m_sock, packet.m_upacket);
 
 			SendMessageA(m_edit, WM_SETTEXT, 0, (LPARAM)"");
@@ -40,7 +40,7 @@ bool Sample::Init()
 	//"192.168.0.12"
 	//"192.168.0.90"
 	//"27.35.45.57"
-	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "49.142.62.157");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "192.168.0.90");
 	return true;
 }
 bool Sample::Frame()
@@ -61,20 +61,10 @@ bool Sample::Frame()
 			ChatMsg recvdata;
 			ZeroMemory(&recvdata, sizeof(recvdata));
 			(*iter) >> recvdata.index >> recvdata.name >> recvdata.message;
-			
-			//char* buffer = { 0, };
-			//char* buffer[30] = { 0, };
-			//char a[] = "[";
-			//char b[] = "] ";
-			//*buffer = strcat(a, recvdata.name);
-			//*buffer = strcat(*buffer, b);
-			//buffer = strcat(buffer, recvdata.message);
-			
-			//packet << "[" << recvdata.name << "] " << recvdata.message;
+			//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.index);
 			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.name);
 			SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)recvdata.message);
-			//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)buffer);
-			//iter = m_Net.m_PlayerUser.m_packetPool.erase(iter);
+
 			(*iter).Reset();
 		}
 	}
