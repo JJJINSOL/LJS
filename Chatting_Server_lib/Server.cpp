@@ -1,7 +1,7 @@
 #include "Server.h"
 bool Server:: InitServer(int port)
 {
-	InitializeCriticalSection(&m_cs);
+	//InitializeCriticalSection(&m_cs);
 	//윈속 초기화
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -40,7 +40,7 @@ bool Server:: Release()
 {
 	closesocket(m_socket);
 	WSACleanup();
-	DeleteCriticalSection(&m_cs);
+	//DeleteCriticalSection(&m_cs);
 	return true;
 }
 bool Server:: AddUser(SOCKET sock, SOCKADDR_IN clientaddr)
@@ -69,6 +69,7 @@ bool Server::Broadcast(User* user)
 				if (i <= 0)
 				{
 					senduser->m_connect = false;
+					suser = m_userlist.erase(suser);
 				}
 				suser++;
 			}

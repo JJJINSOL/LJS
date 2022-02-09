@@ -42,6 +42,7 @@ int Message:: SendMsg(SOCKET sock, UPACKET& packet)
 	int sendsize = 0;
 	while (sendsize < packet.p_header.len)
 	{
+
 		int sendbyte = send(sock,&msg[sendsize],packet.p_header.len-sendsize,0);
 		if (sendbyte == SOCKET_ERROR)
 		{

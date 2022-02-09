@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Message">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACIAAAAAAgABICAAACEgAAAACAIAAIggEAAA=</HashCode>
+      <FileName>Message.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Obj_Server">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAEAAAAAAAAAAAAAAAAAAAAAIAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Obj_Server.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Packet">
+    <Position X="10" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAIAAAAAAAAAIAAAAAAAAAAAACA=</HashCode>
+      <FileName>Packet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAACAAAACAAAAAAAAAAAAAAAAEAAAgAAAAAhCAAAI=</HashCode>
+      <FileName>Server.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Thread">
+    <Position X="0.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACAAQAAAAIAAAAAAAAAAAAAAEAAAAAAAAgAAAI=</HashCode>
+      <FileName>Thread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="User">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <InheritanceLine Type="Message" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="4.25" />
+        <Point X="6.5" Y="4.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>EIgAAAAAAAAAAAAAAIAAAAAAAIBAAAAIEAAAAAAIAAA=</HashCode>
+      <FileName>User.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="__unnamed_struct_0389_1">
+    <Position X="8.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Message.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0010_1">
+    <Position X="10" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0010_2">
+    <Position X="8.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0010_3">
+    <Position X="8.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="NewOV" Collapsed="true">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Message.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="PACKET_HEADER" Collapsed="true">
+    <Position X="10" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+    <AliasOfLine Type="__unnamed_struct_0010_1" FixedFromPoint="true">
+      <Path>
+        <Point X="10.562" Y="1.25" />
+        <Point X="10.562" Y="1.155" />
+        <Point X="10.75" Y="1.155" />
+        <Point X="10.75" Y="1.062" />
+      </Path>
+    </AliasOfLine>
+  </Typedef>
+  <Typedef Name="UPACKET" Collapsed="true">
+    <Position X="8.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="CahtMSG" Collapsed="true">
+    <Position X="8.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

@@ -14,7 +14,7 @@ public:
 
 	bool m_connect = false;
 
-	void set(SOCKET sock, SOCKADDR_IN addr);
+	//void set(SOCKET sock, SOCKADDR_IN addr);
 
 };
 

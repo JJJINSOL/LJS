@@ -27,6 +27,7 @@ void Check()
 
 void main()
 {
+	setlocale(LC_ALL, "korean");
 	//환경 핸들(메모리)할당------------------------------------------------------
 	//(핸들타입/생성할 부모 핸들/생성할 핸들 주소)
 	if (SQLAllocHandle(SQL_HANDLE_ENV, SQL_NULL_HANDLE, &g_hEnv) != SQL_SUCCESS)
@@ -55,7 +56,7 @@ void main()
 	//현재 드라이브 경로 가져오기
 	GetCurrentDirectory(MAX_PATH, dir);
 	wstring dbpath = dir;
-	dbpath+= L"\\cigarette.dsn";
+	dbpath+= L"\\..\\..\\data\\db\\cigarette.dsn";
 
 	// 문자열 앞에 '_T'를 붙여주면 컴파일 환경에 따라 문자열을 처리할 수 있게  -> #include <tchar.h>
 	// TCHAR - char 타입 자동 설정
@@ -124,7 +125,7 @@ void main()
 
 	while (SQLFetch(g_hStmt) != SQL_NO_DATA)
 	{
-		std::wcout << Price << std::endl;
+		wcout << Price << std::endl;
 	}
 	SQLCloseCursor(g_hStmt);
 

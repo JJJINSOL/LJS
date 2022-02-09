@@ -9,5 +9,5 @@ MaxScanRows=8
 MaxBufferSize=2048
 FIL=MS Access
 DriverId=25
-DefaultDir=C:\Users\kgca4087874\source\repos\JJJINSOL\data\db
-DBQ=C:\Users\kgca4087874\source\repos\JJJINSOL\data\db\cigarette.accdb
+DefaultDir=C:\Users\이진솔\source\repos\JJJINSOL\data\db
+DBQ=C:\Users\이진솔\source\repos\JJJINSOL\data\db\cigarette.accdb

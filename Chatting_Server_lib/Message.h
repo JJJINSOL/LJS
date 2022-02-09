@@ -13,7 +13,7 @@ public:
 	NewOV m_ovsend;
 	WSABUF m_wsaRecvBuffer;
 	WSABUF m_wsaSendBuffer;
-	char m_szRecv[256];//256
+	char m_szRecv[256];//256//실제 데이터
 	char m_szSend[256];
 
 	char m_recvBuffer[2048];
