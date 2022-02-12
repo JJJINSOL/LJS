@@ -1,0 +1,7 @@
+[ODBC]
+DRIVER=SQL Server Native Client 11.0
+UID=sa
+DATABASE=LJSGAME
+WSID=DESKTOP-I0I3BNI
+APP=Microsoft¢ç Windows¢ç Operating System
+SERVER=127.0.0.1
