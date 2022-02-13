@@ -43,7 +43,12 @@ bool ODBC:: Connect()
 }
 bool ODBC:: Release()
 {
+	SQLFreeHandle(SQL_HANDLE_STMT, m_hStmt);
 	SQLFreeHandle(SQL_HANDLE_STMT, m_hAccountStmt);
+	SQLFreeHandle(SQL_HANDLE_STMT, m_hLoginStmt);
+	SQLFreeHandle(SQL_HANDLE_STMT, m_hLogoutStmt);
+	SQLFreeHandle(SQL_HANDLE_STMT, m_hUserdelStmt);
+	SQLFreeHandle(SQL_HANDLE_STMT, m_hChangepsStmt);
 
 	SQLDisconnect(m_hDbc);
 	SQLFreeHandle(SQL_HANDLE_DBC, m_hDbc);
