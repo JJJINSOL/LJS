@@ -6,7 +6,7 @@
 #include <d3d11.h>
 #include "Collision.h"
 #pragma comment	(lib, "d3d11.lib")
-#pragma comment	(lib, "CoreLib")
+//#pragma comment	(lib, "CoreLib")
 #pragma comment	(lib, "ws2_32.lib")
 
 #ifdef _DEBUG
