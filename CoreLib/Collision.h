@@ -86,7 +86,10 @@ class Collision
 public:
 	static bool RectToPoint(Rect rt, int x, int y);
 	static bool RectToPoint(Rect rt, Vector2 v);
-	static Type RectToRect(Rect box1, Rect box2);
+	static Type RectToRect(Rect rt1, Rect rt2);
+
+	static Type ToRect(Rect rt1, Rect rt2);
+
 	static Rect UnionRect(Rect rt1, Rect rt2);
 	static bool IntersectRect(Rect rt1, Rect rt2, Rect* rt);
 

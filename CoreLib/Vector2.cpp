@@ -42,6 +42,18 @@ Vector2 Vector2:: operator / (float num)
 	vec.y = y / num;
 	return vec;
 }
+Vector2 Vector2::operator += (const Vector2& v)
+{
+	this->x = this->x + v.x;
+	this->y = this->y + v.y;
+	return *this;
+}
+Vector2 Vector2::operator -= (const Vector2& v)
+{
+	this->x = this->x - v.x;
+	this->y = this->y - v.y;
+	return *this;
+}
 bool Vector2:: operator == (const Vector2& v)
 {
 	if (fabs(x - v.x) < 0.0001f)

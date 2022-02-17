@@ -144,11 +144,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DxObject.cpp" />
+    <ClCompile Include="Object2D.cpp" />
+    <ClCompile Include="Object3D.cpp" />
+    <ClCompile Include="ObjectNpc2D.cpp" />
+    <ClCompile Include="PlayerObj2D.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DxObject.h" />
+    <ClInclude Include="Object2D.h" />
+    <ClInclude Include="Object3D.h" />
+    <ClInclude Include="ObjectNpc2D.h" />
+    <ClInclude Include="PlayerObj2D.h" />
     <ClInclude Include="Sample.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="PixelShader.txt" />
+    <Text Include="player.txt" />
     <Text Include="VertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

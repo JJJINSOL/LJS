@@ -1,7 +1,12 @@
 #pragma once
 #include "Device.h"
+#include "DxObject.h"
+#include "Input.h"
+#include "Timer.h"
 class Core : public Device
 {
+public:
+	Timer m_GameTimer;
 private:
 	bool CoreInit();
 	bool CoreFrame();

@@ -64,6 +64,21 @@ Type Collision::RectToRect(Rect rt1, Rect rt2)
 	if (rt == rt2) return RECT_OVERLAP;
 	return RECT_IN;
 }
+Type Collision::ToRect(Rect rt1, Rect rt2)
+{
+	// 거리 판정
+	float fDistanceX;
+	float fDistanceY;
+	fDistanceX = fabs(rt1.vMiddle.x - rt2.vMiddle.x);
+	fDistanceY = fabs(rt1.vMiddle.y - rt2.vMiddle.y);
+	float fToX = rt1.vSize.x / 2.0f + rt1.vSize.x / 2.0f;
+	float fToY = rt1.vSize.y / 2.0f + rt1.vSize.y / 2.0f;
+	if (fDistanceX < fToX && fDistanceY < fToY)
+	{
+		return RECT_OVERLAP;
+	}
+	return RECT_OUT;
+}
 //==========================================================================================================
 bool Collision::BoxToPoint(Box rt, int x, int y, int z)
 {

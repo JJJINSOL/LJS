@@ -20,6 +20,8 @@ public:
 	Vector2 operator - (const Vector2& v);
 	Vector2 operator * (float num);
 	Vector2 operator / (float num);
+	Vector2 operator += (const Vector2& v);
+	Vector2 operator -= (const Vector2& v);
 	bool operator == (const Vector2& v);
 	bool operator != (const Vector2& v);
 
