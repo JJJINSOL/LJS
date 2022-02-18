@@ -15,10 +15,32 @@ enum CollisionType
 	Overlap,
 	Ignore,
 };
+enum SelectType
+{
+	Select_Block = 0,
+	Select_Overlap,
+	Select_Ignore,
+};
+// 0001  - 기본
+// 0010  - 권총
+// 0100  - 장총
+// 1000  - 수류탄
+// 0111 = 7(속성)
+// 1111 = 15
+enum SelectState
+{
+	T_DEFAULT = 0,  // 커서가 위에 없을 때(T_FOCUS상태에서 다른 곳을 T_ACTIVE하면 전환된다.)
+	T_HOVER = 1,	// 커서가 위에 있을 때
+	T_FOCUS = 2,	// T_ACTIVE상태에서 왼쪽 버튼을 다른 곳에서 놓았을 때(취소)
+	T_ACTIVE = 4,	// 마우스 왼쪽 버튼 누르고 있을 때
+	T_SELECTED = 8, // T_ACTIVE 상태에서 왼쪼버튼 놓았을 때
+};
 class BaseObject
 {
 public:
+	bool		m_bDead;
 	int			m_iCollisionID;//매니저에서 id등록해서 유니크한 것 만들어낸것
+	int			m_iSelectID;
 	float		m_fSpeed;
 	Vector2	m_vPos;
 	Vector2	m_vDirection;
@@ -26,18 +48,27 @@ public:
 	float		m_fHeight;
 	Rect		m_rtCollision;//움직이게 되면 무조건 충돌 갱신
 	DWORD		m_dwCollisonType;
+	DWORD		m_dwSelectType;
+	DWORD		m_dwSelectState;
+	bool		m_bSelect;
 	bool		m_bAlphaBlend = true;
 public:
 	//충돌처리함수
 	virtual void	HitOverlap(BaseObject* pObj, DWORD dwState);
+	virtual void	HitSelect(BaseObject* pObj, DWORD dwState);
 public:
 
 	BaseObject()
 	{
+		m_bDead = false;
+		m_bSelect = false;
+		m_dwSelectState = T_DEFAULT;
 		m_iCollisionID = -1;
+		m_iSelectID = -1;
 		m_vDirection.x = 0.0f;
 		m_vDirection.y = 0.0f;
-		m_dwCollisonType = Overlap;
+		m_dwCollisonType = CollisionType::Overlap;
+		m_dwSelectType = CollisionType::Overlap;
 	}
 };
 class DxObject : public BaseObject
@@ -58,11 +89,7 @@ public:
 	ID3D11BlendState* m_AlphaBlendDisable;
 
 	D3D11_TEXTURE2D_DESC m_TextureDesc;
-public:
-	float m_fSpeed;
-	Vector2	m_vPos;
-	float m_fWidth;
-	float m_fHeight;
+
 public:
 	std::vector<SimpleVertex> m_InitScreenList;
 	std::vector<SimpleVertex> m_VertexList;
@@ -79,20 +106,19 @@ public:
 	ID3DBlob* m_pErrorMsgs = nullptr;
 	ID3DBlob* m_pPSCodeResult = nullptr;
 public:
-	void    SetDevice(ID3D11Device* m_pd3dDevice,
-		ID3D11DeviceContext* m_pContext);
-	virtual bool    LoadTexture(const TCHAR* szColorFileName,
+	void SetDevice(ID3D11Device* m_pd3dDevice, ID3D11DeviceContext* m_pContext);
+	virtual bool LoadTexture(const TCHAR* szColorFileName,
 								const TCHAR* szMaskFileName);
-	virtual bool    SetVertexData();
-	virtual bool	Create(ID3D11Device* m_pd3dDevice,
+	virtual bool SetVertexData();
+	virtual bool Create(ID3D11Device* m_pd3dDevice,
 							ID3D11DeviceContext* m_pContext,
 							const TCHAR* szTextureFileName = nullptr,
 							const TCHAR* szMaskFileName = nullptr);
 public:
-	virtual bool	Init();
-	virtual bool	Frame();
-	virtual bool	Render();
-	virtual bool	Release();
+	virtual bool Init();
+	virtual bool Frame();
+	virtual bool Render();
+	virtual bool Release();
 public:
 	DxObject();
 	~DxObject();

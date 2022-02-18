@@ -13,8 +13,12 @@ bool Device::CreateDevice()
 {
 	//************************디바이스와 스왑체인 생성***************************
 	//UINT = unsigned int
-	UINT Flags = 0;
+	//D2DWIRETE 연동 필수
+	UINT Flags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
+#ifdef _DEBUG
+	Flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 	//다이렉트엑스 사용 버전인데 11 우선 쓰고 안되면 10쓰겠다는 의미
 	D3D_FEATURE_LEVEL fl[]
 	{

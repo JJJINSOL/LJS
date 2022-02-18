@@ -22,8 +22,9 @@ using namespace std;
 
 extern RECT g_rtClient;
 extern HWND g_hwnd;
-extern float   g_fSecPerFrame;
-extern float   g_fGameTimer;
+extern float g_fSecPerFrame;
+extern float g_fGameTimer;
+extern POINT g_ptMouse;
 
 template<class T>
 class Singleton

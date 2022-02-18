@@ -11,6 +11,9 @@ class Input
 {
 public:
 	DWORD m_dwKeyState[256]; //키보드 상태 배열
+	POINT m_ptMouse;
+	DWORD m_dwMouseState[3];
+
 	//클래스가 private되어 있기에 사용하기 위해서는 이 함수를 이용
 	//static으로 해놨기에 딱 한개만 생성된당!
 	static Input& Get()

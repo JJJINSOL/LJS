@@ -2,7 +2,11 @@
 #include "ObjectMgr.h"
 void BaseObject::HitOverlap(BaseObject* pObj, DWORD dwState)
 {
-	int kkk = 0;
+	
+}
+void BaseObject::HitSelect(BaseObject* pObj, DWORD dwState)
+{
+
 }
 void DxObject::SetDevice(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pContext)
 {
@@ -50,6 +54,10 @@ bool DxObject::Create(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pContext,
 								std::placeholders::_1,
 								std::placeholders::_2));
 
+	I_ObjectMgr.AddSelectExecute(this,
+		std::bind(&BaseObject::HitSelect, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
 
 	SetDevice(pd3dDevice, pContext);
 	if (!LoadTexture(szColorFileName, szMaskFileName))

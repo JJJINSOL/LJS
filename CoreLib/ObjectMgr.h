@@ -10,6 +10,7 @@ class ObjectMgr : public Singleton< ObjectMgr>//객체 생성은 부모에서
 {
 private:
 	int	m_iExcueteCollisionID;
+	int	m_iExcueteSelectID;
 	std::map<int, BaseObject*>  m_ObjectList;
 	std::map<int, BaseObject*>  m_SelectList;
 public://부모가 자식을 만들어서 쓸수 잇도록 friend로 해줌
@@ -22,12 +23,16 @@ public:
 public:
 	//                        자기 자신          반환될 함수
 	void  AddCollisionExecute(BaseObject* owner, CollisionFunction func);//이거 할때마다 m_iExcueteCollisionID가 +1
-	void  DeleteExecute(BaseObject* owner);
+	void  DeleteCollisionExecute(BaseObject* owner);
+
+	void  AddSelectExecute(BaseObject* owner, CollisionFunction func);
+	void  DeleteSelectExecute(BaseObject* owner);
+
 	bool  Init();
 	bool  Frame();
 	bool  Releae();
 private://외부에서는 절대로 객체 생성 불가능
-	ObjectMgr() { m_iExcueteCollisionID = 0; };
+	ObjectMgr() { m_iExcueteCollisionID = 0; m_iExcueteSelectID = 0;};
 public:
 	virtual ~ObjectMgr() {};
 };
