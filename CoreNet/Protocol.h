@@ -29,7 +29,7 @@ struct ChatMsg
 {
 	int index;
 	char name[20];
-	int damage;
+	//int damage;
 	char message[256];
 };
 struct LoginReq

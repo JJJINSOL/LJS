@@ -18,20 +18,17 @@
     <ClCompile Include="Sample.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Accepter.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="LobbyServer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ChatUser.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="LoginServerProcess.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Accepter.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="LobbyServer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>

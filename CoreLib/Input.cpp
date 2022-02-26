@@ -1,4 +1,5 @@
 #include "Input.h"
+POINT g_ptMouse;
 DWORD Input::GetKey(DWORD dwKey)
 {
 	return m_dwKeyState[dwKey];
@@ -13,7 +14,7 @@ bool Input::Frame()
 	//화면(스크린)좌표계
 	GetCursorPos(&m_ptMouse);
 	//클라이언트(윈도우)좌표계
-	ScreenToClient(g_hWnd, &m_ptMouse);
+	ScreenToClient(g_hwnd, &m_ptMouse);
 	g_ptMouse = m_ptMouse;
 
 	// 마우스 버튼 VK_LBUTTON,  VK_RBUTTON, VK_MBUTTON,
@@ -56,7 +57,6 @@ bool Input::Frame()
 }
 bool Input::Render()
 {
-
 	return true;
 }
 bool Input::Release() 

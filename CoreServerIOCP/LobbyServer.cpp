@@ -46,13 +46,13 @@ DWORD WINAPI WorkerThread(LPVOID param)
 bool LobbyServer::AddUser(SOCKET sock, SOCKADDR_IN clientAddr)
 {
 	ChatUser* user = new ChatUser;
-	user->set(sock,clientAddr);
+	user->set(sock,clientAddr,this);
 
 	u_long on = 1;
 	ioctlsocket(sock, FIONBIO, &on);
 
 	EnterCriticalSection(&m_cs);
-	g_userlist.push_back(user);
+	m_UserList.push_back(user);
 	LeaveCriticalSection(&m_cs);
 
 	::CreateIoCompletionPort((HANDLE)sock, g_hIOCP, (ULONG_PTR)user, 0);
@@ -74,41 +74,11 @@ bool LobbyServer::InitServer(int iPort)
 		DWORD id;
 		g_hWorkThread[i] = CreateThread(0,0,WorkerThread,this,0,&id);
 	}
-	return true;
-}
-bool LobbyServer:: Run()
-{
-	while (1)
-	{
-		EnterCriticalSection(&m_cs);
-
-		for (NetUser* user : g_userlist)
-		{
-			ChatUser* chatuser = (ChatUser*)user;
-			if (chatuser->m_packetpool.size() > 0)
-			{
-				Broadcast(user);
-			}
-		}
-		list<NetUser*>::iterator iter;
-		for (iter = g_userlist.begin(); iter != g_userlist.end();)
-		{
-			if ((*iter)->m_connect == false)
-			{
-				(*iter)->DisConnect();
-				delete(*iter);
-				iter = g_userlist.erase(iter);
-			}
-			else
-			{
-				iter++;
-			}
-		}
-
-
-		LeaveCriticalSection(&m_cs);
-		Sleep(1);
-	}
+	m_fnExecutePacket.insert(std::make_pair(
+			PACKET_CHAT_MSG,
+			std::bind(&LobbyServer::ChatMsg, this,
+			std::placeholders::_1,
+			std::placeholders::_2)));
 	return true;
 }
 bool LobbyServer:: Release()

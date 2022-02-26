@@ -1,4 +1,12 @@
 #include "Sample.h"
+void Sample::CreateResizeDevice(UINT iWidth, UINT iHeight)
+{
+	int k = 0;
+}
+void Sample::DeleteResizeDevice(UINT iWidth, UINT iHeight)
+{
+	int k = 0;
+}
 LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
@@ -13,7 +21,8 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_edit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet packet(PACKET_CHAT_MSG);
-			packet << 999 << "이진솔" << 50 << buffer;
+			packet.m_upacket.ph.time = timeGetTime();
+			packet << 999 << "이진솔" << buffer;
 			m_net.SendMsg(m_net.m_sock, packet.m_upacket);
 
 			SendMessageA(m_edit, WM_SETTEXT, 0, (LPARAM)"");
@@ -45,66 +54,35 @@ bool Sample::Init()
 	//	}
 	//}
 
-	//플레이어 세팅
-	m_PlayerObj.Init();
-	m_PlayerObj.SetPosition(Vector2(400, 300));//속성값
-	m_PlayerObj.SetRectSouce({ 91,1,42,56 });//속성값
-	//m_PlayerObj.SetRectSouce({ 46,63,69,79 });
-	m_PlayerObj.SetRectDraw({ 0,0, 42,56 });//속성값
+	I_Sound.Init();
+
+	m_IntroWorld.Init();
+	m_IntroWorld.m_pd3dDevice = m_pd3dDevice;
+	m_IntroWorld.m_pContext = m_pImmediateContext;
+	m_IntroWorld.Load(L"intro.txt");
+
+	m_ZoneWorld.m_pd3dDevice = m_pd3dDevice;
+	m_ZoneWorld.m_pContext = m_pImmediateContext;
+	m_ZoneWorld.Load(L"zone.txt");
 	
-	//생성
-	if (!m_PlayerObj.Create(m_pd3dDevice, m_pImmediateContext,
-		L"../../data/bitmap1.bmp",
-		L"../../data/bitmap2.bmp"))
-	{
-		return false;
-	}
-
-	for (int iNpc = 0; iNpc < 10; iNpc++)
-	{
-		
-		ObjectNpc2D* npc = new ObjectNpc2D;
-		npc->Init();
-		if (iNpc % 2 == 0)
-		{
-			npc->SetRectSouce({ 46,63,69,79 });
-			npc->SetRectDraw({ 0,0, 69,79 });
-		}
-		else
-		{
-			npc->SetRectSouce({ 1,63,42,76 });
-			npc->SetRectDraw({ 0,0, 42,76 });
-		}
-
-		npc->SetPosition(Vector2(50 + iNpc * 50, 50));
-		if (!npc->Create(m_pd3dDevice, m_pImmediateContext,
-			L"../../data/bitmap1.bmp",
-			L"../../data/bitmap2.bmp"))
-		{
-			return false;
-		}
-		//ObjectNpc2D* -> 포인터가 아니면 push_back에 넣을때 복사가 안됨
-		m_NpcLlist.push_back(npc);
-	}
-
-
+	World::m_pWorld = &m_IntroWorld;
 
 	m_net.Initnetwork();
 	//"192.168.0.12"
 	//"192.168.0.90"
 	//"27.35.45.57"
-	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "110.35.175.33");
+	m_net.Connect(g_hwnd, SOCK_STREAM, 10000, "120.50.78.82");
 	return true;
 }
 bool Sample::Frame()
 {
-	m_PlayerObj.Frame();
-
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
+	if (Input::Get().GetKey(VK_F1) == KEY_PUSH)
 	{
-		m_NpcLlist[iObj]->Frame();
+		World::m_pWorld = &m_ZoneWorld;
 	}
+	World::m_pWorld->Frame();
 
+#pragma region
 	int iChatCnt = m_net.m_playuser.m_packetpool.size();
 	if (iChatCnt > 0 && m_chatcount != iChatCnt)
 	{
@@ -158,24 +136,25 @@ bool Sample::Frame()
 		}
 		m_net.m_playuser.m_packetpool.clear();
 	}
+#pragma endregion  NetProcess
 	return true;
 }
 bool Sample::Render()
 {
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
-	{
-		m_NpcLlist[iObj]->Render();
-	}
-	m_PlayerObj.Render();
+	World::m_pWorld->Render();
+
+	std::wstring msg = L"FPS:";
+	msg += std::to_wstring(m_GameTimer.m_iFPS);
+	msg += L"  GT:";
+	msg += std::to_wstring(m_GameTimer.m_fTimer);
+	m_dxWrite.Draw(msg, g_rtClient, D2D1::ColorF(0, 0, 1, 1));
 	return true;
 }
 bool Sample::Release()
 {
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
-	{
-		m_NpcLlist[iObj]->Release();
-	}
-	m_PlayerObj.Release();
+	I_Sound.Release();
+	m_IntroWorld.Release();
+	m_ZoneWorld.Release();
 
 	m_net.Closenetwork();
 	return true;

@@ -3,18 +3,31 @@
 //#include "ServerStd.h"
 #include "ServerObj.h"
 #include "Packet.h"
+#include "ObjectPool.h"
 //#pragma comment (lib, "ws2_32.lib")
 using namespace std;
-
+class Server;
 //OVERLAPPED - 확장형
-struct OV
+// 비동기 작업이 완료 시점까지 OVERLAPPED 유지되어 있어야 된다.
+struct OV : public ObjectPool<OV>
 {
+	enum { MODE_RECV = 1, MODE_SEND = 2, MODE_EXIT };
 	OVERLAPPED ov;
-	//키값 구분
 	int  type;
+	OV(int packetType)
+	{
+		ZeroMemory(&ov, sizeof(OVERLAPPED));
+		type = packetType;
+	}
+	OV()
+	{
+		ZeroMemory(&ov, sizeof(OVERLAPPED));
+		type = MODE_RECV;
+	}
 };
 class NetUser : public ServerObj
 {
+	Server* m_pServer = nullptr;
 public:
 	SOCKET m_sock;
 	SOCKADDR_IN m_addr;
@@ -37,11 +50,14 @@ public:
 	int  m_readpos;
 
 	list<Packet> m_packetpool;
-	void set(SOCKET sock, SOCKADDR_IN addr);
+	void set(SOCKET sock, SOCKADDR_IN addr, Server* pServer);
 
 	int Dispatch(DWORD dwTrans, OV* tov);
 	int DispatchRecv(char* recvbuffer, int recvbyte);
 	int DispatchSend(DWORD dwTrans);
+
+	int  SendMsg(char* msg, int iSize, WORD type);
+	int  SendMsg(UPACKET& packet);
 
 	int  Recv();
 	bool DisConnect();

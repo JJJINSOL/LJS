@@ -17,6 +17,8 @@ public:
 	Packet& operator << (float data);
 	Packet& operator << (char* data);
 	Packet& operator << (string data);
+	Packet& operator << (byte data);
+	Packet& operator << (DWORD data);
 
 	Packet& operator >> (int data);
 	Packet& operator >> (long data);
@@ -24,6 +26,8 @@ public:
 	Packet& operator >> (float data);
 	Packet& operator >> (char* data);
 	Packet& operator >> (string data);
+	Packet& operator >> (byte& data);
+	Packet& operator >> (DWORD& data);
 
 
 

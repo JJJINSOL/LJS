@@ -11,6 +11,10 @@ bool NetWork:: Initnetwork()
 bool NetWork:: Initserver(int protocal, int port, const char* ip)
 {
 	m_sock = socket(AF_INET, protocal, 0);
+
+	int optval = 1;
+	setsockopt(m_sock, IPPROTO_TCP, TCP_NODELAY, (char*)&optval, sizeof(int));
+
 	SOCKADDR_IN sa;
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
@@ -32,6 +36,7 @@ bool NetWork:: Initserver(int protocal, int port, const char* ip)
 }
 bool NetWork:: Closenetwork()
 {
+	shutdown(m_sock, SD_SEND);
 	closesocket(m_sock);
 	WSACleanup();
 	return true;
@@ -64,6 +69,31 @@ int NetWork:: SendMsg(SOCKET sock, char* msg, WORD type)
 		sendsize += sendbyte;
 	} while (sendsize < packet.ph.len);
 	return sendsize;
+}
+int NetWork::SendMsg(SOCKET sock, char* msg, int iSize, WORD type)
+{
+	// 1번 패킷 생성
+	UPACKET packet;
+	ZeroMemory(&packet, sizeof(packet));
+	packet.ph.len = iSize + PACKET_HEADER_SIZE;
+	packet.ph.type = type;
+	memcpy(packet.msg, msg, iSize);
+	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트), recvbuffer
+	char* pMsg = (char*)&packet;
+	int iSendSize = 0;
+	do {
+		int iSendByte = send(sock, &pMsg[iSendSize],
+			packet.ph.len - iSendSize, 0);
+		if (iSendByte == SOCKET_ERROR)
+		{
+			if (WSAGetLastError() != WSAEWOULDBLOCK)
+			{
+				return -1;
+			}
+		}
+		iSendSize += iSendByte;
+	} while (iSendSize < packet.ph.len);
+	return iSendSize;
 }
 int NetWork::SendMsg(SOCKET sock, UPACKET& packet)
 {

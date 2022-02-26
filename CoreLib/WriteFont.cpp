@@ -1,4 +1,9 @@
 #include "WriteFont.h"
+void WriteFont::DeleteDeviceResize()
+{
+	if (m_pd2dColorBrush)m_pd2dColorBrush->Release();
+	if (m_pd2dRT)m_pd2dRT->Release();
+}
 bool WriteFont ::Init()
 {
 	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pd2dFactory);
@@ -39,13 +44,13 @@ bool WriteFont ::Init()
 }
 bool WriteFont::SetRenderTarget(IDXGISurface1* pSurface)
 {
-	UINT dpi = GetDpiForWindow(g_hWnd);
+	UINT dpi = GetDpiForWindow(g_hwnd);
 
 	D2D1_RENDER_TARGET_PROPERTIES rtp;
 	ZeroMemory(&rtp, sizeof(D2D1_RENDER_TARGET_PROPERTIES));
 	rtp.type = D2D1_RENDER_TARGET_TYPE_DEFAULT;
 	rtp.pixelFormat = D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN,
-		D2D1_ALPHA_MODE_PREMULTIPLIED);
+										D2D1_ALPHA_MODE_PREMULTIPLIED);
 	rtp.dpiX = dpi;
 	rtp.dpiY = dpi;
 	rtp.usage = D2D1_RENDER_TARGET_USAGE_NONE;
@@ -67,11 +72,9 @@ bool WriteFont::SetRenderTarget(IDXGISurface1* pSurface)
 }
 bool WriteFont::Frame()
 {
-
 	return true;
 }
-void WriteFont::Draw(std::wstring msg, RECT rt, D2D1::ColorF color,
-	IDWriteTextFormat* tf)
+void WriteFont::Draw(std::wstring msg, RECT rt, D2D1::ColorF color,IDWriteTextFormat* tf)
 {
 	m_pd2dRT->BeginDraw();
 	D2D_RECT_F fRT;

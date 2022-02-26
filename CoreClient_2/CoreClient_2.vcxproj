@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/Core3D;../../include/dxtk;../../include/CoreNet</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/Core3D;../../include/dxtk;../../include/CoreNet;../../include/fmod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,14 +144,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="IntroWorld.cpp" />
+    <ClCompile Include="LoginWorld.cpp" />
     <ClCompile Include="ObjectNpc2D.cpp" />
     <ClCompile Include="PlayerObj2D.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="UIObject.cpp" />
+    <ClCompile Include="ZoneWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IntroWorld.h" />
+    <ClInclude Include="LoginWorld.h" />
     <ClInclude Include="ObjectNpc2D.h" />
     <ClInclude Include="PlayerObj2D.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="UIObject.h" />
+    <ClInclude Include="ZoneWorld.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreLib\CoreLib.vcxproj">
@@ -162,8 +170,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="DefaultUI.txt" />
     <Text Include="PixelShader.txt" />
     <Text Include="player.txt" />
+    <Text Include="Shader.txt" />
     <Text Include="VertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

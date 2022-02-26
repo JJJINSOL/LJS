@@ -10,6 +10,12 @@ LRESULT  CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     g_pWindow -> MsgProc(hwnd, msg, wparam, lparam);
     switch (msg)
     {
+    case WM_SIZE:
+    {
+        UINT iWidth = LOWORD(lparam);
+        UINT iHeight = HIWORD(lparam);
+        g_pWindow->ResizeDevice(iWidth, iHeight);
+    }break;
     case WM_DESTROY: //WM_DESTORY = 창을 닫을 때 응용 프로그램에서 창에 할당한 자원을 해제하거나 후처리 작업을 할 수 있게 전달하는 윈도우 메시지
     {
         //메시지 큐에 WM_QUIT 메시지를 붙임
@@ -21,11 +27,15 @@ LRESULT  CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     }
     return 0;
 }
-
 LRESULT  Window::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
     return 0;
 }
+void Window::ResizeDevice(UINT iWidth, UINT iHeight)
+{
+
+}
+
 //1. 윈도우 클래스 등록 / 허가 (운영체제)
 BOOL Window::SetWinClass(HINSTANCE hInstance)
 {

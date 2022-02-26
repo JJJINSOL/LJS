@@ -24,6 +24,18 @@
     <ClCompile Include="ObjectNpc2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="IntroWorld.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginWorld.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoneWorld.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h">
@@ -35,10 +47,24 @@
     <ClInclude Include="ObjectNpc2D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="IntroWorld.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginWorld.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneWorld.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="PixelShader.txt" />
     <Text Include="VertexShader.txt" />
     <Text Include="player.txt" />
+    <Text Include="DefaultUI.txt" />
+    <Text Include="Shader.txt" />
   </ItemGroup>
 </Project>

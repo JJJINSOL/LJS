@@ -3,9 +3,12 @@
 bool Core::CoreInit()
 {
 	m_GameTimer.Init();
-	Input::Get(), Init();
-	if (SUCCEEDED(InitDeivice()))
+	Input::Get().Init();
+	if (SUCCEEDED(InitDevice()))
 	{
+		I_Shader.Set(m_pd3dDevice);
+		I_Texture.Set(m_pd3dDevice);
+
 		if (m_dxWrite.Init())
 		{
 			IDXGISurface1* pSurface = nullptr;
@@ -84,4 +87,25 @@ bool Core::CoreRelease()
 
 	CleanupDevice();
 	return true;
+}
+void Core::ResizeDevice(UINT iWidth, UINT iHeight)
+{
+	if (m_pd3dDevice == nullptr) return;
+	DeleteResizeDevice(iWidth, iHeight);
+
+	m_dxWrite.DeleteDeviceResize();
+
+	Device::ResizeDevice(iWidth, iHeight);
+
+	IDXGISurface1* pSurface = nullptr;
+	HRESULT hr = m_pSwapChain->GetBuffer(0,
+		__uuidof(IDXGISurface1),
+		(void**)&pSurface);
+	if (SUCCEEDED(hr))
+	{
+		m_dxWrite.SetRenderTarget(pSurface);
+	}
+	if (pSurface) pSurface->Release();
+
+	CreateResizeDevice(iWidth, iHeight);
 }

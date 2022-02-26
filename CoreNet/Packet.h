@@ -8,6 +8,7 @@ class Packet
 public:
 	UPACKET m_upacket;
 	char* m_offset;
+	char* c_str() { return m_offset; }
 	void PutData(const char* data, int size);
 	void GetData(const char* data, int size);
 	void Reset();

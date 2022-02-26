@@ -8,6 +8,7 @@
 #include <list>
 #include <vector>
 #pragma comment (lib, "ws2_32.lib")
+#pragma comment	(lib, "winmm.lib")
 using namespace std;
 #ifdef _DEBUG
 #pragma comment	(lib, "CoreNet_d.lib")

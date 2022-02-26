@@ -1,8 +1,6 @@
 #include "Device.h"
-
-HRESULT Device:: InitDevice()
+HRESULT Device::InitDevice()
 {
-	//S_OK - 함수가 성공하였음을 의미
 	HRESULT hr = S_OK;
 	CreateDevice();
 	CreateRenderTargetView();
@@ -102,7 +100,23 @@ bool Device:: SetViewport()
 	m_pImmediateContext->RSSetViewports(1, &m_ViewPort);
 	return true;
 }
+void Device::ResizeDevice(UINT iWidth, UINT iHeight)
+{
+	m_pImmediateContext->OMSetRenderTargets(0, NULL, NULL);
+	if (m_pRenderTargetView)m_pRenderTargetView->Release();
 
+	HRESULT hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
+		iWidth, iHeight,
+		m_SwapChainDesc.BufferDesc.Format,
+		m_SwapChainDesc.Flags);
+	if (SUCCEEDED(hr))
+	{
+		m_pSwapChain->GetDesc(&m_SwapChainDesc);
+
+	}
+	CreateRenderTargetView();
+	SetViewport();
+}
 bool Device:: CleanupDevice()
 {
 	//Release = 풀어주다

@@ -150,7 +150,9 @@ copy "..\\..\\output\\Debug\\CoreServer.lib" "..\\..\\lib\\CoreServer_d.lib"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Accepter.h" />
     <ClInclude Include="NetUser.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Protocol.h" />
     <ClInclude Include="Server.h" />
@@ -159,6 +161,7 @@ copy "..\\..\\output\\Debug\\CoreServer.lib" "..\\..\\lib\\CoreServer_d.lib"
     <ClInclude Include="Thread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Accepter.cpp" />
     <ClCompile Include="NetUser.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Server.cpp" />

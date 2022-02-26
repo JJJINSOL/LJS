@@ -16,11 +16,12 @@ public:
 	IDWriteTextFormat* m_pd2dMTShadowTF = nullptr;
 	ID2D1SolidColorBrush* m_pd2dColorBrush = nullptr;
 public:
-	bool   SetRenderTarget(IDXGISurface1* pSurface);
-	void   Draw(std::wstring msg, RECT rt, D2D1::ColorF color, IDWriteTextFormat* tf = nullptr);
+	void DeleteDeviceResize();
+	bool SetRenderTarget(IDXGISurface1* pSurface);
+	void Draw(std::wstring msg, RECT rt, D2D1::ColorF color, IDWriteTextFormat* tf = nullptr);
 public:
-	bool	Init();
-	bool	Frame();
-	bool	Render();
-	bool	Release();
+	bool Init();
+	bool Frame();
+	bool Render();
+	bool Release();
 };

@@ -37,6 +37,11 @@ LRESULT AsyncSelect:: MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 		{
 		case FD_CONNECT:
 		{
+			LoginReq login;
+			strcpy_s(login.szID, "¿Ã¡¯º÷");
+			strcpy_s(login.szPS, "1111");
+			SendMsg(m_sock, (char*)&login, sizeof(LoginReq), PACKET_LOGIN_REQ);
+
 			m_connect = true;
 		}break;
 		case FD_READ:

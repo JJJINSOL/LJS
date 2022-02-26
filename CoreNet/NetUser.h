@@ -1,9 +1,5 @@
 #pragma once
-//#define _WINSOCK_DEPRECATED_NO_WARNINGS
-//#include <iostream>
-//#include <string>
-//#include <list>
-//#include <WinSock2.h>
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "NetStd.h"
 #include "Packet.h"
 //#pragma comment (lib, "ws2_32.lib")

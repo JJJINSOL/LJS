@@ -8,6 +8,9 @@ public:
 	HANDLE g_hWorkThread[MAX_WORKER_THREAD];
 	HANDLE g_hIOCP;
 
+	virtual void LoginReq(Packet& t, NetUser* user) override;
+	virtual void ChatMsg(Packet& t, NetUser* user);
+
 	virtual bool InitServer(int iPort) ;
 	virtual bool Run();
 	virtual bool Release();

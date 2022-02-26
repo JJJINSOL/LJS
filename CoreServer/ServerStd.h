@@ -4,6 +4,10 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <vector>
+#include <list>
+#include <map>
+#include <functional>
 #include <ws2tcpip.h> // inet_ntop
 #pragma comment (lib, "ws2_32.lib")
 

@@ -3,7 +3,27 @@ void ObjectNpc2D::HitOverlap(BaseObject* pObj, DWORD dwState)
 {
 	if (dwState == CollisionType::Overlap)
 	{
-		pObj->m_bAlphaBlend = !pObj->m_bAlphaBlend;
+		//pObj->m_bAlphaBlend = !pObj->m_bAlphaBlend;
+	}
+}
+void ObjectNpc2D::HitSelect(BaseObject* pObj, DWORD dwState)
+{
+	if (m_dwSelectState & T_HOVER)
+	{
+		INT K = 0;
+	}
+	if (m_dwSelectState & T_FOCUS)
+	{
+		INT K = 0;
+	}
+	if (m_dwSelectState & T_ACTIVE)
+	{
+		INT K = 0;
+	}
+	if (m_dwSelectState & T_SELECTED)
+	{
+		m_bSelect = true;
+		m_bDead = true;
 	}
 }
 bool ObjectNpc2D::Frame()

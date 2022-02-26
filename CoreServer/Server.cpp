@@ -1,33 +1,17 @@
 #include "Server.h"
+void Server::LoginReq(Packet& t, NetUser* user)
+{
+
+}
 bool Server::InitServer(int port)
 {
-	InitializeCriticalSection(&g_cs);
+	m_fnExecutePacket[PACKET_LOGIN_REQ] = std::bind(&Server::LoginReq, this,
+										  std::placeholders::_1,
+										  std::placeholders::_2);
 
-	g_Mutex = CreateMutex(NULL, FALSE, NULL);
-
-	WSADATA wsa;
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-	{
-		return false;
-	}
-	m_listensock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sa;
-	ZeroMemory(&sa, sizeof(sa));
-	sa.sin_family = AF_INET;
-	sa.sin_port = htons(port);
-	sa.sin_addr.s_addr = htonl(INADDR_ANY);
-	int a = bind(m_listensock, (sockaddr*)&sa, sizeof(sa));
-	if (a == SOCKET_ERROR) return false;
-	a = listen(m_listensock, SOMAXCONN);
-	if (a == SOCKET_ERROR) return false;
-
-	//SOCKADDR_IN clientaddr;
-	//int len = sizeof(clientaddr);
-
-	cout << "서버 가동중~" << endl;
-
-	u_long on = 1;
-	ioctlsocket(m_listensock, FIONBIO, &on);
+	m_Accept.Set(port);
+	m_Accept.Create(this);
+	m_Accept.Detach();
 	return true;
 }
 bool Server:: Run()
@@ -38,45 +22,27 @@ bool Server:: AddUser(SOCKET socr, SOCKADDR_IN clientAddr)
 {
 	return true;
 }
-bool Server:: Release()
+bool Server::DelUser(SOCKET sock)
 {
-	closesocket(m_listensock);
-	WSACleanup();
-	DeleteCriticalSection(&g_cs);
-	CloseHandle(g_Mutex);
 	return true;
 }
-
-int Server:: SendMsg(SOCKET sock, char* msg, WORD type)
+bool Server::DelUser(NetUser* pUser)
 {
-	//1. 패킷 생성
-	UPACKET packet;
-	//패킷 구조체 메모리 정리
-	ZeroMemory(&packet, sizeof(packet));
-	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
-	packet.ph.type = type;
-	memcpy(packet.msg, msg, strlen(msg));
-	//2. 패킷 전송
-	//무엇을 보내고 받을때 직접 바로 보내는 것이 아니라, 운영체제 버퍼에 거쳐보냄
-	//운영체제 sendbuffer/recvbuffer 꽉 차면 보내기 받기 안됨
-	char* pmsg = (char*)&packet;
-	int sendsize = 0;
-	do
-	{
-		int sendbyte = send(sock, &pmsg[sendsize], packet.ph.len - sendsize, 0);
-		if (sendbyte == SOCKET_ERROR)
-		{
-			if (WSAGetLastError() != WSAEWOULDBLOCK)
-			{
-				//비정상적인 종료
-				return -1;
-			}
-		}
-		sendsize += sendbyte;
-	} while (sendsize < packet.ph.len);
-	return sendsize;
+	pUser->DisConnect();
+	return true;
 }
-int Server:: SendMsg(SOCKET sock, UPACKET& packet)
+bool Server::DelUser(m_UserIter& iter)
+{
+	DelUser((NetUser*)*iter);
+	return true;
+}
+bool Server:: Release()
+{
+	ObjectPool<NetUser>::AllFree();
+	ObjectPool<OV>::AllFree();
+	return true;
+}
+int Server::SendMsg(SOCKET sock, UPACKET& packet)
 {
 	char* msg = (char*)&packet;
 	int sendsize = 0;
@@ -95,8 +61,19 @@ int Server:: SendMsg(SOCKET sock, UPACKET& packet)
 	} while (sendsize < packet.ph.len);
 	return sendsize;
 }
+int Server::SendMsg(NetUser* pUser, char* msg, int iSize, WORD type)
+{
+	// 보내는 패킷 풀에 저장하고 일괄 전송시스템.
+	pUser->SendMsg(msg, iSize, type);
+	return 0;
+}
+int Server::SendMsg(NetUser* pUser, UPACKET& packet)
+{
+	pUser->SendMsg(packet);
+	return 0;
+}
 //한 유저가 입력한 메세지를 다른 유저에게 다 전송하는 함수
-int Server:: Broadcast(NetUser* user)
+int Server::BroadcastUserPacketPool(NetUser* user)
 {
 	//유저의 패킷풀의 사이즈가 0보다 크면 전송할 패킷이 있다는 소리
 	if (user->m_packetpool.size() > 0)
@@ -107,7 +84,7 @@ int Server:: Broadcast(NetUser* user)
 		for (iter = user->m_packetpool.begin(); iter != user->m_packetpool.end();)
 		{
 			//패킷1 모든 유저한테 보내기 ->패킷2 모든 유저한테 보내기 -> ~ -> 마지막 패킷까지
-			for (NetUser* senduser : g_userlist)
+			for (NetUser* senduser : m_UserList)
 			{
 				int i = SendMsg(senduser->m_sock, (*iter).m_upacket);
 				//보낸게 0이면 유저 연결이 안되어 있다는것
@@ -121,23 +98,15 @@ int Server:: Broadcast(NetUser* user)
 		}
 	}
 	return 1;
-}
-int Server:: RecvUser(NetUser& user)
+}int Server::Broadcast(Packet& t)
 {
-	char recvbuffer[1024] = { 0, };
-	int recvbyte = recv(user.m_sock, recvbuffer, 1024, 0);
-	if (recvbyte == 0)
+	for (NetUser* senduser : m_UserList)
 	{
-		return 0;
-	}
-	if (recvbyte == SOCKET_ERROR)
-	{
-		if (WSAGetLastError() != WSAEWOULDBLOCK)
+		int iRet = SendMsg(senduser->m_sock, t.m_upacket);
+		if (iRet <= 0)
 		{
-			return -1;
+			senduser->m_connect = false;
 		}
-		return 2;
 	}
-	user.DispatchRecv(recvbuffer, recvbyte);
 	return 1;
 }

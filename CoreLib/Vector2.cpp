@@ -106,3 +106,9 @@ Vector2 Normalize(Vector2& v)
 	vec.y = v.y * d;
 	return vec;
 }
+// 두벡터의 거리 반환
+float Vector2::Distance(Vector2& v)
+{
+	float fDist = (*this - v).Length();
+	return fDist;
+}
