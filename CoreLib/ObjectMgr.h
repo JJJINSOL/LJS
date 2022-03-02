@@ -30,7 +30,7 @@ public://부모가 자식을 만들어서 쓸수 잇도록 friend로 해줌
 
 	bool  Init();
 	bool  Frame();
-	bool  Releae();
+	bool  Release();
 private://외부에서는 절대로 객체 생성 불가능
 	ObjectMgr() 
 	{
@@ -38,6 +38,9 @@ private://외부에서는 절대로 객체 생성 불가능
 		m_iExcueteSelectID = 0;
 	};
 public:
-	virtual ~ObjectMgr() {};
+	virtual ~ObjectMgr() 
+	{
+		Release();
+	};
 };
 #define I_ObjectMgr ObjectMgr::Get()//그래서 객체 생성하고 싶으면 이거 써야댐

@@ -60,10 +60,11 @@ bool Sample::Init()
 	m_IntroWorld.m_pd3dDevice = m_pd3dDevice;
 	m_IntroWorld.m_pContext = m_pImmediateContext;
 	m_IntroWorld.Load(L"intro.txt");
+	m_IntroWorld.m_pNextWorld = &m_ZoneWorld;
 
 	m_ZoneWorld.m_pd3dDevice = m_pd3dDevice;
 	m_ZoneWorld.m_pContext = m_pImmediateContext;
-	m_ZoneWorld.Load(L"zone.txt");
+	//m_ZoneWorld.Load(L"zone.txt");
 	
 	World::m_pWorld = &m_IntroWorld;
 
@@ -76,10 +77,6 @@ bool Sample::Init()
 }
 bool Sample::Frame()
 {
-	if (Input::Get().GetKey(VK_F1) == KEY_PUSH)
-	{
-		World::m_pWorld = &m_ZoneWorld;
-	}
 	World::m_pWorld->Frame();
 
 #pragma region

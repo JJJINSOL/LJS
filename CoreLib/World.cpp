@@ -1,5 +1,5 @@
 #include "World.h"
-
+#include "ObjectMgr.h"
 World* World::m_pWorld = nullptr;
 
 bool World::Load(std::wstring saveFile)
@@ -20,6 +20,14 @@ bool World::Frame()
 			pObj->Frame();
 		}
 	}
+	for (auto obj : m_NpcObj)
+	{
+		Object2D* pObj = obj.second;
+		if (pObj != nullptr)
+		{
+			pObj->Frame();
+		}
+	}
 	return true;
 }
 bool World::Render()
@@ -28,6 +36,14 @@ bool World::Render()
 	{
 		Object2D* pObj = obj.second;
 		if (pObj != nullptr)
+		{
+			pObj->Render();
+		}
+	}
+	for (auto obj : m_NpcObj)
+	{
+		Object2D* pObj = obj.second;
+		if (pObj->m_bDead == false)
 		{
 			pObj->Render();
 		}

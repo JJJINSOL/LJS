@@ -5,7 +5,14 @@ class Object2D : public DxObject
 public:
 	RECT m_rtSource;//소스 이미지의 u,v 좌표/텍스쳐
 	RECT m_rtDraw;//화면의 드로우 영역
+	Vector4	m_vColor;
 public:
+	float m_fAlpha = 0.0f;
+	bool m_bFadeIn = false;
+	bool m_bFadeOut = false;
+	virtual void FadeIn();
+	virtual void FadeOut();
+
 	virtual void SetRectSouce(RECT rt);
 	virtual void SetRectDraw(RECT rt);
 	virtual void AddPosition(Vector2 vPos);//현재위치의 포지션이 덧셈이된다
@@ -24,6 +31,7 @@ public:
 
 	virtual bool SetVertexData() override;
 	virtual bool SetIndexData() override;
+	virtual bool Frame() override;
 
 	Object2D();
 	virtual ~Object2D();

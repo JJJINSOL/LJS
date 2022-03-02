@@ -157,9 +157,9 @@ bool DxObject::Create(ID3D11Device* pd3dDevice,
 								std::placeholders::_2));
 
 	I_ObjectMgr.AddSelectExecute(this,
-		std::bind(&BaseObject::HitSelect, this,
-			std::placeholders::_1,
-			std::placeholders::_2));
+								std::bind(&BaseObject::HitSelect, this,
+								std::placeholders::_1,
+								std::placeholders::_2));
 
 	SetDevice(pd3dDevice, pContext);
 	if (szColorFileName != nullptr && !LoadTexture(szColorFileName, szMaskFileName))
@@ -325,5 +325,5 @@ DxObject::DxObject()
 }
 DxObject::~DxObject()
 {
-
+	Release();
 }

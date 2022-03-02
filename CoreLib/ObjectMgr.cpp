@@ -77,8 +77,9 @@ bool  ObjectMgr::Frame()
 	for (auto src : m_SelectList)
 	{
 		BaseObject* pObjSrc = (BaseObject*)src.second;
-		if (pObjSrc->m_dwSelectType == CollisionType::Ignore) continue;
-		DWORD dwState = CollisionType::Overlap;
+		if (pObjSrc->m_dwSelectType == SelectType::Select_Ignore) continue;
+		DWORD dwState = SelectState::T_DEFAULT;
+		pObjSrc->m_dwSelectState = SelectState::T_DEFAULT;
 		if (Collision::RectToPoint(pObjSrc->m_rtCollision, (float)g_ptMouse.x, (float)g_ptMouse.y))
 		{
 			DWORD dwKeyState = Input::Get().m_dwMouseState[0];
@@ -107,7 +108,7 @@ bool  ObjectMgr::Frame()
 	}
 	return true;
 }
-bool ObjectMgr::Releae()
+bool ObjectMgr::Release()
 {
 	m_ObjectList.clear();
 	m_SelectList.clear();

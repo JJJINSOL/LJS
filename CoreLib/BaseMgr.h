@@ -11,11 +11,11 @@ public:
 	std::map<std::wstring, T* >  m_list;
 public:
 	std::wstring Splitpath(std::wstring path, std::wstring entry);
-	virtual void	Set(ID3D11Device* pd3dDevice)
+	virtual void Set(ID3D11Device* pd3dDevice)
 	{
 		m_pd3dDevice = pd3dDevice;
 	}
-	T* Load(std::wstring filename);
+	virtual T* Load(std::wstring filename);
 	T* GetPtr(std::wstring key);
 	bool	Init();
 	bool	Frame();

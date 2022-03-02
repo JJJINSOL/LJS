@@ -36,6 +36,7 @@ enum SelectState
 class BaseObject
 {
 public:
+	std::wstring m_csName;
 	bool		m_bDead;
 	int			m_iCollisionID;//매니저에서 id등록해서 유니크한 것 만들어낸것
 	int			m_iSelectID;
@@ -48,24 +49,31 @@ public:
 	DWORD		m_dwCollisonType;
 	DWORD		m_dwSelectType;
 	DWORD		m_dwSelectState;
+	DWORD		m_dwPreSelectState;
 	bool		m_bSelect;
-	bool		m_bAlphaBlend = true;
+	bool		m_bAlphaBlend;
 	
 	virtual void HitOverlap(BaseObject* pObj, DWORD dwState);//충돌처리함수
 	virtual void HitSelect(BaseObject* pObj, DWORD dwState);
+	virtual void SetCollisionType(DWORD dwCollisionType, DWORD dwSelectType)
+	{
+		m_dwCollisonType = dwCollisionType;
+		m_dwSelectType = dwSelectType;
+	}
 public:
 
 	BaseObject()
 	{
 		m_bDead = false;
 		m_bSelect = false;
+		m_bAlphaBlend = true;
 		m_dwSelectState = T_DEFAULT;
 		m_iCollisionID = -1;
 		m_iSelectID = -1;
 		m_vDirection.x = 0.0f;
 		m_vDirection.y = 0.0f;
-		m_dwCollisonType = CollisionType::Overlap;
-		m_dwSelectType = CollisionType::Overlap;
+		m_dwCollisonType = CollisionType::Ignore;
+		m_dwSelectType = SelectType::Select_Ignore;
 	}
 };
 //===========================================================-====
