@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="IntroWorld.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginWorld.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectNpc2D.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObj2D.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="ZoneWorld.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>스프라이트</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectObj.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IntroWorld.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginWorld.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectNpc2D.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObj2D.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="ZoneWorld.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>스프라이트</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectObj.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="VertexShader.txt">
+      <Filter>텍스트</Filter>
+    </Text>
+    <Text Include="player.txt">
+      <Filter>텍스트</Filter>
+    </Text>
+    <Text Include="DefaultUI.txt">
+      <Filter>텍스트</Filter>
+    </Text>
+    <Text Include="PixelShader.txt">
+      <Filter>텍스트</Filter>
+    </Text>
+    <Text Include="Shader.txt">
+      <Filter>텍스트</Filter>
+    </Text>
+    <Text Include="SpriteData.txt">
+      <Filter>스프라이트</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="소스">
+      <UniqueIdentifier>{11168ad8-e49d-41af-bdbb-0747e84adb94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더">
+      <UniqueIdentifier>{469e6d00-82ce-4b37-bd98-df8972b229d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="스프라이트">
+      <UniqueIdentifier>{58ba17d8-d3c1-4cb4-951b-be89247fcf00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="텍스트">
+      <UniqueIdentifier>{84073fc1-da0e-461e-a618-215e2d4e6bbe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
