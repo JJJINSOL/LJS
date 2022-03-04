@@ -59,7 +59,7 @@ bool ZoneWorld::Load(std::wstring file)
 		{
 			return false;
 		}
-		m_NpcObj.insert(std::make_pair(npc->m_csName, npc));
+		m_NpcObj.push_back(npc);
 	}
 	return true;
 }

@@ -49,6 +49,15 @@ bool  ObjectMgr::Init()
 {
 	return true;
 }
+void  ObjectMgr::CallRecursive(BaseObject* pSrcObj, DWORD dwState)
+{
+	if (pSrcObj->m_pParent == nullptr)
+	{
+		return;
+	}
+	CallRecursive(pSrcObj->m_pParent, dwState);
+	pSrcObj->HitSelect(pSrcObj, dwState);
+}
 bool  ObjectMgr::Frame()
 {
 	// collision
@@ -77,10 +86,10 @@ bool  ObjectMgr::Frame()
 	for (auto src : m_SelectList)
 	{
 		BaseObject* pObjSrc = (BaseObject*)src.second;
-		if (pObjSrc->m_dwSelectType == SelectType::Select_Ignore) continue;
+		//if (pObjSrc->m_dwSelectType == SelectType::Select_Ignore) continue;
 		DWORD dwState = SelectState::T_DEFAULT;
-		pObjSrc->m_dwSelectState = SelectState::T_DEFAULT;
-		if (Collision::RectToPoint(pObjSrc->m_rtCollision, (float)g_ptMouse.x, (float)g_ptMouse.y))
+		if (pObjSrc->m_dwSelectType != SelectType::Select_Ignore &&
+			Collision::RectToPoint(pObjSrc->m_rtCollision, (float)g_ptMouse.x, (float)g_ptMouse.y)) 
 		{
 			DWORD dwKeyState = Input::Get().m_dwMouseState[0];
 			pObjSrc->m_dwSelectState = SelectState::T_HOVER;
@@ -97,11 +106,25 @@ bool  ObjectMgr::Frame()
 				pObjSrc->m_dwSelectState = SelectState::T_SELECTED;
 			}
 
+			CallRecursive(pObjSrc, dwState);
 			FuncionIterator colliter = m_fnSelectExecute.find(pObjSrc->m_iSelectID);
 			if (colliter != m_fnSelectExecute.end())
 			{
 				CollisionFunction call = colliter->second;
 				call(pObjSrc, dwState);
+			}
+		}
+		else
+		{
+			if (pObjSrc->m_dwSelectState != SelectState::T_DEFAULT)
+			{
+				pObjSrc->m_dwSelectState = SelectState::T_DEFAULT;
+				FuncionIterator colliter = m_fnSelectExecute.find(pObjSrc->m_iSelectID);
+				if (colliter != m_fnSelectExecute.end())
+				{
+					CollisionFunction call = colliter->second;
+					call(pObjSrc, dwState);
+				}
 			}
 		}
 

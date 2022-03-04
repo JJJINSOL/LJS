@@ -33,6 +33,11 @@ public:
 	virtual bool SetIndexData() override;
 	virtual bool Frame() override;
 
+	bool Load(ID3D11Device* pd3dDevice, std::wstring filename)
+	{
+		return true;
+	};
+	virtual void UpdateData() {}
 	Object2D();
 	virtual ~Object2D();
 };

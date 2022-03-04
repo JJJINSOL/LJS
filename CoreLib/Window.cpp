@@ -10,7 +10,7 @@ LRESULT  CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
     g_pWindow -> MsgProc(hwnd, msg, wparam, lparam);
     switch (msg)
     {
-    case WM_SIZE:
+    case WM_SIZE://윈도우 창크기 변경 됐을때
     {
         UINT iWidth = LOWORD(lparam);
         UINT iHeight = HIWORD(lparam);

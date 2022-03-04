@@ -135,7 +135,7 @@ Sound* SoundMgr::GetPtr(std::wstring key)
 	auto iter = m_list.find(key);
 	if (iter != m_list.end())
 	{
-		return (*iter).second;
+		return (*iter).second.get();
 	}
 	return nullptr;
 }
@@ -156,11 +156,11 @@ Sound* SoundMgr::Load(std::string filename)
 	{
 		if (data.second->m_csName == name)
 		{
-			return data.second;
+			return data.second.get();
 		}
 	}
 
-	Sound* pSound = new Sound;
+	std::shared_ptr<Sound> pSound = std::make_shared<Sound>();
 	FMOD_RESULT ret = m_pSystem->createSound(filename.c_str(),FMOD_DEFAULT, 0,&pSound->m_pSound);
 
 	if (ret != FMOD_OK)
@@ -171,7 +171,7 @@ Sound* SoundMgr::Load(std::string filename)
 
 	pSound->Set(m_pSystem, name, m_iIndex);
 	m_iIndex++;
-	return pSound;
+	return pSound.get();
 }
 bool SoundMgr::Init()
 {
@@ -194,7 +194,6 @@ bool SoundMgr::Release()
 	for (auto data : m_list)
 	{
 		data.second->Release();
-		delete data.second;
 	}
 	m_list.clear();
 	if (m_pSystem)

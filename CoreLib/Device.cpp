@@ -56,10 +56,10 @@ bool Device::CreateDevice()
 		1, //피처레벨 배열 수
 		D3D11_SDK_VERSION, //다이렉트엑스 에스디케이 버전
 		&m_SwapChainDesc, //스왑체인 구조체
-		&m_pSwapChain, //넘겨받을 스왑체인 인터페이스 포인터
-		&m_pd3dDevice, //넘겨받을 디바이스 인터페이스 포인터
+		m_pSwapChain.GetAddressOf(), //넘겨받을 스왑체인 인터페이스 포인터
+		m_pd3dDevice.GetAddressOf(), //넘겨받을 디바이스 인터페이스 포인터
 		&m_FeatureLevel, //피쳐레벨을 얻어낼 포인터
-		&m_pImmediateContext); //넘겨받을 디바이스컨텍스트 인터페이스 포인터
+		m_pImmediateContext.GetAddressOf()); //넘겨받을 디바이스컨텍스트 인터페이스 포인터
 	if (FAILED(hr))
 	{
 		return false;
@@ -70,16 +70,14 @@ bool Device:: CreateRenderTargetView()
 {
 	//**********************************백버퍼 설정*********************
 	//스왑체인으로부터 백버퍼 얻어옴
-	ID3D11Texture2D* backBuffer = nullptr;
+	ComPtr<ID3D11Texture2D> backBuffer = nullptr;
 	m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
 
 	//뷰로 액세스할 리소스, NULL, 렌더타겟 뷰를 받아올 변수
-	m_pd3dDevice->CreateRenderTargetView(backBuffer, NULL, &m_pRenderTargetView);
-
-	if (backBuffer)backBuffer->Release();
+	m_pd3dDevice->CreateRenderTargetView(backBuffer.Get(), NULL, m_pRenderTargetView.GetAddressOf());
 
 	//렌더타겟 수, 렌더 타겟 뷰의 배열, 깊이
-	m_pImmediateContext->OMSetRenderTargets(1, &m_pRenderTargetView, NULL);
+	m_pImmediateContext->OMSetRenderTargets(1, m_pRenderTargetView.GetAddressOf(), NULL);
 	
 	return true;
 }
@@ -120,13 +118,13 @@ void Device::ResizeDevice(UINT iWidth, UINT iHeight)
 bool Device:: CleanupDevice()
 {
 	//Release = 풀어주다
-	if (m_pd3dDevice)m_pd3dDevice->Release();	// 디바이스 객체
-	if (m_pImmediateContext)m_pImmediateContext->Release();// 다비이스 컨텍스트 객체
-	if (m_pSwapChain)m_pSwapChain->Release();	// 스왑체인 객체
-	if (m_pRenderTargetView)m_pRenderTargetView->Release();
-	m_pd3dDevice = nullptr;	// 디바이스 객체
-	m_pImmediateContext = nullptr;// 다비이스 컨텍스트 객체
-	m_pSwapChain = nullptr;	// 스왑체인 객체
-	m_pRenderTargetView = nullptr;
+	//if (m_pd3dDevice)m_pd3dDevice->Release();	// 디바이스 객체
+	//if (m_pImmediateContext)m_pImmediateContext->Release();// 다비이스 컨텍스트 객체
+	//if (m_pSwapChain)m_pSwapChain->Release();	// 스왑체인 객체
+	//if (m_pRenderTargetView)m_pRenderTargetView->Release();
+	//m_pd3dDevice = nullptr;	// 디바이스 객체
+	//m_pImmediateContext = nullptr;// 다비이스 컨텍스트 객체
+	//m_pSwapChain = nullptr;	// 스왑체인 객체
+	//m_pRenderTargetView = nullptr;
 	return true;
 }

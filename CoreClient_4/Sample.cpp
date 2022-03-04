@@ -1,4 +1,5 @@
 #include "Sample.h"
+#include "ObjectMgr.h"
 void Sample::CreateResizeDevice(UINT iWidth, UINT iHeight)
 {
 	int k = 0;

@@ -28,6 +28,9 @@
     <ClCompile Include="EffectObj.cpp">
       <Filter>소스</Filter>
     </ClCompile>
+    <ClCompile Include="UIModelMgr.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IntroWorld.h">
@@ -55,6 +58,9 @@
       <Filter>스프라이트</Filter>
     </ClInclude>
     <ClInclude Include="EffectObj.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="UIModelMgr.h">
       <Filter>헤더</Filter>
     </ClInclude>
   </ItemGroup>

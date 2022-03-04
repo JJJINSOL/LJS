@@ -90,6 +90,9 @@
     <ClInclude Include="TextureMgr.h">
       <Filter>manager\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="DxState.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="TextureMgr.cpp">
       <Filter>manager\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DxState.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

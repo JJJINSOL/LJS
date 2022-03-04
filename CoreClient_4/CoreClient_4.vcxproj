@@ -151,6 +151,7 @@
     <ClCompile Include="PlayerObj2D.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="UIModelMgr.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="ZoneWorld.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="PlayerObj2D.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="UIModelMgr.h" />
     <ClInclude Include="UIObject.h" />
     <ClInclude Include="ZoneWorld.h" />
   </ItemGroup>

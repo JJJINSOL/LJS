@@ -38,7 +38,7 @@ class SoundMgr : public Singleton<SoundMgr>
 public:
 	friend class Singleton<SoundMgr>;
 	FMOD::System* m_pSystem = nullptr;
-	std::map<std::wstring, Sound* >  m_list;
+	std::map<std::wstring, std::shared_ptr<Sound> > m_list;
 public:
 	Sound*  Load(std::string filename);
 	Sound*  GetPtr(std::wstring key);

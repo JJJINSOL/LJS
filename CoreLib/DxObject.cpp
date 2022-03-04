@@ -6,7 +6,7 @@ void BaseObject::HitOverlap(BaseObject* pObj, DWORD dwState)
 }
 void BaseObject::HitSelect(BaseObject* pObj, DWORD dwState)
 {
-
+	int k = 0;
 }
 void DxObject::SetDevice(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pContext)
 {
@@ -150,16 +150,16 @@ bool DxObject::Create(ID3D11Device* pd3dDevice,
 {
 	HRESULT hr;
 
-	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
-	I_ObjectMgr.AddCollisionExecute(this,
-								std::bind(&BaseObject::HitOverlap, this,//this가 넘어가서 자식이 호출될수있음
-								std::placeholders::_1,
-								std::placeholders::_2));
+	//m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
+	//I_ObjectMgr.AddCollisionExecute(this,
+	//							std::bind(&BaseObject::HitOverlap, this,//this가 넘어가서 자식이 호출될수있음
+	//							std::placeholders::_1,
+	//							std::placeholders::_2));
 
-	I_ObjectMgr.AddSelectExecute(this,
-								std::bind(&BaseObject::HitSelect, this,
-								std::placeholders::_1,
-								std::placeholders::_2));
+	//I_ObjectMgr.AddSelectExecute(this,
+	//							std::bind(&BaseObject::HitSelect, this,
+	//							std::placeholders::_1,
+	//							std::placeholders::_2));
 
 	SetDevice(pd3dDevice, pContext);
 	if (szColorFileName != nullptr && !LoadTexture(szColorFileName, szMaskFileName))
@@ -203,43 +203,6 @@ bool DxObject::Create(ID3D11Device* pd3dDevice,
 		return false;
 	}
 
-	// (소스컬러*D3D11_BLEND_SRC_ALPHA) 
-	//                  + 
-	// (대상컬러*D3D11_BLEND_INV_SRC_ALPHA)
-	// 컬러   =  투명컬러값 = (1,1,1,1)
-	// 마스크 =  1.0 - 투명컬러값 = (1,1,1,1)
-
-	// FinalColor = SrcColor*SrcAlpha + DestColor*(1.0f- SrcAlpha) 	    
-	// if SrcAlpha == 0 완전투명
-	//           FinalColor() = SrcColor*0 + DestColor*(1-0)
-	//                FinalColor = DestColor;
-	// if SrcAlpha == 1 완전불투명
-	//           FinalColor() = SrcColor*1 + DestColor*(1-1)
-	//                FinalColor = SrcColor;
-	// 혼합상태 = 소스(지금드로우객체 픽셀) (연산) 대상(백버퍼 객체:픽셀)
-	// 혼합상태 = 픽셀쉐이더 출력 컬러  (연산:사칙연산) 출력버퍼의 컬러
-	D3D11_BLEND_DESC  blenddesc;
-	ZeroMemory(&blenddesc, sizeof(D3D11_BLEND_DESC));
-	/*bd.AlphaToCoverageEnable;
-	bd.IndependentBlendEnable;*/
-	blenddesc.RenderTarget[0].BlendEnable = TRUE;//혼합 연산 할래 말래?
-	//컬러(밑의 3개) RGB 연산 저장
-	// 혼합상태 = 소스(지금드로우객체 픽셀) (연산) 대상(백버퍼 객체:픽셀)
-	blenddesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	blenddesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	blenddesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	//// A 연산 저장
-	//투명도(밑의 3개) 알파 연산 담당
-	blenddesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	blenddesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	blenddesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	blenddesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	//투명도 생성
-	hr = m_pd3dDevice->CreateBlendState(&blenddesc, &m_AlphaBlend);
-
-	blenddesc.RenderTarget[0].BlendEnable = FALSE;
-	hr = m_pd3dDevice->CreateBlendState(&blenddesc, &m_AlphaBlendDisable);
 
 	return true;
 }
@@ -257,9 +220,9 @@ bool	DxObject::Render()
 	if (m_pColorTex != nullptr)
 	//픽셀 shader로 텍스쳐 전달 전달
 	//                               텍스쳐 레지스터 슬롯 번호   개수
-		m_pContext->PSSetShaderResources(0,                          1, &m_pColorTex->m_pSRV); //s가 붙으면 배열로 전달
+		m_pContext->PSSetShaderResources(0,                          1, m_pColorTex->m_pSRV.GetAddressOf()); //s가 붙으면 배열로 전달
 	if (m_pMaskTex != nullptr)
-		m_pContext->PSSetShaderResources(1, 1, &m_pMaskTex->m_pSRV);
+		m_pContext->PSSetShaderResources(1, 1, m_pMaskTex->m_pSRV.GetAddressOf());
 	
 	if (m_pVShader != nullptr)
 	{
@@ -272,11 +235,11 @@ bool	DxObject::Render()
 
 	if (m_bAlphaBlend)
 	{
-		m_pContext->OMSetBlendState(m_AlphaBlend, 0, -1);
+		m_pContext->OMSetBlendState(DxState::m_AlphaBlend, 0, -1);
 	}
 	else
 	{
-		m_pContext->OMSetBlendState(m_AlphaBlendDisable, 0, -1);
+		m_pContext->OMSetBlendState(DxState::m_AlphaBlendDisable, 0, -1);
 	}
 
 	m_pContext->IASetInputLayout(m_pVertexLayout);
@@ -304,11 +267,6 @@ bool	DxObject::Render()
 }
 bool	DxObject::Release()
 {
-	if (m_AlphaBlend) m_AlphaBlend->Release();
-	if (m_AlphaBlendDisable) m_AlphaBlendDisable->Release();
-	m_AlphaBlend = nullptr;
-	m_AlphaBlendDisable = nullptr;
-
 	if (m_pVertexBuffer) m_pVertexBuffer->Release();
 	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 	if (m_pConstantBuffer) m_pConstantBuffer->Release();
@@ -325,5 +283,5 @@ DxObject::DxObject()
 }
 DxObject::~DxObject()
 {
-	Release();
+	
 }

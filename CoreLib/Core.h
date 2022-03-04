@@ -9,7 +9,7 @@ class Core : public Device
 public:
 	Timer m_GameTimer;
 	WriteFont  m_dxWrite;
-	ID3D11SamplerState* m_pSamplerState = nullptr;
+
 private:
 	bool CoreInit();
 	bool CoreFrame();

@@ -31,6 +31,8 @@ public://부모가 자식을 만들어서 쓸수 잇도록 friend로 해줌
 	bool  Init();
 	bool  Frame();
 	bool  Release();
+	void  CallRecursive(BaseObject* pSrcObj, DWORD dwState);
+
 private://외부에서는 절대로 객체 생성 불가능
 	ObjectMgr() 
 	{

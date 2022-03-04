@@ -1,8 +1,8 @@
 #pragma once
 #include "ShaderMgr.h"
 #include "TextureMgr.h"
-
-struct SimpleVertex
+#include "DxState.h"
+struct SimpleVertex//정점
 {
 	Vector2 v;
 	Vector2 t;
@@ -33,16 +33,19 @@ enum SelectState
 	T_ACTIVE = 4,	// 마우스 왼쪽 버튼 누르고 있을 때
 	T_SELECTED = 8, // T_ACTIVE 상태에서 왼쪼버튼 놓았을 때
 };
+//====================================================================
 class BaseObject
 {
 public:
 	std::wstring m_csName;
+
+	BaseObject* m_pParent = nullptr;
 	bool		m_bDead;
 	int			m_iCollisionID;//매니저에서 id등록해서 유니크한 것 만들어낸것
 	int			m_iSelectID;
 	float		m_fSpeed;
 	Vector2		m_vPos;
-	Vector2		m_vDirection;
+	Vector2		m_vDirection;//방향
 	float		m_fWidth;
 	float		m_fHeight;
 	Rect		m_rtCollision;//움직이게 되면 무조건 충돌 갱신
@@ -55,6 +58,7 @@ public:
 	
 	virtual void HitOverlap(BaseObject* pObj, DWORD dwState);//충돌처리함수
 	virtual void HitSelect(BaseObject* pObj, DWORD dwState);
+
 	virtual void SetCollisionType(DWORD dwCollisionType, DWORD dwSelectType)
 	{
 		m_dwCollisonType = dwCollisionType;
@@ -83,7 +87,7 @@ struct Index
 	DWORD _1;
 	DWORD _2;
 };
-struct ConstantData
+struct ConstantData//지속적인
 {
 	Vector4 Color;
 	Vector4 Timer;
@@ -96,10 +100,6 @@ public:
 	Texture* m_pMaskTex = nullptr;
 	Shader*  m_pVShader = nullptr;
 	Shader*  m_pPShader = nullptr;
-	
-	//투명도
-	ID3D11BlendState* m_AlphaBlend;
-	ID3D11BlendState* m_AlphaBlendDisable;
 
 	D3D11_TEXTURE2D_DESC m_TextureDesc;
 
@@ -107,17 +107,17 @@ public:
 	std::vector<SimpleVertex> m_InitScreenList;
 	std::vector<SimpleVertex> m_VertexList;
 	
-	ID3D11Buffer* m_pVertexBuffer;
+	ID3D11Buffer* m_pVertexBuffer = nullptr;
 
 	std::vector<DWORD> m_IndexList;
-	ID3D11Buffer* m_pIndexBuffer;
+	ID3D11Buffer* m_pIndexBuffer = nullptr;
 
 	ConstantData    m_ConstantList;
-	ID3D11Buffer* m_pConstantBuffer;
+	ID3D11Buffer* m_pConstantBuffer = nullptr;
 
-	ID3D11InputLayout* m_pVertexLayout;
-	ID3D11Device* m_pd3dDevice;
-	ID3D11DeviceContext* m_pContext;
+	ID3D11InputLayout* m_pVertexLayout = nullptr;
+	ID3D11Device* m_pd3dDevice = nullptr;
+	ID3D11DeviceContext* m_pContext = nullptr;
 
 public:
 	void SetDevice(ID3D11Device* m_pd3dDevice, ID3D11DeviceContext* m_pContext);

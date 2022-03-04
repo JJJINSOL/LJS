@@ -6,8 +6,12 @@ void Object2D::SetRectSouce(RECT rt)
 void Object2D::SetRectDraw(RECT rt)
 {
 	m_rtDraw = rt;
+	m_vPos.x = rt.left + (rt.right / 2.0f);
+	m_vPos.y = rt.top + (rt.bottom / 2.0f);
 	m_fWidth = rt.right;
 	m_fHeight = rt.bottom;
+
+	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
 }
 void Object2D::UpdateRectDraw(RECT rt)
 {
@@ -19,8 +23,13 @@ void Object2D::AddPosition(Vector2 vPos)
 	// 현재위치
 	m_vPos += vPos;
 	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
-	ConvertIndex(m_vPos, m_fWidth, m_fHeight, m_VertexList);
-	m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	//ConvertIndex(m_vPos, m_fWidth, m_fHeight, m_VertexList);
+	SetVertexData();
+	SetIndexData();
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	}
 }
 void Object2D::SetPosition(Vector2 vPos)
 {
@@ -153,6 +162,7 @@ bool Object2D::SetVertexData()
 }
 bool Object2D::SetIndexData()
 {
+	m_IndexList.clear();
 	//// 0   1,4
 	//// 2,3  5
 	//DWORD indeces[] = {

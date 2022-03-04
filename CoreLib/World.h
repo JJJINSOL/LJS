@@ -9,11 +9,11 @@ public:
 	bool m_bLoadZone = false;
 public:
 	static World* m_pWorld;
-	std::map<std::wstring, Object2D*> m_UIObj;
-	std::map<std::wstring, Object2D*> m_ItemObj;
-	std::map<std::wstring, Object2D*> m_NpcObj;
-	std::map<std::wstring, Object2D*> m_MapObj;
-	using m_mapIter = std::map<std::wstring, Object2D*>::iterator;
+	std::vector<std::shared_ptr<Object2D>> m_UIObj;
+	std::vector<std::shared_ptr<Object2D>> m_ItemObj;
+	std::vector<std::shared_ptr<Object2D>> m_NpcObj;
+	std::vector<std::shared_ptr<Object2D>> m_MapObj;
+	using m_mapIter = std::vector<std::shared_ptr<Object2D>>::iterator;
 public:
 	virtual bool	Load(std::wstring saveFile);
 	virtual bool	Init() ;
