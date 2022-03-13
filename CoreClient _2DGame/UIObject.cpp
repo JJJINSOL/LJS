@@ -1,5 +1,6 @@
 #include "UIObject.h"
 #include "World.h"
+#include "Sample.h"
 #include "SoundMgr.h"
 bool UIObject::SetVertexData()
 {
@@ -152,11 +153,10 @@ bool ButtonObject::Init()
 }
 bool ButtonObject::Frame()
 {
-	//if (m_dwSelectState == SelectState::T_DEFAULT)
-	//{
-	//	//m_pColorTex = m_pStatePlayList[0].pTex;
-	//	//m_dwPreSelectState = m_dwSelectState;
-	//}
+	m_vColor.x = m_fAlpha;
+	m_vColor.y = m_fAlpha;
+	m_vColor.z = m_fAlpha;
+	m_vColor.w = 1.0f;
 	Object2D::Frame();
 	return true;
 }
@@ -187,7 +187,11 @@ void ButtonObject::HitSelect(BaseObject* pObj, DWORD dwState)
 		if (m_pStatePlayList[3].pTex == nullptr) break;
 		m_pColorTex = m_pStatePlayList[3].pTex;
 		m_pStatePlayList[3].pSound->PlayEffect();
+		//m_IntroWorld.m_pNextWorld = &m_GameWorld;
+		//&Sample::m_IntroWorld.m_pNextWorld = &Sample::m_GameWorld;
+
 		World::m_pWorld->m_bLoadZone = true;
+
 		state += "T_SELECTED\n";
 	}break;
 	case SelectState::T_HOVER:

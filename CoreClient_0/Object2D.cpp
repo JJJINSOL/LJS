@@ -8,6 +8,10 @@ void Object2D::SetRectDraw(RECT rt)
 	m_rtDraw = rt;
 	m_fWidth = rt.right;
 	m_fHeight = rt.bottom;
+	m_vPos.x = rt.left + (rt.right / 2.0f);
+	m_vPos.y = rt.top + (rt.bottom / 2.0f);
+
+	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
 }
 void Object2D::UpdateRectDraw(RECT rt)
 {
@@ -18,13 +22,33 @@ void Object2D::AddPosition(Vector2 vPos)
 {
 	// 현재위치
 	m_vPos += vPos;
-	Convert(m_vPos, m_fWidth, m_fHeight, m_VertexList);
-	m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	//  10,10f    ~     w(50, 10)
+	//
+	//   h
+	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
+	SetVertexData();
+	SetIndexData();
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	}
 }
+/// m_rtDraw, m_rtCollision 갱신된다.
 void Object2D::SetPosition(Vector2 vPos)
 {
 	// 현재위치
 	m_vPos = vPos;
+	SetRectDraw({(LONG)(m_vPos.x - m_rtDraw.right / 2.0f),
+				 (LONG)(m_vPos.y - m_rtDraw.bottom / 2.0f),
+				  m_rtDraw.right,
+				  m_rtDraw.bottom });
+	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
+	SetVertexData();
+	SetIndexData();
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	}
 }
 void Object2D::Convert(Vector2 center, float fWidth, float fHeight, std::vector<SimpleVertex>& retList)
 {

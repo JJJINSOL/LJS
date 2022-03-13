@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="UIModelMgr.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObj2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectNpc2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="EffectObj.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="UsersetWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="RankWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+    <ClCompile Include="IntroWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UIObject.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UIModelMgr.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObj2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectNpc2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectObj.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="UsersetWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="IntroWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="RankWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="player.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="PixelShader.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="DefaultUI.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="SpriteData.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="Shader.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="VertexShader.txt">
+      <Filter>text</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="text">
+      <UniqueIdentifier>{f9d1ce4c-7978-4126-90bd-c4a34bc3726d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{91a83c2f-2c9a-4103-9dd9-8564ad6a26c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{5d4c3734-c6d5-41cb-aa30-4a9ad4d1d78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="WORLD">
+      <UniqueIdentifier>{71dcaca2-5ca2-4834-9d98-462941e5433f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+</Project>
