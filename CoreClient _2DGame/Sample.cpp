@@ -68,6 +68,7 @@ bool Sample::Init()
 
 	m_GameWorld.m_pd3dDevice = m_pd3dDevice.Get();
 	m_GameWorld.m_pContext = m_pImmediateContext.Get();
+	m_GameWorld.m_pNextWorld = &m_IntroWorld;
 
 	m_RankWorld.m_pd3dDevice = m_pd3dDevice.Get();
 	m_RankWorld.m_pContext = m_pImmediateContext.Get();

@@ -3,15 +3,11 @@
 //#include "GameWorld.h"
 void PlayerObj2D::HitOverlap(BaseObject* pObj, DWORD dwState)
 {
-
-
 	if (dwState == CollisionType::Overlap)
 	{
-		////&GameWorld::m_npclist
-		//Vector2 p;
-		//p.y = -1.0f;
-		//pObj->m_bDead = true;
-
+		//pObj->m_fHeight = 100;
+		pObj->m_bDead = true;
+		//AddPosition(p);
 	}
 }
 bool PlayerObj2D::Frame()
@@ -42,6 +38,7 @@ PlayerObj2D::PlayerObj2D()
 	//								std::bind(&BaseObject::HitOverlap, this,
 	//								std::placeholders::_1,
 	//								std::placeholders::_2));
+	m_life = 3;
 }
 
 PlayerObj2D::~PlayerObj2D()

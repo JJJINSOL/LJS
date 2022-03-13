@@ -67,5 +67,20 @@ Sprite* SpriteMgr::Load(std::wstring filename)
 		m_iIndex++;
 	}
 	fclose(fp_src);
+
+	Sprite* pSprite = new Sprite;
+	TCHAR name[256] = {L"effect"};
+
+	for (int iFrame = 0; iFrame < 6; iFrame++)
+	{
+
+		pSprite->m_rtArray.push_back({850,850,300,300});
+	}
+
+	pSprite->m_csName = name;
+	pSprite->m_fAnimTime = 1.5;
+	m_list.insert(make_pair(pSprite->m_csName, pSprite));
+	m_iIndex++;
+
 	return nullptr;
 }

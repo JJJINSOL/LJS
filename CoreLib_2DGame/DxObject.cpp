@@ -150,7 +150,7 @@ bool DxObject::Create(ID3D11Device* pd3dDevice,
 {
 	HRESULT hr;
 
-	m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
+	//m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
 	//I_ObjectMgr.AddCollisionExecute(this,
 	//							std::bind(&BaseObject::HitOverlap, this,//this가 넘어가서 자식이 호출될수있음
 	//							std::placeholders::_1,

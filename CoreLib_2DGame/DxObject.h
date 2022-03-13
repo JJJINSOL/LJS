@@ -76,7 +76,7 @@ public:
 		m_iSelectID = -1;
 		m_vDirection.x = 0.0f;
 		m_vDirection.y = 0.0f;
-		m_dwCollisonType = CollisionType::Overlap;
+		m_dwCollisonType = CollisionType::Ignore;
 		m_dwSelectType = SelectType::Select_Ignore;
 	}
 };
