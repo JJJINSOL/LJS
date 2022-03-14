@@ -63,6 +63,7 @@ bool IntroWorld::CreateModelType()
 	/// 버튼1-게임시작---------------------------------------------------------------
 	
 	btnObj1->m_csName = L"TButtonObject:btnGameStart";
+	btnObj1->m_index = 1;
 	btnObj1->Init();
 	btnObj1->m_rtOffset = { 0, 0, 0, 0 };
 	btnObj1->SetRectDraw({ 0,0, 340,100 });//334,82//340,100
@@ -84,7 +85,7 @@ bool IntroWorld::CreateModelType()
 	pSound1 = I_Sound.Load("../../data/Sound/PianoSound_00.mp3");
 	btnObj1->m_pStatePlayList.emplace_back(pTex1, pSound1);
 
-	if (!btnObj1->Create(m_pd3dDevice, m_pContext,
+	if (!btnObj1->Create(m_pd3dDevice, m_pContext ,
 		L"../../data/shader/DefaultUI.txt",
 		L"../../DX2D/data/gamestart_nor.png"))
 	{
@@ -96,6 +97,7 @@ bool IntroWorld::CreateModelType()
 	/// 버튼2-랭크---------------------------------------------------------------
 	
 	btnObj2->m_csName = L"TButtonObject:btnRank";
+	btnObj1->m_index = 2;
 	btnObj2->Init();
 	btnObj2->m_rtOffset = { 0, 0, 0, 0 };
 	btnObj2->SetRectDraw({ 0,0, 340,100 });//334,82//340,100
@@ -129,6 +131,7 @@ bool IntroWorld::CreateModelType()
 	/// 버튼3-유저셋---------------------------------------------------------------
 	
 	btnObj3->m_csName = L"TButtonObject:btnUserSet";
+	btnObj1->m_index = 3;
 	btnObj3->Init();
 	btnObj3->m_rtOffset = { 0, 0, 0, 0 };
 	btnObj3->SetRectDraw({ 0,0, 340,100 });//334,82//340,100

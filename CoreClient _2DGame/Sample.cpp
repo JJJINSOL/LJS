@@ -66,16 +66,26 @@ bool Sample::Init()
 	m_IntroWorld.m_pNextWorld2 = &m_RankWorld;
 	m_IntroWorld.m_pNextWorld3 = &m_UserserWorld;
 
-	m_GameWorld.m_pd3dDevice = m_pd3dDevice.Get();
-	m_GameWorld.m_pContext = m_pImmediateContext.Get();
+	m_GameWorld.Init();
+	m_GameWorld.World::m_pd3dDevice = m_pd3dDevice.Get();
+	m_GameWorld.World::m_pContext = m_pImmediateContext.Get();
 	m_GameWorld.m_pNextWorld = &m_IntroWorld;
 
+	m_RankWorld.Init();
 	m_RankWorld.m_pd3dDevice = m_pd3dDevice.Get();
 	m_RankWorld.m_pContext = m_pImmediateContext.Get();
+	m_RankWorld.Load(L"intro.txt");
 
+	m_UserserWorld.Init();
 	m_UserserWorld.m_pd3dDevice = m_pd3dDevice.Get();
 	m_UserserWorld.m_pContext = m_pImmediateContext.Get();
+	m_UserserWorld.Load(L"intro.txt");
 	
+	m_ResultWorld.Init();
+	m_ResultWorld.m_pd3dDevice = m_pd3dDevice.Get();
+	m_ResultWorld.m_pContext = m_pImmediateContext.Get();
+	m_ResultWorld.Load(L"intro.txt");
+
 	World::m_pWorld = &m_IntroWorld;
 
 	m_net.Initnetwork();
@@ -88,7 +98,19 @@ bool Sample::Init()
 bool Sample::Frame()
 {
 	World::m_pWorld->Frame();
+	if (m_GameWorld.m_PlayerObj.m_life <= 0)
+	{
+		m_GameWorld.m_gamestart = false;
+		m_GameWorld.m_PlayerObj.m_life = 3;
+		m_GameWorld.m_pBackGroundMusic->Stop();
+		m_ResultWorld.m_pBackGroundMusic->Play(false);
 
+		m_GameWorld.m_score = (int)m_GameTimer.m_fTimer * 100;
+
+		I_ObjectMgr.Release();
+		World::m_pWorld = &m_ResultWorld;
+		//World::m_pWorld->m_bLoadZone = true;
+	}
 #pragma region
 	int iChatCnt = m_net.m_playuser.m_packetpool.size();
 	if (iChatCnt > 0 && m_chatcount != iChatCnt)
@@ -149,17 +171,35 @@ bool Sample::Frame()
 bool Sample::Render()
 {
 	World::m_pWorld->Render();
+	
+	if (World::m_pWorld == (World*)&m_GameWorld)
+	{
+		if (m_GameWorld.m_gamestart == false)
+		{
+			m_GameTimer.m_fTimer = 0;
+			m_GameWorld.m_gamestart = true;
+		}
+		std::wstring msg = L"SCORE  ";
+		msg += std::to_wstring((int)m_GameTimer.m_fTimer*100);
+		RECT a;
+		a.top = 30;
+		a.left = 750;
+		a.bottom = g_rtClient.bottom;
+		a.right = g_rtClient.right;
+		m_dxWrite.Draw(msg, a, D2D1::ColorF(1, 1, 1, 1));
+	}
+	else if (World::m_pWorld == (World*)&m_ResultWorld)
+	{
+		std::wstring msg = L"SCORE  ";
+		msg += std::to_wstring(m_GameWorld.m_score);
+		RECT a;
+		a.top = 250;
+		a.left = 0;
+		a.bottom = g_rtClient.bottom;
+		a.right = g_rtClient.right;
+		m_dxWrite.Draw(msg, a, D2D1::ColorF(0, 0, 0, 1));
+	}
 
-	std::wstring msg = L"FPS:";
-	msg += std::to_wstring(m_GameTimer.m_iFPS);
-	msg += L"  GT:";
-	msg += std::to_wstring(m_GameTimer.m_fTimer);
-	//RECT a;
-	//a.top = g_rtClient.bottom / 5;
-	//a.left = g_rtClient.right / 5;
-	//a.bottom = g_rtClient.bottom;
-	//a.right = g_rtClient.right;
-	m_dxWrite.Draw(msg, g_rtClient, D2D1::ColorF(1, 1, 1, 1));
 	return true;
 }
 bool Sample::Release()

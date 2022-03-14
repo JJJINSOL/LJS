@@ -7,6 +7,8 @@
 #include "UsersetWorld.h"
 #include "UIObject.h"
 #include "UIModelMgr.h"
+#include "ResultWorld.h"
+#include "WriteFont.h"
 class Sample : public Core
 {
 public:
@@ -14,6 +16,7 @@ public:
 	GameWorld		m_GameWorld;
 	RankWorld		m_RankWorld;
 	UsersetWorld	m_UserserWorld;
+	ResultWorld		m_ResultWorld;
 
 	AsyncSelect m_net;
 	HWND		m_edit;

@@ -188,8 +188,8 @@ void ButtonObject::HitSelect(BaseObject* pObj, DWORD dwState)
 		m_pColorTex = m_pStatePlayList[3].pTex;
 		m_pStatePlayList[3].pSound->PlayEffect();
 		//m_IntroWorld.m_pNextWorld = &m_GameWorld;
-		//&Sample::m_IntroWorld.m_pNextWorld = &Sample::m_GameWorld;
-
+		//&Sample::m_IntroWorld.m_pNextWorld = &Sample::m_GameWorld;			
+		//if(m_pStatePlayList)
 		World::m_pWorld->m_bLoadZone = true;
 
 		state += "T_SELECTED\n";

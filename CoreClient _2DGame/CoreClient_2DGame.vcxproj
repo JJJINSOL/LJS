@@ -146,9 +146,11 @@
   <ItemGroup>
     <ClCompile Include="EffectObj.cpp" />
     <ClCompile Include="IntroWorld.cpp" />
+    <ClCompile Include="Life2D.cpp" />
     <ClCompile Include="ObjectNpc2D.cpp" />
     <ClCompile Include="PlayerObj2D.cpp" />
     <ClCompile Include="RankWorld.cpp" />
+    <ClCompile Include="ResultWorld.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="UIModelMgr.cpp" />
@@ -159,9 +161,11 @@
   <ItemGroup>
     <ClInclude Include="EffectObj.h" />
     <ClInclude Include="IntroWorld.h" />
+    <ClInclude Include="Life2D.h" />
     <ClInclude Include="ObjectNpc2D.h" />
     <ClInclude Include="PlayerObj2D.h" />
     <ClInclude Include="RankWorld.h" />
+    <ClInclude Include="ResultWorld.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="UIModelMgr.h" />

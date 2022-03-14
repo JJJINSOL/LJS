@@ -34,6 +34,12 @@
     <ClCompile Include="IntroWorld.cpp">
       <Filter>WORLD</Filter>
     </ClCompile>
+    <ClCompile Include="Life2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultWorld.cpp">
+      <Filter>WORLD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UIObject.h">
@@ -67,6 +73,12 @@
       <Filter>WORLD</Filter>
     </ClInclude>
     <ClInclude Include="RankWorld.h">
+      <Filter>WORLD</Filter>
+    </ClInclude>
+    <ClInclude Include="Life2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultWorld.h">
       <Filter>WORLD</Filter>
     </ClInclude>
   </ItemGroup>

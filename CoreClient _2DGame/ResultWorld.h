@@ -1,12 +1,19 @@
-#pragma once
 #include "World.h"
 #include "UIObject.h"
 #include "SoundMgr.h"
-class RankWorld : public World
+#include "Life2D.h"
+class ResultWorld : public World
 {
 public:
-	Texture* m_BGTex;
-	Sound* m_pBackGroundMusic;
+	Texture*		m_BGTex;
+	Texture*		m_BGSubTex;
+	Life2D			m_Gameover;
+	Sound*			m_pBackGroundMusic;
+
+	float			m_fGOTimer = 0.0f;
+	float			m_fGOChangeTime = 0.3;
+	int				m_CurrentIndex = 0;
+
 	bool			CreateModelType();
 	bool			Load(std::wstring file) override;
 	virtual bool	Init();

@@ -8,6 +8,7 @@ struct StatePlayData
 	Sound* pSound;
 	StatePlayData(const StatePlayData& data)
 	{
+		
 		pTex = data.pTex;
 		pSound = data.pSound;
 		DisplayText("StatePlayDataCopy\n");
@@ -31,6 +32,7 @@ class UIModel : public Object2D
 {
 public:
 	std::vector<StatePlayData> m_pStatePlayList;
+	int  m_index;
 	RECT m_rtOffset;
 	RECT m_rtOffsetTex;
 

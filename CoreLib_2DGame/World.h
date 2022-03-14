@@ -7,6 +7,11 @@ public:
 	ID3D11Device*		 m_pd3dDevice;	// 디바이스 객체
 	ID3D11DeviceContext* m_pContext;// 다비이스 컨텍스트 객체
 	bool m_bLoadZone = false;
+	bool			btngame = false;
+	bool			btnintro = false;
+	bool			btnuserset = false;
+	bool			btnrank = false;
+
 public:
 	static World* m_pWorld;
 

@@ -44,9 +44,17 @@ bool WriteFont ::Init()
 													DWRITE_FONT_WEIGHT_NORMAL,
 													DWRITE_FONT_STYLE_NORMAL,
 													DWRITE_FONT_STRETCH_NORMAL,
-													20,
+													30,
 													L"ko-kr",
 													&m_pd2dStardust);
+			hr = m_pWriteFactory->CreateTextFormat(L"PF스타더스트 Bold",
+													NULL,
+													DWRITE_FONT_WEIGHT_NORMAL,
+													DWRITE_FONT_STYLE_NORMAL,
+													DWRITE_FONT_STRETCH_NORMAL,
+													50,
+													L"ko-kr",
+													&m_pd2dStardustBig);
 
 		}
 	}
@@ -110,8 +118,6 @@ void WriteFont::Draw(std::wstring msg, RECT rt, D2D1::ColorF color,IDWriteTextFo
 	fRT.left = rt.left;
 	fRT.right = rt.right;
 	fRT.bottom = rt.bottom;
-	
-
 
 	m_pd2dColorBrush->SetColor(color);
 	if (tf == nullptr)

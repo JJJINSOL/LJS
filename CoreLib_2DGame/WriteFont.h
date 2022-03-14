@@ -15,6 +15,7 @@ public:
 	IDWriteTextFormat* m_pd2dTextFormat = nullptr;
 	IDWriteTextFormat* m_pd2dMTShadowTF = nullptr;
 	IDWriteTextFormat* m_pd2dStardust = nullptr; 
+	IDWriteTextFormat* m_pd2dStardustBig = nullptr;
 
 	ID2D1SolidColorBrush* m_pd2dColorBrush = nullptr;
 public:
