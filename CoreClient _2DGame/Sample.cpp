@@ -186,7 +186,29 @@ bool Sample::Render()
 		a.left = 750;
 		a.bottom = g_rtClient.bottom;
 		a.right = g_rtClient.right;
-		m_dxWrite.Draw(msg, a, D2D1::ColorF(1, 1, 1, 1));
+		if (m_colortime == 0)
+		{
+			m_dxWrite.Draw(msg, a, D2D1::ColorF(1, 1, 1, 1));
+		}
+		else if(m_colortime!=0)
+		{
+			m_checktime += g_fSecPerFrame;
+			m_dxWrite.Draw(msg, a, D2D1::ColorF(1, 0, 0, 1));
+		}
+		if (m_checktime >= m_colortime)
+		{
+			m_colortime = 0;
+		}
+		if (m_GameWorld.m_plusescore == true)
+		{
+			std::wstring msg = L"SCORE  ";
+			m_GameTimer.m_fTimer += 10;
+			msg += std::to_wstring((int)m_GameTimer.m_fTimer * 100);
+			m_dxWrite.Draw(msg, a, D2D1::ColorF(1, 0, 0, 1));
+			m_GameWorld.m_plusescore = false;
+			m_colortime = 1.5;
+			m_checktime = g_fSecPerFrame;
+		}
 	}
 	else if (World::m_pWorld == (World*)&m_ResultWorld)
 	{

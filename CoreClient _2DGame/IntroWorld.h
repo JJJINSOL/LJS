@@ -16,9 +16,9 @@ class IntroWorld : public World
 public:
 
 	EffectObj	m_ExplosionObj;
-	World* m_pNextWorld1;
-	World* m_pNextWorld2;
-	World* m_pNextWorld3;
+	World*		m_pNextWorld1;
+	World*		m_pNextWorld2;
+	World*		m_pNextWorld3;
 
 	Sound*		m_pBackGroundMusic;
 	

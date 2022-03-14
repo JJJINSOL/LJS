@@ -9,6 +9,7 @@
 #include "UIModelMgr.h"
 #include "ResultWorld.h"
 #include "WriteFont.h"
+#include "Timer.h"
 class Sample : public Core
 {
 public:
@@ -17,6 +18,8 @@ public:
 	RankWorld		m_RankWorld;
 	UsersetWorld	m_UserserWorld;
 	ResultWorld		m_ResultWorld;
+	float			m_colortime = 0;
+	float			m_checktime = 0;
 
 	AsyncSelect m_net;
 	HWND		m_edit;

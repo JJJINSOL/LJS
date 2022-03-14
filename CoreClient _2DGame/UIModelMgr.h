@@ -33,6 +33,7 @@ class UIModel : public Object2D
 public:
 	std::vector<StatePlayData> m_pStatePlayList;
 	int  m_index;
+	bool m_start = false;;
 	RECT m_rtOffset;
 	RECT m_rtOffsetTex;
 

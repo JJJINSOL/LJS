@@ -1,6 +1,8 @@
 #include "GameWorld.h"
 #include "Input.h"
 #include "ObjectMgr.h"
+ObjectNpc2D* plusheart;
+ObjectNpc2D* plusscore;
 bool GameWorld:: CreateNPC()
 {
 	Shader* pVShader = I_Shader.CreateVertexShader(World::m_pd3dDevice, L"Shader.txt", "VS");
@@ -30,6 +32,54 @@ bool GameWorld:: CreateNPC()
 		//m_NpcObj.push_back(npc);
 		m_npclist.push_back(npc);
 	}
+}
+bool GameWorld:: CreatePlusLife()
+{
+	Shader* pVShader = I_Shader.CreateVertexShader(World::m_pd3dDevice, L"Shader.txt", "VS");
+	Shader* pPShader = I_Shader.CreatePixelShader(World::m_pd3dDevice, L"Shader.txt", "PSAlphaBlend");
+
+	plusheart = new ObjectNpc2D;
+	plusheart->m_csName = L"plusheart";
+	plusheart->Init();
+
+	plusheart->SetRectDraw({ 0,0, 30,30 });
+	plusheart->SetPosition(Vector2(20 + (rand() % 960), 0));
+
+	plusheart->m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart.png");
+	plusheart->m_pMaskTex = nullptr;
+	plusheart->m_pVShader = pVShader;
+	plusheart->m_pPShader = pPShader;
+
+	if (!plusheart->Create(World::m_pd3dDevice, m_pContext))
+	{
+		return false;
+	}
+	plusheart->SetCollisionType(CollisionType::Overlap, SelectType::Select_Ignore);
+	plusheart->UpdateData();
+}
+bool GameWorld:: CreatePlusScore()
+{
+	Shader* pVShader = I_Shader.CreateVertexShader(World::m_pd3dDevice, L"Shader.txt", "VS");
+	Shader* pPShader = I_Shader.CreatePixelShader(World::m_pd3dDevice, L"Shader.txt", "PSAlphaBlend");
+
+	plusscore = new ObjectNpc2D;
+	plusscore->m_csName = L"start";
+	plusscore->Init();
+
+	plusscore->SetRectDraw({ 0,0, 30,30 });
+	plusscore->SetPosition(Vector2(20 + (rand() % 960), 0));
+
+	plusscore->m_pColorTex = I_Texture.Load(L"../../DX2D/data/red_star_01.png");
+	plusscore->m_pMaskTex = nullptr;
+	plusscore->m_pVShader = pVShader;
+	plusscore->m_pPShader = pPShader;
+
+	if (!plusscore->Create(World::m_pd3dDevice, m_pContext))
+	{
+		return false;
+	}
+	plusscore->SetCollisionType(CollisionType::Overlap, SelectType::Select_Ignore);
+	plusscore->UpdateData();
 }
 bool GameWorld::CreateModelType()
 {
@@ -116,7 +166,7 @@ bool GameWorld::Load(std::wstring file)
 	m_PlayerObj.UpdateData();
 	//m_PlayerObj.m_life = 3;
 	CreateNPC();
-	
+	//CreatePlusLife();
 	I_Sprite.Load(L"SpriteData.txt");
 	//World::m_pWorld = m_pNextWorld;
 	return true;
@@ -128,30 +178,13 @@ bool GameWorld::Frame()
 
 	if (m_PlayerObj.m_life <= 0)
 	{
-		//m_pBackGroundMusic->Stop();
 		m_pNextWorld->Load(L"world.txt");
 		I_ObjectMgr.Release();
-		//World::m_pWorld = &m_IntroWorld1;
-		//World::m_pWorld->m_bLoadZone = true;
 	}
-	if (m_PlayerObj.m_life ==1)
-	{
-		
-		m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_1.png");
-		
-	}
-	if (m_PlayerObj.m_life == 2)
-	{
-		m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_2.png");
-		
-	}
-	if (m_PlayerObj.m_life >= 3)
-	{
-		m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_3.png");
-		m_PlayerObj.m_life = 3;
-		
-	}
-
+	if (m_PlayerObj.m_life == 1) {m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_1.png");}
+	if (m_PlayerObj.m_life == 2) {m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_2.png");}
+	if (m_PlayerObj.m_life >= 3) {m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_3.png");
+								  m_PlayerObj.m_life = 3;}
 
 	vector<ObjectNpc2D*>::iterator iter;
 	for (iter = m_npclist.begin(); iter != m_npclist.end(); )
@@ -159,6 +192,7 @@ bool GameWorld::Frame()
 		if (m_npclist.size() < 9)
 		{
 			CreateNPC();
+			if(plusscore==nullptr) CreatePlusScore();
 		}
 		if ((*iter) != nullptr)
 		{
@@ -207,6 +241,72 @@ bool GameWorld::Frame()
 			}
 		}
 	}
+	//하트 생성
+	m_fHeartTimer += g_fSecPerFrame;
+	if (m_fHeartTimer >= m_fHeartMakeTime)
+	{
+		CreatePlusLife();
+		m_fHeartTimer -= m_fHeartMakeTime;
+	}
+	if (plusheart!=nullptr)
+	{
+		plusheart->Frame();
+		if (plusheart->m_vPos.y > 450)
+		{
+			delete plusheart;
+			plusheart = nullptr;
+		}
+		else if (plusheart->m_bDead)
+		{
+			delete plusheart;
+			plusheart = nullptr;
+			m_PlayerObj.m_life++;
+		}
+	}
+	//플러스 점수 아이템
+	if (plusscore != nullptr)
+	{
+		m_fStarTimer1 += g_fSecPerFrame;
+		if (m_fStarTimer1 >= m_fStarChangeTime1)
+		{
+			m_iStarCurrentIndex1++;
+			if (m_iStarCurrentIndex1 >= 4)
+			{
+				m_iStarCurrentIndex1 = 0;
+			}
+			m_fStarTimer1 -= m_fStarChangeTime1;
+		}
+		if (m_iStarCurrentIndex1 == 0)
+		{
+			plusscore->m_pColorTex = I_Texture.Load(L"../../DX2D/data/red_star_01.png");
+		}
+		else if (m_iStarCurrentIndex1 == 1)
+		{
+			plusscore->m_pColorTex = I_Texture.Load(L"../../DX2D/data/red_star_02.png");
+		}
+		else if (m_iStarCurrentIndex1 == 2)
+		{
+			plusscore->m_pColorTex = I_Texture.Load(L"../../DX2D/data/red_star_03.png");
+		}
+		else if (m_iStarCurrentIndex1 == 3)
+		{
+			plusscore->m_pColorTex = I_Texture.Load(L"../../DX2D/data/red_star_02.png");
+		}
+		plusscore->Frame();
+		if (plusscore->m_vPos.y > 450)
+		{
+			delete plusscore;
+			plusscore = nullptr; 
+		}
+		else if (plusscore->m_bDead)
+		{
+			delete plusscore;
+			plusscore = nullptr;
+			m_plusescore = true;
+		}
+	}
+
+	//플레이어 이동 모션
 	static int Lindex = 1;
 	if (Input::Get().GetKey(VK_LEFT) == KEY_HOLD)
 	{
@@ -296,7 +396,8 @@ bool GameWorld::Render()
 	}
 	m_PlayerObj.Render();
 	m_Life.Render();
-
+	if(plusheart!=nullptr)plusheart->Render();
+	if (plusscore != nullptr)plusscore->Render();
 	//std::wstring msg = L"SCORE  ";
 	//msg += std::to_wstring((int)m_time.m_fTimer*100);
 
@@ -305,6 +406,8 @@ bool GameWorld::Render()
 }
 bool GameWorld::Release()
 {
+	if (plusheart != nullptr)plusheart->Release();
+	if (plusscore != nullptr)plusscore->Release();
 	m_PlayerObj.Release();
 	m_Life.Release();
 	vector<ObjectNpc2D*>::iterator iter;

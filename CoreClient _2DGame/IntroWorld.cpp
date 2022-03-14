@@ -6,6 +6,10 @@
 extern std::shared_ptr<ButtonObject> btnObj1(new ButtonObject);
 extern std::shared_ptr<ButtonObject> btnObj2(new ButtonObject);
 extern std::shared_ptr<ButtonObject> btnObj3(new ButtonObject);
+UIModel* pNewBtnSetClone;
+Object2D* pNewbtn1;
+Object2D* pNewbtn2;
+Object2D* pNewbtn3;
 bool IntroWorld::CreateModelType()
 {
 	/// 배경이미지---------------------------------------------------------------
@@ -226,24 +230,32 @@ bool IntroWorld::Load(std::wstring file)
 	pNewLOGO->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewLOGO));
 	//========================================================================================
-	// 프로토타입 디자인 패턴-> 복제를 통해서 객체 생성/ + 컴포짓(Composite패턴)
 
-	////버튼
-	//UIModel* pNewBtn3 = I_UI.GetPtr(L"btnStart")->Clone();
-	//pNewBtn3->m_csName = L"btnStartClone3";
-	//pNewBtn3->SetRectDraw({ 0,0, 100,50 });
-	//pNewBtn3->SetPosition(Vector2(500, 200));
-	//pNewBtn3->UpdateData();
-	//m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBtn3));
+	//pNewBtnSetClone = I_UI.GetPtr(L"btnset")->Clone();
+	////UIModel* pNewBtnSetClone = I_UI.GetPtr(L"btnset")->Clone();
+	//pNewBtnSetClone->m_csName = L"UIModelComposedClone1";
+	//pNewBtnSetClone->m_pParent = nullptr;
+	//pNewBtnSetClone->SetPosition(Vector2(700, 150));
+	//pNewBtnSetClone->UpdateData();
+	//m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBtnSetClone));
+	
+	pNewbtn1 = I_UI.GetPtr(L"btnGameStart")->Clone();
+	pNewbtn1->m_csName = L"TImageObjectClock:gamestart";
+	pNewbtn1->SetPosition(Vector2(700, 150));
+	pNewbtn1->UpdateData();
+	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn1));
 
+	pNewbtn2 = I_UI.GetPtr(L"btnRank")->Clone();
+	pNewbtn2->m_csName = L"TImageObjectClock:rank";
+	pNewbtn2->SetPosition(Vector2(700, 250));
+	pNewbtn2->UpdateData();
+	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn2));
 
-	UIModel* pNewBtnSetClone = I_UI.GetPtr(L"btnset")->Clone();
-	pNewBtnSetClone->m_csName = L"UIModelComposedClone1";
-	pNewBtnSetClone->m_pParent = nullptr;
-	pNewBtnSetClone->SetPosition(Vector2(700, 150));
-	pNewBtnSetClone->UpdateData();
-	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBtnSetClone));
-
+	pNewbtn3 = I_UI.GetPtr(L"btnUserSet")->Clone();
+	pNewbtn3->m_csName = L"TImageObjectClock:userset";
+	pNewbtn3->SetPosition(Vector2(700, 350));
+	pNewbtn3->UpdateData();
+	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn3));
 
 	// 이펙트========================================================
 	I_Sprite.Load(L"SpriteData.txt");
@@ -273,58 +285,19 @@ bool IntroWorld::Frame()
 		m_pNextWorld1->Load(L"world.txt");
 		m_pNextWorld2->Load(L"world.txt");
 		m_pNextWorld3->Load(L"world.txt");
-		World::m_pWorld = m_pNextWorld1;
-		//BaseObject* pObj; DWORD dwState;
-
-
-		//if (btnObj1.get())
+		//World::m_pWorld = m_pNextWorld1;
+		
+		//if (pNewbtn1->m_bSelect==true)
 		//{
-		//	World::m_pWorld = m_pNextWorld1;
+			World::m_pWorld = m_pNextWorld1;
 		//}
+
 	}
-	m_pBackGroundMusic->Frame();
+	//m_pBackGroundMusic->Frame();
 	static int iIndex = 0;
 
-	if (Input::Get().GetKey(VK_F3) == KEY_PUSH)
-	{
-		iIndex++;
-		if (iIndex >= m_ExplosionObj.m_pSprite->m_rtArray.size())
-		{
-			iIndex = 0;
-		}
-		m_ExplosionObj.SetRectSouce(m_ExplosionObj.m_pSprite->m_rtArray[iIndex]);
-		m_ExplosionObj.SetRectDraw({ 0,0,
-			m_ExplosionObj.m_pSprite->m_rtArray[iIndex].right,
-			m_ExplosionObj.m_pSprite->m_rtArray[iIndex].bottom });
-	}
-	if (Input::Get().GetKey(VK_F4) == KEY_PUSH)
-	{
-		m_ExplosionObj.Reset();
-		m_ExplosionObj.m_pSprite = I_Sprite.GetPtr(L"rtExplosion");
-		m_ExplosionObj.SetRectSouce(m_ExplosionObj.m_pSprite->m_rtArray[0]);
-		m_ExplosionObj.SetRectDraw({ 0,0,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].right,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].bottom });
-	}
-	if (Input::Get().GetKey(VK_F6) == KEY_PUSH)
-	{
-		m_ExplosionObj.Reset();
-		m_ExplosionObj.m_pSprite = I_Sprite.GetPtr(L"rtBomb");
-		m_ExplosionObj.SetRectSouce(m_ExplosionObj.m_pSprite->m_rtArray[0]);
-		m_ExplosionObj.SetRectDraw({ 0,0,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].right,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].bottom });
-	}
-	if (Input::Get().GetKey(VK_F7) == KEY_PUSH)
-	{
-		m_ExplosionObj.Reset();
-		m_ExplosionObj.m_pSprite = I_Sprite.GetPtr(L"rtClash");
-		m_ExplosionObj.SetRectSouce(m_ExplosionObj.m_pSprite->m_rtArray[0]);
-		m_ExplosionObj.SetRectDraw({ 0,0,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].right,
-			m_ExplosionObj.m_pSprite->m_rtArray[0].bottom });
-	}
-	m_ExplosionObj.Frame();
+
+	//m_ExplosionObj.Frame();
 	World::Frame();
 	return true;
 }
