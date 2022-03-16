@@ -21,7 +21,7 @@ public:
 	vector<ObjectNpc2D*> m_npclist;
 	World*			m_pNextWorld;
 	bool			m_gamestart = false;
-
+	bool			hard = false;
 	
 	float			m_fStarChangeTime = 2;
 	float			m_fStarTimer = 0.0f;

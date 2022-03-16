@@ -107,25 +107,25 @@ bool IntroWorld::CreateModelType()
 	btnObj2->SetRectDraw({ 0,0, 340,100 });//334,82//340,100
 	btnObj2->SetPosition(Vector2(0, 0));
 
-	Texture* pTex2 = I_Texture.Load(L"../../DX2D/data/rank_nor.png");
+	Texture* pTex2 = I_Texture.Load(L"../../DX2D/data/hardmode_nor.png");
 	Sound* pSound2 = I_Sound.Load("../../data/Sound/00_Menu.MP3");
 	btnObj2->m_pStatePlayList.emplace_back(pTex2, pSound2);
 
-	pTex2 = I_Texture.Load(L"../../DX2D/data/rank_hover.png");
+	pTex2 = I_Texture.Load(L"../../DX2D/data/hardmode_hover.png");
 	pSound2 = I_Sound.Load("../../data/Sound/FootStepSound.wav");
 	btnObj2->m_pStatePlayList.emplace_back(pTex2, pSound2);
 
-	pTex2 = I_Texture.Load(L"../../DX2D/data/rank_sel.png");
+	pTex2 = I_Texture.Load(L"../../DX2D/data/hardmode_sel.png");
 	pSound2 = I_Sound.Load("../../data/Sound/FootStepSound_2.wav");
 	btnObj2->m_pStatePlayList.emplace_back(pTex2, pSound2);
 
-	pTex2 = I_Texture.Load(L"../../DX2D/data/rank_nor.png");
+	pTex2 = I_Texture.Load(L"../../DX2D/data/hardmode_nor.png");
 	pSound2 = I_Sound.Load("../../data/Sound/PianoSound_00.mp3");
 	btnObj2->m_pStatePlayList.emplace_back(pTex2, pSound2);
 
 	if (!btnObj2->Create(m_pd3dDevice, m_pContext,
 		L"../../data/shader/DefaultUI.txt",
-		L"../../DX2D/data/rank_nor.png"))
+		L"../../DX2D/data/hardmode_nor.png"))
 	{
 		return false;
 	}
@@ -141,25 +141,25 @@ bool IntroWorld::CreateModelType()
 	btnObj3->SetRectDraw({ 0,0, 340,100 });//334,82//340,100
 	btnObj3->SetPosition(Vector2(0, 0));
 
-	Texture* pTex3 = I_Texture.Load(L"../../DX2D/data/userset_nor.png");
+	Texture* pTex3 = I_Texture.Load(L"../../DX2D/data/rule_nor.png");
 	Sound* pSound3 = I_Sound.Load("../../data/Sound/00_Menu.MP3");
 	btnObj3->m_pStatePlayList.emplace_back(pTex3, pSound3);
 
-	pTex3 = I_Texture.Load(L"../../DX2D/data/userset_hover.png");
+	pTex3 = I_Texture.Load(L"../../DX2D/data/rule_hover.png");
 	pSound3 = I_Sound.Load("../../data/Sound/FootStepSound.wav");
 	btnObj3->m_pStatePlayList.emplace_back(pTex3, pSound3);
 
-	pTex3 = I_Texture.Load(L"../../DX2D/data/userset_sel.png");
+	pTex3 = I_Texture.Load(L"../../DX2D/data/rule_sel.png");
 	pSound3 = I_Sound.Load("../../data/Sound/FootStepSound_2.wav");
 	btnObj3->m_pStatePlayList.emplace_back(pTex3, pSound3);
 
-	pTex3 = I_Texture.Load(L"../../DX2D/data/userset_nor.png");
+	pTex3 = I_Texture.Load(L"../../DX2D/data/rule_nor.png");
 	pSound3 = I_Sound.Load("../../data/Sound/PianoSound_00.mp3");
 	btnObj3->m_pStatePlayList.emplace_back(pTex3, pSound3);
 
 	if (!btnObj3->Create(m_pd3dDevice, m_pContext,
 		L"../../data/shader/DefaultUI.txt",
-		L"../../DX2D/data/userset_nor.png"))
+		L"../../DX2D/data/rule_nor.png"))
 	{
 		return false;
 	}
@@ -201,6 +201,7 @@ bool IntroWorld::CreateModelType()
 
 	I_UI.m_list.insert(std::make_pair(L"btnset", pComposedObj1));
 	//----------------------------------------------------------------------------------------
+	
 	return true;
 }
 bool IntroWorld::Init()
@@ -230,14 +231,6 @@ bool IntroWorld::Load(std::wstring file)
 	pNewLOGO->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewLOGO));
 	//========================================================================================
-
-	//pNewBtnSetClone = I_UI.GetPtr(L"btnset")->Clone();
-	////UIModel* pNewBtnSetClone = I_UI.GetPtr(L"btnset")->Clone();
-	//pNewBtnSetClone->m_csName = L"UIModelComposedClone1";
-	//pNewBtnSetClone->m_pParent = nullptr;
-	//pNewBtnSetClone->SetPosition(Vector2(700, 150));
-	//pNewBtnSetClone->UpdateData();
-	//m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBtnSetClone));
 	
 	pNewbtn1 = I_UI.GetPtr(L"btnGameStart")->Clone();
 	pNewbtn1->m_csName = L"gamestart";
@@ -246,54 +239,47 @@ bool IntroWorld::Load(std::wstring file)
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn1));
 
 	pNewbtn2 = I_UI.GetPtr(L"btnRank")->Clone();
-	pNewbtn2->m_csName = L"rank";
+	pNewbtn2->m_csName = L"hardmode";
 	pNewbtn2->SetPosition(Vector2(700, 250));
 	pNewbtn2->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn2));
 
 	pNewbtn3 = I_UI.GetPtr(L"btnUserSet")->Clone();
-	pNewbtn3->m_csName = L"userset";
+	pNewbtn3->m_csName = L"rule";
 	pNewbtn3->SetPosition(Vector2(700, 350));
 	pNewbtn3->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn3));
-
-	// ÀÌÆåÆ®========================================================
-	I_Sprite.Load(L"SpriteData.txt");
-	m_ExplosionObj.m_pSprite = I_Sprite.GetPtr(L"rtExplosion");
-
-	m_ExplosionObj.Init();
-	m_ExplosionObj.SetPosition(Vector2(400, 500));
-	Sprite* pSprite = I_Sprite.GetPtr(L"rtExplosion");
-	m_ExplosionObj.SetRectSouce(m_ExplosionObj.m_pSprite->m_rtArray[0]);
-	m_ExplosionObj.SetRectDraw({ 0,0, 34, 46 });
-
-	if (!m_ExplosionObj.Create(m_pd3dDevice, m_pContext,
-		L"Shader.txt",
-		L"../../data/bitmap1.bmp",
-		L"../../data/bitmap2.bmp"))
-	{
-		return false;
-	}
 
 	return true;
 }
 bool IntroWorld::Frame()
 {
-	if (m_bLoadZone && m_pNextWorld1 && m_pNextWorld2 && m_pNextWorld3 != nullptr)
+	if (m_bLoadZone&&m_pNextWorld1 && m_pNextWorld2 && m_pNextWorld3 != nullptr)//m_bLoadZone
 	{
 		I_ObjectMgr.Release();
 		m_pNextWorld1->Load(L"world.txt");
 		m_pNextWorld2->Load(L"world.txt");
 		m_pNextWorld3->Load(L"world.txt");
-		//World::m_pWorld = m_pNextWorld1;
-		
-		//if (pNewbtn1->m_bSelect==true)
-		//{
-			World::m_pWorld = m_pNextWorld1;
-		//}
-
 	}
 	//m_pBackGroundMusic->Frame();
+	if (World::m_pWorld->btngame == true)
+	{
+		World::m_pWorld = m_pNextWorld1;
+		World::m_pWorld->btngame = false;
+	}
+	//else if (hardmode == true)
+	//{
+	//	World::m_pWorld = m_pNextWorld1;
+	//	hardmode = true;
+	//	//m_pNextWorld1->hardmode
+	//	//World::m_pWorld->hardmode = false;
+	//}
+	else if (World::m_pWorld->btnrule == true)
+	{
+		I_ObjectMgr.Release();
+		World::m_pWorld = m_pNextWorld3;
+		World::m_pWorld->btnrule = false;
+	}
 	static int iIndex = 0;
 
 
@@ -304,12 +290,12 @@ bool IntroWorld::Frame()
 bool IntroWorld::Render()
 {
 	World::Render();
-	m_ExplosionObj.Render();
+	
 	return true;
 }
 bool IntroWorld::Release()
 {
 	World::Release();
-	m_ExplosionObj.Release();
+	
 	return true;
 }

@@ -4,7 +4,7 @@
 class PlayerObj2D : public Object2D
 {
 public:
-	int m_life = 0;
+	int m_life = 3;
 	virtual void	HitOverlap(BaseObject* pObj, DWORD dwState);
 	bool			Frame() override;
 	void  UpdateData() override

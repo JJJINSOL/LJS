@@ -175,11 +175,14 @@ bool GameWorld::Frame()
 {
 	m_Life.Frame();
 	m_PlayerObj.Frame();
-
+	//if (hardmode)
+	//{
+	//	return 0;
+	//}
 	if (m_PlayerObj.m_life <= 0)
 	{
-		m_pNextWorld->Load(L"world.txt");
-		I_ObjectMgr.Release();
+		//m_pNextWorld->Load(L"world.txt");
+		//I_ObjectMgr.Release();
 	}
 	if (m_PlayerObj.m_life == 1) {m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_1.png");}
 	if (m_PlayerObj.m_life == 2) {m_Life.m_pColorTex = I_Texture.Load(L"../../DX2D/data/heart_2.png");}
@@ -295,6 +298,10 @@ bool GameWorld::Frame()
 		plusscore->Frame();
 		if (plusscore->m_vPos.y > 450)
 		{
+			if (hardmode)
+			{
+				m_PlayerObj.m_life--;
+			}
 			delete plusscore;
 			plusscore = nullptr; 
 		}

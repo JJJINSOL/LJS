@@ -19,6 +19,24 @@ bool UsersetWorld::CreateModelType()
 	}
 	obj->SetCollisionType(CollisionType::Ignore, SelectType::Select_Ignore);
 	I_UI.m_list.insert(std::make_pair(L"bg", obj));
+
+
+//·ê »çÁø
+	std::shared_ptr<ImageObject> obj1(new ImageObject);
+	obj1->m_csName = L"ImageObject:RULE";
+	obj1->Init();
+	obj1->SetRectDraw({ 0,0, 900,400});
+	obj1->SetPosition(Vector2(0, 0));
+	obj1->m_pColorTex = m_RuleTex;
+	obj1->m_pMaskTex = nullptr;
+	obj1->m_pVShader = pVShader;
+	obj1->m_pPShader = pPShader;
+	if (!obj1->Create(World::m_pd3dDevice, m_pContext))
+	{
+		return false;
+	}
+	obj1->SetCollisionType(CollisionType::Ignore, SelectType::Select_Overlap);
+	I_UI.m_list.insert(std::make_pair(L"rule", obj1));
 }
 bool UsersetWorld::Init()
 {
@@ -28,6 +46,7 @@ bool UsersetWorld::Init()
 bool UsersetWorld::Load(std::wstring file)
 {
 	m_BGTex = I_Texture.Load(L"../../DX2D/data/bg.png");
+	m_RuleTex = I_Texture.Load(L"../../DX2D/data/rule.png");
 
 	m_pBackGroundMusic = I_Sound.Load("../../DX2D/data/END.MP3");
 	//m_pBackGroundMusic->m_pChannel->setMode(FMOD_LOOP_OFF);
@@ -39,6 +58,12 @@ bool UsersetWorld::Load(std::wstring file)
 	pNewBK->SetPosition(Vector2(500, 250));
 	pNewBK->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBK));
+
+	Object2D* pNewRule = I_UI.GetPtr(L"rule")->Clone();
+	pNewRule->m_csName = L"rule1";
+	pNewRule->SetPosition(Vector2(500, 250));
+	pNewRule->UpdateData();
+	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewRule));
 	return true;
 }
 bool UsersetWorld::Frame()

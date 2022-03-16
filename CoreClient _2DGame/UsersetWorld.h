@@ -6,6 +6,7 @@ class UsersetWorld : public World
 {
 public:
 	Texture* m_BGTex;
+	Texture* m_RuleTex;
 	Sound* m_pBackGroundMusic;
 	bool			CreateModelType();
 	bool			Load(std::wstring file) override;

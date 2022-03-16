@@ -2,6 +2,8 @@
 #include "UIObject.h"
 #include "SoundMgr.h"
 #include "Life2D.h"
+#include "ShaderMgr.h"
+#include "TextureMgr.h"
 class ResultWorld : public World
 {
 public:

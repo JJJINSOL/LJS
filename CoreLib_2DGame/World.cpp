@@ -93,7 +93,6 @@ bool World::Release()
 }
 World::World()
 {
-
 }
 
 World::~World()

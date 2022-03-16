@@ -145,6 +145,37 @@ bool ImageObject::Render()
 	Object2D::Render();
 	return true;
 }
+void    ImageObject:: HitSelect(BaseObject* pObj, DWORD dwState)
+{
+	std::string state;
+	//if (m_dwPreSelectState == m_dwSelectState)
+	//{
+	//	return;
+	//}
+	//if (m_pStatePlayList.size() <= 0) return;
+
+	switch (m_dwSelectState)
+	{
+	case SelectState::T_SELECTED:
+	{
+		wstring name = this->m_csName;
+
+		if (name == L"rule1")
+		{
+			//World::m_pWorld->m_bLoadZone = true;
+			World::m_pWorld->btnintro = true;
+		}
+
+		state += "T_SELECTED\n";
+	}break;
+	default:
+	{
+		state += std::to_string(m_dwSelectState);
+	}
+	}
+	m_dwPreSelectState = m_dwSelectState;
+	//DisplayText(state.c_str());
+}
 //======================================================
 bool ButtonObject::Init()
 {
@@ -190,13 +221,30 @@ void ButtonObject::HitSelect(BaseObject* pObj, DWORD dwState)
 		//m_IntroWorld.m_pNextWorld = &m_GameWorld;
 		//&Sample::m_IntroWorld.m_pNextWorld = &Sample::m_GameWorld;			
 		//if(m_pStatePlayList)
-		this->m_start = true;
+		//this->m_start = true;
 		wstring name = this->m_csName;
 		if (name==L"gamestart")
 		{
 			World::m_pWorld->m_bLoadZone = true;
+			World::m_pWorld->btngame = true;
 		}
-	
+		if (name == L"hardmode")
+		{
+			World::m_pWorld->m_bLoadZone = true;
+			World::m_pWorld->btngame = true;
+			hardmode = true;
+		}
+		if (name == L"rule")
+		{
+			//World::m_pWorld->m_bLoadZone = true;
+			World::m_pWorld->btnrule = true;
+		}
+		if (name == L"replay")
+		{
+			//World::m_pWorld->m_bLoadZone = true;
+			World::m_pWorld->btnintro = true;
+		}
+		//m_dwPreSelectState = 0;
 		state += "T_SELECTED\n";
 	}break;
 	case SelectState::T_HOVER:
@@ -251,7 +299,7 @@ bool ListCtrlObject::Create(int xCount, int yCount)
 				pStart.x + iHalfWidth * iCol,
 				pStart.y + iHalfHeight * iRow));
 			pNewBtn->UpdateData();
-			//pNewBtn->m_dwSelectType = TSelectType::Select_Ignore;
+			//pNewBtn->m_dwSelectType = SelectType::Select_Ignore;
 			Add(pNewBtn);
 		}
 	}

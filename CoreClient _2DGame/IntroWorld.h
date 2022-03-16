@@ -8,9 +8,6 @@
 #include "TextureMgr.h"
 #include "EffectObj.h"
 #include "GameWorld.h"
-//static World* m_pNextWorld1;
-//static World* m_pNextWorld2;
-//static World* m_pNextWorld3;
 class IntroWorld : public World
 {
 public:

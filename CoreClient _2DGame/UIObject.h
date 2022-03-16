@@ -61,10 +61,7 @@ public:
 	bool	Init() override;
 	bool	Frame() override;
 	bool	Render()override;
-	void    HitSelect(BaseObject* pObj, DWORD dwState) override
-	{
-		int k = 0;
-	}
+	void    HitSelect(BaseObject* pObj, DWORD dwState) override;
 };
 //========================================================================
 class ButtonObject : public UIObject

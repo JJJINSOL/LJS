@@ -35,26 +35,6 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 }
 bool Sample::Init()
 {
-	////윈도우창 스타일
-	//DWORD style = WS_CHILD | WS_VISIBLE | ES_MULTILINE;
-	//m_edit = CreateWindow(L"edit", NULL, style, 0, g_rtClient.bottom - 50, 300, 50, m_hWnd, (HMENU)100, m_hInsatance, NULL);
-	//style = WS_CHILD | WS_VISIBLE;
-	//m_button = CreateWindow(L"button", L"전송", style, 310, g_rtClient.bottom - 50, 50, 50, m_hWnd, (HMENU)200, m_hInsatance, NULL);
-	//m_listbox = CreateWindow(L"listbox", NULL, style, 0, 0, 300, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInsatance, NULL);
-
-	//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
-
-	//for (int i = 0; i < 12; i++)
-	//{
-	//	DxObject obj;
-	//	obj.Init();
-
-	//	if (obj.Create(m_pd3dDevice, m_pImmediateContext, Vector2(-100 * i, i * 50), 400, 30))
-	//	{
-	//		m_ObjectList.push_back(obj);
-	//	}
-	//}
-
 	I_Sound.Init();
 
 	m_IntroWorld.Init();
@@ -84,7 +64,7 @@ bool Sample::Init()
 	m_ResultWorld.Init();
 	m_ResultWorld.m_pd3dDevice = m_pd3dDevice.Get();
 	m_ResultWorld.m_pContext = m_pImmediateContext.Get();
-	m_ResultWorld.Load(L"intro.txt");
+	/*m_ResultWorld.Load(L"intro.txt");*/
 
 	World::m_pWorld = &m_IntroWorld;
 
@@ -98,16 +78,35 @@ bool Sample::Init()
 bool Sample::Frame()
 {
 	World::m_pWorld->Frame();
+	if (World::m_pWorld->btnintro == true)
+	{
+		I_ObjectMgr.Release();
+		World::m_pWorld->m_bLoadZone = false;
+		m_IntroWorld.Load(L"intro.txt");
+		World::m_pWorld = &m_IntroWorld;
+		World::m_pWorld->btnintro = false;
+	}
+	if (World::m_pWorld->btnrule == true)
+	{
+		I_ObjectMgr.Release();
+		World::m_pWorld = &m_IntroWorld;
+		World::m_pWorld->btnrule = false;
+	}
 	if (m_GameWorld.m_PlayerObj.m_life <= 0)
 	{
+		World::m_pWorld->btngame = false;
 		m_GameWorld.m_gamestart = false;
 		m_GameWorld.m_PlayerObj.m_life = 3;
 		m_GameWorld.m_pBackGroundMusic->Stop();
-		m_ResultWorld.m_pBackGroundMusic->Play(false);
+		
 
 		m_GameWorld.m_score = (int)m_GameTimer.m_fTimer * 100;
-
 		I_ObjectMgr.Release();
+		//I_ObjectMgr.Release();
+		//World::m_pWorld->hardmode = false;
+		//m_GameWorld.hard = false;
+		m_ResultWorld.Load(L"intro.txt");
+		m_ResultWorld.m_pBackGroundMusic->Play(false);
 		World::m_pWorld = &m_ResultWorld;
 		//World::m_pWorld->m_bLoadZone = true;
 	}
@@ -171,7 +170,6 @@ bool Sample::Frame()
 bool Sample::Render()
 {
 	World::m_pWorld->Render();
-	
 	if (World::m_pWorld == (World*)&m_GameWorld)
 	{
 		if (m_GameWorld.m_gamestart == false)
@@ -229,6 +227,8 @@ bool Sample::Release()
 	I_Sound.Release();
 	m_IntroWorld.Release();
 	m_GameWorld.Release();
+	m_ResultWorld.Release();
+	m_UserserWorld.Release();
 
 	m_net.Closenetwork();
 	return true;
