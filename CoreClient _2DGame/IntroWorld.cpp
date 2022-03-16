@@ -240,19 +240,19 @@ bool IntroWorld::Load(std::wstring file)
 	//m_UIObj.push_back(std::shared_ptr<Object2D>(pNewBtnSetClone));
 	
 	pNewbtn1 = I_UI.GetPtr(L"btnGameStart")->Clone();
-	pNewbtn1->m_csName = L"TImageObjectClock:gamestart";
+	pNewbtn1->m_csName = L"gamestart";
 	pNewbtn1->SetPosition(Vector2(700, 150));
 	pNewbtn1->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn1));
 
 	pNewbtn2 = I_UI.GetPtr(L"btnRank")->Clone();
-	pNewbtn2->m_csName = L"TImageObjectClock:rank";
+	pNewbtn2->m_csName = L"rank";
 	pNewbtn2->SetPosition(Vector2(700, 250));
 	pNewbtn2->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn2));
 
 	pNewbtn3 = I_UI.GetPtr(L"btnUserSet")->Clone();
-	pNewbtn3->m_csName = L"TImageObjectClock:userset";
+	pNewbtn3->m_csName = L"userset";
 	pNewbtn3->SetPosition(Vector2(700, 350));
 	pNewbtn3->UpdateData();
 	m_UIObj.push_back(std::shared_ptr<Object2D>(pNewbtn3));

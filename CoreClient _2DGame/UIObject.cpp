@@ -191,8 +191,12 @@ void ButtonObject::HitSelect(BaseObject* pObj, DWORD dwState)
 		//&Sample::m_IntroWorld.m_pNextWorld = &Sample::m_GameWorld;			
 		//if(m_pStatePlayList)
 		this->m_start = true;
-		World::m_pWorld->m_bLoadZone = true;
-
+		wstring name = this->m_csName;
+		if (name==L"gamestart")
+		{
+			World::m_pWorld->m_bLoadZone = true;
+		}
+	
 		state += "T_SELECTED\n";
 	}break;
 	case SelectState::T_HOVER:
