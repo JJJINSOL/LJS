@@ -1,4 +1,5 @@
 #include "Sample.h"
+#include "Fsm.h"
 LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
 	switch (msg)
@@ -13,6 +14,7 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_edit, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			Packet packet(PACKET_CHAT_MSG);
+			packet.m_upacket.ph.time = timeGetTime();
 			packet << 999 << "이진솔" << 50 << buffer;
 			m_net.SendMsg(m_net.m_sock, packet.m_upacket);
 
@@ -25,57 +27,54 @@ LRESULT  Sample::MsgProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 }
 bool Sample::Init()
 {
-	////윈도우창 스타일
-	//DWORD style = WS_CHILD | WS_VISIBLE | ES_MULTILINE;
-	//m_edit = CreateWindow(L"edit", NULL, style, 0, g_rtClient.bottom - 50, 300, 50, m_hWnd, (HMENU)100, m_hInsatance, NULL);
-	//style = WS_CHILD | WS_VISIBLE;
-	//m_button = CreateWindow(L"button", L"전송", style, 310, g_rtClient.bottom - 50, 50, 50, m_hWnd, (HMENU)200, m_hInsatance, NULL);
-	//m_listbox = CreateWindow(L"listbox", NULL, style, 0, 0, 300, g_rtClient.bottom - 70, m_hWnd, (HMENU)300, m_hInsatance, NULL);
+	I_Fsm.AddTransition(STATE_STOP, STATE_STOP_TIMER, STATE_MOVE);
+	I_Fsm.AddTransition(STATE_STOP, STATE_FIND_TARGET, STATE_ATTACK);
 
-	//SendMessageA(m_listbox, LB_ADDSTRING, 0, (LPARAM)"채팅시작!");
+	I_Fsm.AddTransition(STATE_MOVE, STATE_STOP_TIMER, STATE_STOP);
+	I_Fsm.AddTransition(STATE_MOVE, STATE_FIND_TARGET, STATE_ATTACK);
+	I_Fsm.AddTransition(STATE_MOVE, STATE_LOST_TARGET, STATE_STOP);
 
-	//for (int i = 0; i < 12; i++)
-	//{
-	//	DxObject obj;
-	//	obj.Init();
+	I_Fsm.AddTransition(STATE_ATTACK, STATE_LOST_TARGET, STATE_STOP);
 
-	//	if (obj.Create(m_pd3dDevice, m_pImmediateContext, Vector2(-100 * i, i * 50), 400, 30))
-	//	{
-	//		m_ObjectList.push_back(obj);
-	//	}
-	//}
+	Shader* pVShader = I_Shader.CreateVertexShader(m_pd3dDevice.Get(), L"VertexShader.txt", "VS");
+	Shader* pPShader = I_Shader.CreatePixelShader(m_pd3dDevice.Get(), L"PixelShader.txt", "PS");
 
 	m_PlayerObj.Init();
 	m_PlayerObj.SetRectSouce({ 91,1,42,56 });
 	//m_PlayerObj.SetRectSouce({ 46,63,69,79 });
 	m_PlayerObj.SetRectDraw({ 0,0, 42,56 });
 	m_PlayerObj.SetPosition(Vector2(400, 300));
-	if (!m_PlayerObj.Create(m_pd3dDevice, m_pImmediateContext,
-		L"../../data/bitmap1.bmp",
-		L"../../data/bitmap2.bmp"))
+	m_PlayerObj.m_pVShader = pVShader;
+	m_PlayerObj.m_pPShader = pPShader;
+
+	if (!m_PlayerObj.Create(m_pd3dDevice.Get(), m_pImmediateContext.Get(),
+		nullptr,L"../../data/bitmap1.bmp",L"../../data/bitmap2.bmp"))
 	{
 		return false;
 	}
 
-	for (int iNpc = 0; iNpc < 5; iNpc++)
+	for (int iNpc = 0; iNpc < 1; iNpc++)
 	{
-		ObjectNpc2D npc;
-		npc.Init();
+		std::shared_ptr<ObjectNpc2D> npc = std::make_shared<ObjectNpc2D>();
+		npc->Init();
 		if (iNpc % 2 == 0)
 		{
-			npc.SetRectSouce({ 46,63,69,79 });
-			npc.SetRectDraw({ 0,0, 69,79 });
+			npc->SetRectSouce({ 46,63,69,79 });
+			npc->SetRectDraw({ 0,0, 69,79 });
 		}
 		else
 		{
-			npc.SetRectSouce({ 1,63,42,76 });
-			npc.SetRectDraw({ 0,0, 42,76 });
+			npc->SetRectSouce({ 1,63,42,76 });
+			npc->SetRectDraw({ 0,0, 42,76 });
 		}
 
-		npc.SetPosition(Vector2(50 + iNpc * 150, 50));
-		if (!npc.Create(m_pd3dDevice, m_pImmediateContext,
-			L"../../data/bitmap1.bmp",
-			L"../../data/bitmap2.bmp"))
+		npc->SetPosition(Vector2(50 + iNpc * 150, 50));
+
+		npc->m_pVShader = pVShader;
+		npc->m_pPShader = pPShader;
+
+		if (!npc->Create(m_pd3dDevice.Get(), m_pImmediateContext.Get(),
+			nullptr,L"../../data/bitmap1.bmp",L"../../data/bitmap2.bmp"))
 		{
 			return false;
 		}
@@ -97,11 +96,8 @@ bool Sample::Frame()
 
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		RECT rt = m_NpcLlist[iObj].m_rtDraw;
-		rt.right = rt.right + (cos(g_fGameTimer) * 0.5f + 0.5f) * 50.0f;
-		rt.bottom = rt.bottom + (cos(g_fGameTimer) * 0.5f + 0.5f) * 50.0f;
-		m_NpcLlist[iObj].UpdateRectDraw(rt);
-		m_NpcLlist[iObj].Frame();
+		m_NpcLlist[iObj]->Frame();
+		m_NpcLlist[iObj]->m_pStateAction->Process(&m_PlayerObj);
 	}
 
 	int iChatCnt = m_net.m_playuser.m_packetpool.size();
@@ -163,7 +159,7 @@ bool Sample::Render()
 {
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		m_NpcLlist[iObj].Render();
+		m_NpcLlist[iObj]->Render();
 	}
 	m_PlayerObj.Render();
 	return true;
@@ -172,7 +168,7 @@ bool Sample::Release()
 {
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		m_NpcLlist[iObj].Release();
+		m_NpcLlist[iObj]->Release();
 	}
 	m_PlayerObj.Release();
 

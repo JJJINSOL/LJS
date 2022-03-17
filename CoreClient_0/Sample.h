@@ -8,7 +8,7 @@ class Sample : public Core
 public:
 	PlayerObj2D	m_PlayerObj;
 
-	std::vector<ObjectNpc2D> m_NpcLlist;
+	std::vector<std::shared_ptr<ObjectNpc2D>> m_NpcLlist;
 	AsyncSelect m_net;
 	HWND m_edit;
 	HWND m_button;

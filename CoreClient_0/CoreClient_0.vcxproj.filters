@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{8f71331b-9f96-4aa0-8516-5c207ea30f40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp">
@@ -24,6 +27,21 @@
     <ClCompile Include="ObjectNpc2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Fsm.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateAttack.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMove.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateStop.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sample.h">
@@ -32,14 +50,23 @@
     <ClInclude Include="PlayerObj2D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Object2D.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Object3D.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectNpc2D.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Fsm.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="StateStop.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMove.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateAttack.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>FSM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
