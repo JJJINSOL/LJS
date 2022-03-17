@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="State.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateAttack.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMove.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="StateStop.cpp">
+      <Filter>FSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Fsm.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectNpc2D.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerObj2D.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="AStar.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>소스</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="State.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateAttack.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMove.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="StateStop.h">
+      <Filter>FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectNpc2D.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Fsm.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerObj2D.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+    <ClInclude Include="AStar.h">
+      <Filter>헤더</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="player.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="PixelShader.txt">
+      <Filter>text</Filter>
+    </Text>
+    <Text Include="VertexShader.txt">
+      <Filter>text</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="text">
+      <UniqueIdentifier>{e00026a0-e6da-4729-9069-e65026d2df01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FSM">
+      <UniqueIdentifier>{44d5ec1b-e51f-442a-b4ab-aa50902dee54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스">
+      <UniqueIdentifier>{d7dc903d-652f-4dab-9f41-5a660e37da8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더">
+      <UniqueIdentifier>{80da0606-3e21-40a8-b45e-7ee440dce350}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

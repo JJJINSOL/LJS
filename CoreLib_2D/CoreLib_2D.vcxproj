@@ -18,35 +18,78 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseMgr.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Core.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="DxObject.h" />
+    <ClInclude Include="DxState.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Object2D.h" />
+    <ClInclude Include="Object3D.h" />
+    <ClInclude Include="ObjectMgr.h" />
+    <ClInclude Include="ShaderMgr.h" />
+    <ClInclude Include="SoundMgr.h" />
+    <ClInclude Include="Std.h" />
+    <ClInclude Include="TextureMgr.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="WriteFont.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BaseMgr.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="DxObject.cpp" />
+    <ClCompile Include="DxState.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Object2D.cpp" />
+    <ClCompile Include="Object3D.cpp" />
+    <ClCompile Include="ObjectMgr.cpp" />
+    <ClCompile Include="ShaderMgr.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="TextureMgr.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="WriteFont.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{65957FC0-E6D0-4EA1-BA56-3F1CA94CB09A}</ProjectGuid>
-    <RootNamespace>CoreClient_2</RootNamespace>
+    <ProjectGuid>{ED0BDC31-31CD-48AB-B64B-E21C565B1B76}</ProjectGuid>
+    <RootNamespace>CoreLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -79,7 +122,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../output/Debug</OutDir>
-    <IntDir>../../output/Debug/CoreClient_4</IntDir>
+    <IntDir>../../output/Debug/CoreLib_2D</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -88,11 +131,12 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -102,11 +146,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -116,16 +161,20 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/CoreLib_2D;../../include/dxtk;../../include/CoreNet;../../include/fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/dxtk;../../include/fmod;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "*.h" "../../include/CoreLib_2D"
+copy "..\\..\\output\\Debug\\CoreLib_2D.lib" "..\\..\\lib\\CoreLib_2D_d.lib"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -133,56 +182,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>
+      </SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="EffectObj.cpp" />
-    <ClCompile Include="IntroWorld.cpp" />
-    <ClCompile Include="LoginWorld.cpp" />
-    <ClCompile Include="ObjectNpc2D.cpp" />
-    <ClCompile Include="PlayerObj2D.cpp" />
-    <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="UIModelMgr.cpp" />
-    <ClCompile Include="UIObject.cpp" />
-    <ClCompile Include="ZoneWorld.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="EffectObj.h" />
-    <ClInclude Include="IntroWorld.h" />
-    <ClInclude Include="LoginWorld.h" />
-    <ClInclude Include="ObjectNpc2D.h" />
-    <ClInclude Include="PlayerObj2D.h" />
-    <ClInclude Include="Sample.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="UIModelMgr.h" />
-    <ClInclude Include="UIObject.h" />
-    <ClInclude Include="ZoneWorld.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CoreLib_2D\CoreLib_2D.vcxproj">
-      <Project>{ed0bdc31-31cd-48ab-b64b-e21c565b1b76}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\CoreNet\CoreNet.vcxproj">
-      <Project>{2bad1ec1-6961-4e1a-ae81-9532c2c37481}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="DefaultUI.txt" />
-    <Text Include="PixelShader.txt" />
-    <Text Include="player.txt" />
-    <Text Include="Shader.txt" />
-    <Text Include="SpriteData.txt" />
-    <Text Include="VertexShader.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

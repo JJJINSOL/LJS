@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{65957FC0-E6D0-4EA1-BA56-3F1CA94CB09A}</ProjectGuid>
-    <RootNamespace>CoreClient_2</RootNamespace>
+    <ProjectGuid>{28ED291A-B756-40FC-848D-0A5665C8D417}</ProjectGuid>
+    <RootNamespace>CoreClient_0</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../output/Debug</OutDir>
-    <IntDir>../../output/Debug/CoreClient_4</IntDir>
+    <IntDir>../../output/Debug/CoreClient_0</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/CoreLib_2D;../../include/dxtk;../../include/CoreNet;../../include/fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/CoreLib_2D;../../include/dxtk;../../include/CoreNet</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,28 +144,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EffectObj.cpp" />
-    <ClCompile Include="IntroWorld.cpp" />
-    <ClCompile Include="LoginWorld.cpp" />
+    <ClCompile Include="AStar.cpp" />
+    <ClCompile Include="Fsm.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="ObjectNpc2D.cpp" />
     <ClCompile Include="PlayerObj2D.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="UIModelMgr.cpp" />
-    <ClCompile Include="UIObject.cpp" />
-    <ClCompile Include="ZoneWorld.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateAttack.cpp" />
+    <ClCompile Include="StateMove.cpp" />
+    <ClCompile Include="StateStop.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EffectObj.h" />
-    <ClInclude Include="IntroWorld.h" />
-    <ClInclude Include="LoginWorld.h" />
+    <ClInclude Include="AStar.h" />
+    <ClInclude Include="Fsm.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="ObjectNpc2D.h" />
     <ClInclude Include="PlayerObj2D.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="Sprite.h" />
-    <ClInclude Include="UIModelMgr.h" />
-    <ClInclude Include="UIObject.h" />
-    <ClInclude Include="ZoneWorld.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateAttack.h" />
+    <ClInclude Include="StateMove.h" />
+    <ClInclude Include="StateStop.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CoreLib_2D\CoreLib_2D.vcxproj">
@@ -176,11 +176,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="DefaultUI.txt" />
     <Text Include="PixelShader.txt" />
     <Text Include="player.txt" />
-    <Text Include="Shader.txt" />
-    <Text Include="SpriteData.txt" />
     <Text Include="VertexShader.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

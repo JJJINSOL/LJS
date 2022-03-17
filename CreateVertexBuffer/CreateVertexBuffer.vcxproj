@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/Core3D</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/CoreLib_2D</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -158,8 +158,8 @@
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreLib\CoreLib.vcxproj">
-      <Project>{01d7e053-a5dd-423b-94f3-2638bc0bfd59}</Project>
+    <ProjectReference Include="..\CoreLib_2D\CoreLib_2D.vcxproj">
+      <Project>{ed0bdc31-31cd-48ab-b64b-e21c565b1b76}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

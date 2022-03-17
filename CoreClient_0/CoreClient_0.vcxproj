@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/Core3D;../../include/dxtk;../../include/CoreNet</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/CoreLib_2D;../../include/dxtk;../../include/CoreNet</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -164,8 +164,8 @@
     <ClInclude Include="StateStop.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CoreLib\CoreLib.vcxproj">
-      <Project>{01d7e053-a5dd-423b-94f3-2638bc0bfd59}</Project>
+    <ProjectReference Include="..\CoreLib_2D\CoreLib_2D.vcxproj">
+      <Project>{ed0bdc31-31cd-48ab-b64b-e21c565b1b76}</Project>
     </ProjectReference>
     <ProjectReference Include="..\CoreNet\CoreNet.vcxproj">
       <Project>{2bad1ec1-6961-4e1a-ae81-9532c2c37481}</Project>
