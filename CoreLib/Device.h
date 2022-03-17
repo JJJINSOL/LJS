@@ -22,10 +22,15 @@ public:
 	DXGI_SWAP_CHAIN_DESC	m_SwapChainDesc;   // 스왑체인 속성값
 	D3D11_VIEWPORT			m_ViewPort;	       // 뷰 포트 속성값
 
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	 m_pDepthStencilView;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pSRV;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pDsvSRV;// 깊이버퍼 리소스뷰
+
 public:
 	HRESULT InitDevice();
 	virtual bool CreateDevice();
 	virtual bool CreateRenderTargetView();
+	virtual bool CreateDetphStencilView();
 	virtual bool SetViewport();
 	virtual bool CleanupDevice();
 	void ResizeDevice(UINT iWidth, UINT iHeight);

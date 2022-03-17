@@ -3,9 +3,12 @@
 class Object2D : public DxObject
 {
 public:
-	RECT m_rtSource;//소스 이미지의 u,v 좌표/텍스쳐
-	RECT m_rtDraw;//화면의 드로우 영역
-	Vector4	m_vColor;
+	std::vector<SimpleVertex> m_VertexList2D;
+	RECT		m_rtSource;//소스 이미지의 u,v 좌표/텍스쳐
+	RECT		m_rtDraw;//화면의 드로우 영역
+	Vector4		m_vColor;
+	Vector2		m_vPos;
+	Vector2		m_vDirection;//방향
 public:
 	float m_fAlpha = 0.0f;
 	bool m_bFadeIn = false;

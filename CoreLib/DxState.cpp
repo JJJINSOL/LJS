@@ -2,6 +2,8 @@
 ID3D11BlendState* DxState::m_AlphaBlend = nullptr;
 ID3D11BlendState* DxState::m_AlphaBlendDisable = nullptr;
 ID3D11SamplerState* DxState::m_pSamplerState = nullptr;
+ID3D11RasterizerState* DxState::g_pRSBackCullSolid = nullptr;
+ID3D11DepthStencilState* DxState::g_pDSSDepthEnable = nullptr;
 
 bool DxState::SetState(ID3D11Device* pd3dDevice)
 {
@@ -55,10 +57,44 @@ bool DxState::SetState(ID3D11Device* pd3dDevice)
 	sd.MaxLOD = FLT_MIN;
 	hr = pd3dDevice->CreateSamplerState(&sd, &m_pSamplerState);
 
+	D3D11_RASTERIZER_DESC rsDesc;
+	ZeroMemory(&rsDesc, sizeof(rsDesc));
+	rsDesc.DepthClipEnable = TRUE;
+	rsDesc.FillMode = D3D11_FILL_SOLID;
+	rsDesc.CullMode = D3D11_CULL_NONE;
+	if (FAILED(hr = pd3dDevice->CreateRasterizerState(&rsDesc, &DxState::g_pRSBackCullSolid))) return hr;
+
+
+	D3D11_DEPTH_STENCIL_DESC dsDescDepth;
+	ZeroMemory(&dsDescDepth, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	dsDescDepth.DepthEnable = TRUE;
+	dsDescDepth.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dsDescDepth.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dsDescDepth.StencilEnable = FALSE;
+	dsDescDepth.StencilReadMask = 1;
+	dsDescDepth.StencilWriteMask = 1;
+	dsDescDepth.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	dsDescDepth.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR;
+	dsDescDepth.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDescDepth.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	// 디폴트 값
+	dsDescDepth.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	dsDescDepth.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	dsDescDepth.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	dsDescDepth.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+
+	if (FAILED(hr = pd3dDevice->CreateDepthStencilState(&dsDescDepth, &g_pDSSDepthEnable)))
+	{
+		return hr;
+	}
+
 	return true;
 }
 bool DxState::Release()
 {
+	if (g_pRSBackCullSolid) g_pRSBackCullSolid->Release();
+	if (g_pDSSDepthEnable) g_pDSSDepthEnable->Release();
 	if (m_AlphaBlend) m_AlphaBlend->Release();
 	if (m_AlphaBlendDisable) m_AlphaBlendDisable->Release();
 	m_AlphaBlend = nullptr;

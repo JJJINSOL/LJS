@@ -34,6 +34,9 @@ bool DxObject::SetIndexData()
 bool DxObject::SetConstantData()
 {
 	ZeroMemory(&m_ConstantList, sizeof(ConstantData));
+	m_ConstantList.matWorld = Matrix();
+	m_ConstantList.matView = Matrix();
+	m_ConstantList.matProj = Matrix();
 	m_ConstantList.Color.x = 0.0f;
 	m_ConstantList.Color.y = 1.0f;
 	m_ConstantList.Color.z = 0.0f;
@@ -61,7 +64,7 @@ bool DxObject::CreateVertexBuffer()
 	//gpu메모리에 버퍼 할당(원하는 할당 크기)
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-	bd.ByteWidth = sizeof(SimpleVertex) * m_VertexList.size();
+	bd.ByteWidth = sizeof(Vertex) * m_VertexList.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
@@ -125,8 +128,10 @@ bool DxObject::CreateInputLayout()
 	{
 		//"POSITION" = 쉐이더 입력 서명에서 이 요소에 연결된 HLSL 의미
 		//DXGI_FORMAT_R32G32_FLOAT = 요소 데이터 형식
-		{"POSITION",0, DXGI_FORMAT_R32G32_FLOAT, 0,0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{"TEXCOORD",0, DXGI_FORMAT_R32G32_FLOAT, 0,8,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"POSITION",0, DXGI_FORMAT_R32G32B32_FLOAT, 0,0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"NORMAL",0, DXGI_FORMAT_R32G32B32_FLOAT, 0,12,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"COLOR",0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,24,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"TEXCOORD",0, DXGI_FORMAT_R32G32_FLOAT, 0,40,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	//입력 요소의 배열의 입력 데이터 형식의 수
 	UINT NumElements = sizeof(layout) / sizeof(layout[0]);
@@ -149,17 +154,6 @@ bool DxObject::Create(ID3D11Device* pd3dDevice,
 					  const TCHAR* szMaskFileName)
 {
 	HRESULT hr;
-
-	//m_rtCollision = Rect(m_vPos, m_fWidth, m_fHeight);
-	//I_ObjectMgr.AddCollisionExecute(this,
-	//							std::bind(&BaseObject::HitOverlap, this,//this가 넘어가서 자식이 호출될수있음
-	//							std::placeholders::_1,
-	//							std::placeholders::_2));
-
-	//I_ObjectMgr.AddSelectExecute(this,
-	//							std::bind(&BaseObject::HitSelect, this,
-	//							std::placeholders::_1,
-	//							std::placeholders::_2));
 
 	SetDevice(pd3dDevice, pContext);
 	if (szColorFileName != nullptr && !LoadTexture(szColorFileName, szMaskFileName))
@@ -224,6 +218,10 @@ bool	DxObject::Render()
 	if (m_pMaskTex != nullptr)
 		m_pContext->PSSetShaderResources(1, 1, m_pMaskTex->m_pSRV.GetAddressOf());
 	
+	m_pContext->GSSetShader(nullptr, NULL, 0);
+	m_pContext->HSSetShader(nullptr, NULL, 0);
+	m_pContext->DSSetShader(nullptr, NULL, 0);
+
 	if (m_pVShader != nullptr)
 	{
 		m_pContext->VSSetShader(m_pVShader->m_pVertexShader, NULL, 0);
@@ -246,13 +244,14 @@ bool	DxObject::Render()
 
 	UINT StartSlot;
 	UINT NumBuffers;
-	UINT Strides = sizeof(SimpleVertex);
+	UINT Strides = sizeof(Vertex);
 	UINT Offsets = 0;
 
 	m_pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &Strides, &Offsets);
 
 	m_pContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	m_pContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+	m_pContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 
 	m_pContext->IASetPrimitiveTopology(
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST

@@ -28,7 +28,7 @@ void Object2D::AddPosition(Vector2 vPos)
 	SetIndexData();
 	if (m_pContext != nullptr)
 	{
-		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList2D.at(0), 0, 0);
 	}
 }
 void Object2D::SetPosition(Vector2 vPos)
@@ -44,7 +44,7 @@ void Object2D::SetPosition(Vector2 vPos)
 	SetIndexData();
 	if (m_pContext != nullptr)
 	{
-		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList2D.at(0), 0, 0);
 	}
 }
 void Object2D::Convert(Vector2 center, float fWidth, float fHeight, std::vector<SimpleVertex>& retList)
@@ -168,7 +168,7 @@ void Object2D::ConvertIndex(std::vector<SimpleVertex>& list,std::vector<SimpleVe
 }
 bool Object2D::SetVertexData()
 {
-	ConvertIndex(m_vPos, m_fWidth, m_fHeight, m_VertexList);
+	ConvertIndex(m_vPos, m_fWidth, m_fHeight, m_VertexList2D);
 	return true;
 }
 bool Object2D::SetIndexData()

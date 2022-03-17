@@ -8,6 +8,13 @@ struct SimpleVertex//정점
 	Vector2 v;
 	Vector2 t;
 };
+struct Vertex
+{
+	Vector3 p; // 위치
+	Vector3 n; // 노말(정점 방향)
+	Vector4 c; // 컬러
+	Vector2 t; // 텍셀(텍스쳐좌표/픽셀)
+};
 enum CollisionType
 {
 	Block = 0,
@@ -45,8 +52,6 @@ public:
 	int			m_iCollisionID;//매니저에서 id등록해서 유니크한 것 만들어낸것
 	int			m_iSelectID;
 	float		m_fSpeed;
-	Vector2		m_vPos;
-	Vector2		m_vDirection;//방향
 	float		m_fWidth;
 	float		m_fHeight;
 	Rect		m_rtCollision;//움직이게 되면 무조건 충돌 갱신
@@ -75,8 +80,6 @@ public:
 		m_dwSelectState = T_DEFAULT;
 		m_iCollisionID = -1;
 		m_iSelectID = -1;
-		m_vDirection.x = 0.0f;
-		m_vDirection.y = 0.0f;
 		m_dwCollisonType = CollisionType::Ignore;
 		m_dwSelectType = SelectType::Select_Ignore;
 	}
@@ -88,8 +91,11 @@ struct Index
 	DWORD _1;
 	DWORD _2;
 };
-struct ConstantData//지속적인
+struct ConstantData
 {
+	Matrix  matWorld;
+	Matrix  matView;
+	Matrix  matProj;
 	Vector4 Color;
 	Vector4 Timer;
 };
@@ -106,7 +112,7 @@ public:
 
 public:
 	std::vector<SimpleVertex> m_InitScreenList;
-	std::vector<SimpleVertex> m_VertexList;
+	std::vector<Vertex> m_VertexList;
 	
 	ID3D11Buffer* m_pVertexBuffer = nullptr;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Vector3.h"
+#include "Matrix.h"
 enum Type { RECT_OUT = 0, RECT_IN = 1, RECT_OVERLAP = 2 };
 // 화면좌표계+왼쪽상단이 원점
 struct Rect2D

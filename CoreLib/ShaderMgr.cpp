@@ -18,9 +18,12 @@ bool Shader::CreateVertexShader(ID3D11Device* pd3dDevice,std::wstring filename,s
 	);
 	if (FAILED(hr))
 	{
-		//GetBufferPointer = 시작 주소이며 반환형이 lpvoid이므로 메세지 반환받기 위기 (char *) 문자열 강제로 바꿈
-		MessageBoxA(NULL, (char*)m_pErrorMsgs->GetBufferPointer(), "ERROR", MB_OK);
-		if (m_pErrorMsgs) m_pErrorMsgs->Release();
+		if (m_pErrorMsgs)
+		{
+			//GetBufferPointer = 시작 주소이며 반환형이 lpvoid이므로 메세지 반환받기 위기 (char *) 문자열 강제로 바꿈
+			MessageBoxA(NULL, (char*)m_pErrorMsgs->GetBufferPointer(), "ERROR", MB_OK);
+			m_pErrorMsgs->Release();
+		}
 		return false;
 	}
 	hr = pd3dDevice->CreateVertexShader(
@@ -49,10 +52,13 @@ bool Shader::CreatePixelShader(ID3D11Device* pd3dDevice,std::wstring filename,st
 	);
 	if (FAILED(hr))
 	{
-		MessageBoxA(NULL,
-			(char*)m_pErrorMsgs->GetBufferPointer(),
-			"ERROR", MB_OK);
-		if (m_pErrorMsgs) m_pErrorMsgs->Release();
+		if (m_pErrorMsgs)
+		{
+			MessageBoxA(NULL,
+						(char*)m_pErrorMsgs->GetBufferPointer(),
+						"ERROR", MB_OK);
+			m_pErrorMsgs->Release();
+		}
 		return false;
 	}
 	hr = pd3dDevice->CreatePixelShader(

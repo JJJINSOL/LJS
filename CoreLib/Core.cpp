@@ -53,10 +53,17 @@ bool Core::CoreFrame()
 }
 bool Core::CoreRender()
 {
-	
-	float color[4] = { 1, 0, 0, 1 };//배경색
+	float color[4] = { 0.1543f, 0.23421f, 0.4323f,1.0f };
+	//float color[4] = { 1, 0, 0, 1 };//배경색
 	//백버퍼 지워준다 - (ClearRenderTargetView)화면을 깨끗이 지워준다는 의미
 	m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), color);
+
+	m_pImmediateContext->ClearDepthStencilView(
+		m_pDepthStencilView.Get(),
+		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	m_pImmediateContext->OMSetRenderTargets(1,
+		m_pRenderTargetView.GetAddressOf(),
+		m_pDepthStencilView.Get());
 
 	m_pImmediateContext->PSSetSamplers(0, 1, &DxState::m_pSamplerState);
 

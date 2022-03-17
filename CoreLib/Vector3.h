@@ -15,6 +15,11 @@ public:
 	Vector3(float x, float y, float z);
 	Vector3(const Vector3& v);
 
+	void  operator += (const Vector3& v);
+	void  operator -= (const Vector3& v);
+	float operator | (Vector3 const& v);
+	Vector3 operator ^ (Vector3 const& v);
+
 	Vector3 operator + (const Vector3& v);
 	Vector3 operator - (const Vector3& v);
 	Vector3 operator * (float num);

@@ -14,6 +14,9 @@
 #include <atlconv.h> // A2W
 #include "Collision.h"
 #include <wrl.h> 
+#include <DirectXMath.h>
+#include <DirectXPackedVector.h>
+#include <DirectXCollision.h>
 using namespace Microsoft::WRL;
 
 #pragma comment	(lib, "d3d11.lib")
@@ -27,6 +30,14 @@ using namespace Microsoft::WRL;
 #pragma comment	(lib, "ws2_32.lib")
 
 using namespace std;
+
+#define BASIS_EPSILON		((FLOAT)  0.001f)
+#define BASIS_PI			((FLOAT)  3.141592654f)
+#define DegreeToRadian( degree ) ((degree) * (BASIS_PI / 180.0f))
+#define RadianToDegree( radian ) ((radian) * (180.0f / BASIS_PI))
+#define MAKECOLOR_ARGB(a, r, g, b)	(((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)
+#define IS_IN_RANGE(value,r0,r1) (( ((r0) <= (value)) && ((value) <= (r1)) ) ? 1 : 0)
+
 
 #define randf(x) (x*rand()/(float)RAND_MAX)
 #define randf2(x,off) (off+x*rand()/(float)RAND_MAX)
