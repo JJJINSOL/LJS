@@ -13,7 +13,10 @@ bool Timer::Frame()
 {
     DWORD dwCurrentTime = timeGetTime();//현재 시간
     DWORD dwElapseTime = dwCurrentTime - m_dwBeforeTime;//경과시간
-    m_fSecondPerFrame = dwElapseTime / 1000.0f;//초당 프레임
+
+    //m_fSecondPerFrame = dwElapseTime / 1000.0f;//초당 프레임
+    m_fSecondPerFrame = min(0.1f, dwElapseTime / 1000.0f);
+
     m_fTimer += m_fSecondPerFrame;
 
     g_fSecPerFrame = m_fSecondPerFrame;

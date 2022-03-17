@@ -113,10 +113,21 @@ public:
 		vSize.z = q;
 	}
 };
-
+struct Sphere
+{
+	Vector2 vCenter;
+	float    fRadius;
+	Sphere()
+	{
+		fRadius = 3.0f;
+	}
+};
 class Collision
 {
 public:
+	static bool SphereToPoint(Sphere rt, int x, int y);
+	static bool SphereToPoint(Sphere rt, Vector2 v);
+
 	static bool RectToPoint(Rect rt, int x, int y);
 	static bool RectToPoint(Rect rt, Vector2 v);
 	static Type RectToRect(Rect rt1, Rect rt2);

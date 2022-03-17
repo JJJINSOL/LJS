@@ -2,6 +2,7 @@
 #include "ShaderMgr.h"
 #include "TextureMgr.h"
 #include "DxState.h"
+#include "Collision.h"
 struct SimpleVertex//Á¤Á¡
 {
 	Vector2 v;

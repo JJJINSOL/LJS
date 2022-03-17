@@ -1,4 +1,22 @@
 #include "Collision.h"
+bool Collision::SphereToPoint(Sphere sp, int x, int y)
+{
+	float fDistance = (sp.vCenter - Vector2(x, y)).Length();
+	if (fDistance <= sp.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
+bool Collision::SphereToPoint(Sphere sp, Vector2 v)
+{
+	float fDistance = (sp.vCenter - v).Length();
+	if (fDistance <= sp.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
 bool Collision::RectToPoint(Rect rt, int x, int y)
 {
 	if (rt.vMin.x <= x && rt.vMax.x >= x &&

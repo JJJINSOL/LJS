@@ -21,12 +21,6 @@
     <ClCompile Include="PlayerObj2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Object2D.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Object3D.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectNpc2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
