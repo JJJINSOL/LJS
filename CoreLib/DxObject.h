@@ -5,15 +5,24 @@
 #include "Collision.h"
 struct SimpleVertex//정점
 {
-	Vector2 v;
-	Vector2 t;
+	T::TVector2 v;
+	T::TVector2 t;
 };
 struct Vertex
 {
-	Vector3 p; // 위치
-	Vector3 n; // 노말(정점 방향)
-	Vector4 c; // 컬러
-	Vector2 t; // 텍셀(텍스쳐좌표/픽셀)
+	T::TVector3 p; // 위치
+	T::TVector3 n; // 노말(정점 방향)
+	T::TVector4 c; // 컬러
+	T::TVector2 t; // 텍셀(텍스쳐좌표/픽셀)
+
+	Vertex(T::TVector3 p1,T::TVector3 n1,T::TVector4 c1,T::TVector2 t1)
+	{
+		p = p1;
+		n = n1;
+		c = c1;
+		t = t1;
+	}
+	Vertex() {}
 };
 enum CollisionType
 {
@@ -55,6 +64,7 @@ public:
 	float		m_fWidth;
 	float		m_fHeight;
 	Rect		m_rtCollision;//움직이게 되면 무조건 충돌 갱신
+	Box			m_BoxCollision;
 	DWORD		m_dwCollisonType;
 	DWORD		m_dwSelectType;
 	DWORD		m_dwSelectState;
@@ -93,11 +103,11 @@ struct Index
 };
 struct ConstantData
 {
-	Matrix  matWorld;
-	Matrix  matView;
-	Matrix  matProj;
-	Vector4 Color;
-	Vector4 Timer;
+	T::TMatrix  matWorld;
+	T::TMatrix  matView;
+	T::TMatrix  matProj;
+	T::TVector4 Color;
+	T::TVector4 Timer;
 };
 //=================================================================
 class DxObject : public BaseObject
@@ -127,7 +137,7 @@ public:
 	ID3D11DeviceContext* m_pContext = nullptr;
 
 public:
-	void SetDevice(ID3D11Device* m_pd3dDevice, ID3D11DeviceContext* m_pContext);
+	void		 SetDevice(ID3D11Device* m_pd3dDevice, ID3D11DeviceContext* m_pContext);
 	
 	virtual bool LoadTexture(const TCHAR* szColorFileName, const TCHAR* szMaskFileName);
 
@@ -148,7 +158,9 @@ public:
 public:
 	virtual bool Init();
 	virtual bool Frame();
+	virtual bool PreRender();
 	virtual bool Render();
+	virtual bool PostRender();
 	virtual bool Release();
 public:
 	DxObject();

@@ -35,6 +35,7 @@
     <ClInclude Include="Std.h" />
     <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TMath.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Window.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TMath.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Window.cpp" />

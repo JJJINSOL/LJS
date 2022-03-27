@@ -57,8 +57,6 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 	// 소스알파(0) = 마스크이미지의 흰색부분은   투명된다.
 	final = final * input.c;
 	//final.a = 1.0f;	
-
-	final = g_txCubeMap.Sample(g_Sample, input.r);
 	return final;
 }
 

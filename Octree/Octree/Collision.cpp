@@ -32,7 +32,7 @@ Box Collision::UnionBox(Box rt1, Box rt2)
 	unibox.vMax.z = rt1.vMax.z < rt2.vMax.z ? rt2.vMax.z : rt1.vMax.z;
 
 	unibox.vSize = unibox.vMax - unibox.vMin;
-	unibox.vMiddle = (unibox.vMin + unibox.vMax) / 2.0f;
+	unibox.vCenter = (unibox.vMin + unibox.vMax) / 2.0f;
 	return unibox;
 }
 bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
@@ -53,7 +53,7 @@ bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
 			rt->vMax.z = rt1.vMax.z < rt2.vMax.z ? rt1.vMax.z : rt2.vMax.z;
 
 			rt->vSize = rt->vMax - rt->vMin;
-			rt->vMiddle = (rt->vMax + rt->vMin) / 2.0f;
+			rt->vCenter = (rt->vMax + rt->vMin) / 2.0f;
 		}
 		return true;
 	}

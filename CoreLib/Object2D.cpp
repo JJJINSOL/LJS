@@ -18,7 +18,7 @@ void Object2D::UpdateRectDraw(RECT rt)
 	m_fWidth = rt.right;
 	m_fHeight = rt.bottom;
 }
-void Object2D::AddPosition(Vector2 vPos)
+void Object2D::AddPosition(T::TVector2 vPos)
 {
 	// 현재위치
 	m_vPos += vPos;
@@ -31,7 +31,7 @@ void Object2D::AddPosition(Vector2 vPos)
 		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList2D.at(0), 0, 0);
 	}
 }
-void Object2D::SetPosition(Vector2 vPos)
+void Object2D::SetPosition(T::TVector2 vPos)
 {
 	// 현재위치
 	m_vPos = vPos;
@@ -47,7 +47,7 @@ void Object2D::SetPosition(Vector2 vPos)
 		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList2D.at(0), 0, 0);
 	}
 }
-void Object2D::Convert(Vector2 center, float fWidth, float fHeight, std::vector<SimpleVertex>& retList)
+void Object2D::Convert(T::TVector2 center, float fWidth, float fHeight, std::vector<SimpleVertex>& retList)
 {
 	// 화면좌표 위치를 중점으로 NDC 변환
 	// 삼각형 두개 그래서 사각형 만들기, 점은 시계 방향으로 돌리자 / 0,1,2   3,4,5
@@ -114,7 +114,7 @@ void Object2D::Convert(std::vector<SimpleVertex>& list, std::vector<SimpleVertex
 
 }
 void Object2D::ConvertIndex(
-	Vector2 center, float fWidth, float fHeight,
+	T::TVector2 center, float fWidth, float fHeight,
 	std::vector<SimpleVertex>& retList)
 {
 	// 0       1
@@ -207,14 +207,14 @@ bool Object2D::Frame()
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
 	m_ConstantList.Color = m_vColor;
-	m_ConstantList.Timer = Vector4(g_fGameTimer,0,0,1.0f);
+	m_ConstantList.Timer = T::TVector4(g_fGameTimer,0,0,1.0f);
 	m_pContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &m_ConstantList, 0, 0);
 	return true;
 }
 Object2D::Object2D()
 {
 	m_fAlpha = 1.0f;
-	m_vColor = Vector4(1, 1, 1, 1);
+	m_vColor = T::TVector4(1, 1, 1, 1);
 	m_rtSource.left = 0; m_rtSource.right = 0;
 	m_rtSource.top = 0; m_rtSource.bottom = 0;
 	m_rtDraw.left = 0; m_rtDraw.right = g_rtClient.right;

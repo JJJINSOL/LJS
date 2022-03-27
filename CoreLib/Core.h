@@ -7,8 +7,9 @@
 class Core : public Device
 {
 public:
-	Timer m_GameTimer;
-	WriteFont  m_dxWrite;
+	Timer		m_GameTimer;
+	WriteFont   m_dxWrite;
+	bool		m_bWireFrame = false;
 
 private:
 	bool CoreInit();
@@ -20,7 +21,7 @@ public:
 
 	virtual void CreateResizeDevice(UINT iWidth, UINT iHeight) {};
 	virtual void DeleteResizeDevice(UINT iWidth, UINT iHeight) {};
-	void ResizeDevice(UINT iWidth, UINT iHeight);
+	void		 ResizeDevice(UINT iWidth, UINT iHeight);
 
 	virtual bool Init() { return true; };
 	virtual bool Frame() { return true; };

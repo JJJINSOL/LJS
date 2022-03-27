@@ -4,8 +4,8 @@ bool Device::CreateDetphStencilView()
 	HRESULT hr;
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> pDSTexture = nullptr;
 	D3D11_TEXTURE2D_DESC DescDepth;
-	DescDepth.Width = g_rtClient.right;
-	DescDepth.Height = g_rtClient.bottom;
+	DescDepth.Width = m_SwapChainDesc.BufferDesc.Width;
+	DescDepth.Height = m_SwapChainDesc.BufferDesc.Height;
 	DescDepth.MipLevels = 1;
 	DescDepth.ArraySize = 1;
 	DescDepth.Format = DXGI_FORMAT_R24G8_TYPELESS;
@@ -56,7 +56,7 @@ bool Device::CreateDetphStencilView()
 	}
 
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	if (FAILED(hr = m_pd3dDevice->CreateDepthStencilView(pDSTexture.Get(), &dsvDesc, &m_pDepthStencilView)))
+	if (FAILED(hr = m_pd3dDevice->CreateDepthStencilView(pDSTexture.Get(), &dsvDesc, m_pDepthStencilView.GetAddressOf())))
 	{
 		return false;
 	}
@@ -129,6 +129,8 @@ bool Device::CreateDevice()
 	{
 		return false;
 	}
+	DXGI_SWAP_CHAIN_DESC scd;
+	m_pSwapChain->GetDesc(&scd);
 	return true;
 }
 bool Device:: CreateRenderTargetView()
@@ -144,6 +146,9 @@ bool Device:: CreateRenderTargetView()
 	//·»´õÅ¸°Ù ¼ö, ·»´õ Å¸°Ù ºäÀÇ ¹è¿­, ±íÀÌ
 	m_pImmediateContext->OMSetRenderTargets(1, m_pRenderTargetView.GetAddressOf(), NULL);
 	
+	D3D11_RENDER_TARGET_VIEW_DESC rtvd;
+	m_pRenderTargetView->GetDesc(&rtvd);
+
 	return true;
 }
 bool Device:: SetViewport()
@@ -167,6 +172,7 @@ void Device::ResizeDevice(UINT iWidth, UINT iHeight)
 {
 	m_pImmediateContext->OMSetRenderTargets(0, NULL, NULL);
 	if (m_pRenderTargetView)m_pRenderTargetView->Release();
+	if (m_pDepthStencilView)m_pDepthStencilView->Release();
 
 	HRESULT hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
 		iWidth, iHeight,
@@ -178,7 +184,12 @@ void Device::ResizeDevice(UINT iWidth, UINT iHeight)
 
 	}
 	CreateRenderTargetView();
+	CreateDetphStencilView();
 	SetViewport();
+
+	GetClientRect(m_hWnd, &m_rtClient);
+	GetWindowRect(m_hWnd, &m_rtWindow);
+	g_rtClient = m_rtClient;
 }
 bool Device:: CleanupDevice()
 {

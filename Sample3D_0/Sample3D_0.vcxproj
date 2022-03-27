@@ -124,6 +124,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>../../lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,16 +144,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BoxObj.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="PlaneObj.h" />
+    <ClInclude Include="SkyObj.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BoxObj.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="PlaneObj.cpp" />
+    <ClCompile Include="SkyObj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Box.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="map.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="sky.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

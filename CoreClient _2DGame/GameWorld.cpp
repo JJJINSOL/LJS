@@ -423,7 +423,9 @@ bool GameWorld::Release()
 		//ObjectNpc2D* pObj = obj;
 		if ((*iter) != nullptr)
 		{
-			(*iter)->Release();
+			delete *iter;
+			//(*iter)->Release();
+			*iter = nullptr;
 		}
 	}
 	return true;

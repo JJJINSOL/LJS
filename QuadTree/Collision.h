@@ -10,7 +10,7 @@ class Rect
 	//2차원 영역의 기준 지점이랑 대각선에 있는 지점 (x,y 값 갖음)
 	Vector2 vMax;
 	//2차원 영역의 min과 max 사이의 지점으로 가운데 지점 (x,y 값 갖음)
-	Vector2 vMiddle;
+	Vector2 vCenter;
 	//가로,세로 길이 (x,y 값 갖음)
 	Vector2 vSize;
 
@@ -31,7 +31,7 @@ class Rect
 	{
 		vMin = min;
 		vMax = max;
-		vMiddle = (vMin + vMax) / 2.0f;
+		vCenter = (vMin + vMax) / 2.0f;
 		vSize.x = vMax.x - vMin.x;
 		vSize.y = vMax.y - vMin.y;
 	}
@@ -39,7 +39,7 @@ class Rect
 	{
 		vMin = v;
 		vMax = vMin + Vector2(w, h);
-		vMiddle = (vMin + vMax) / 2.0f;
+		vCenter = (vMin + vMax) / 2.0f;
 		vSize.x = w;
 		vSize.y = h;
 	}

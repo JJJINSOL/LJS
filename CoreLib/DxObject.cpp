@@ -34,9 +34,9 @@ bool DxObject::SetIndexData()
 bool DxObject::SetConstantData()
 {
 	ZeroMemory(&m_ConstantList, sizeof(ConstantData));
-	m_ConstantList.matWorld = Matrix();
-	m_ConstantList.matView = Matrix();
-	m_ConstantList.matProj = Matrix();
+	m_ConstantList.matWorld = T::TMatrix();
+	m_ConstantList.matView = T::TMatrix();
+	m_ConstantList.matProj = T::TMatrix();
 	m_ConstantList.Color.x = 0.0f;
 	m_ConstantList.Color.y = 1.0f;
 	m_ConstantList.Color.z = 0.0f;
@@ -211,13 +211,10 @@ bool	DxObject::Frame()
 }
 bool	DxObject::Render()
 {
-	if (m_pColorTex != nullptr)
-	//픽셀 shader로 텍스쳐 전달 전달
-	//                               텍스쳐 레지스터 슬롯 번호   개수
-		m_pContext->PSSetShaderResources(0,                          1, m_pColorTex->m_pSRV.GetAddressOf()); //s가 붙으면 배열로 전달
-	if (m_pMaskTex != nullptr)
-		m_pContext->PSSetShaderResources(1, 1, m_pMaskTex->m_pSRV.GetAddressOf());
+	PreRender();
 	
+	m_pContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &m_ConstantList, 0, 0);
+
 	m_pContext->GSSetShader(nullptr, NULL, 0);
 	m_pContext->HSSetShader(nullptr, NULL, 0);
 	m_pContext->DSSetShader(nullptr, NULL, 0);
@@ -258,6 +255,29 @@ bool	DxObject::Render()
 		//D3D_PRIMITIVE_TOPOLOGY_POINTLIST
 		//D3D_PRIMITIVE_TOPOLOGY_LINELIST
 	);
+
+	PostRender();
+
+	return true;
+}
+bool DxObject::PreRender()
+{
+	if (m_pColorTex != nullptr)
+	{
+		//픽셀 shader로 텍스쳐 전달 전달 //s가 붙으면 배열로 전달                                
+		m_pContext->PSSetShaderResources(0,    //텍스쳐 레지스터 슬롯 번호
+										 1,    //개수
+										 m_pColorTex->m_pSRV.GetAddressOf());
+	}
+	if (m_pMaskTex != nullptr)
+	{
+		m_pContext->PSSetShaderResources(1, 1,m_pMaskTex->m_pSRV.GetAddressOf());
+	}
+
+	return true;
+}
+bool DxObject::PostRender()
+{
 	if (m_IndexList.size() <= 0)
 		m_pContext->Draw(m_VertexList.size(), 0);
 	else

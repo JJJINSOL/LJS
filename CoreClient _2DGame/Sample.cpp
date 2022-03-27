@@ -80,12 +80,18 @@ bool Sample::Frame()
 	World::m_pWorld->Frame();
 	if (World::m_pWorld->btnintro == true)
 	{
-		I_ObjectMgr.Release();
-		World::m_pWorld->m_bLoadZone = false;
-		m_IntroWorld.Load(L"intro.txt");
-		World::m_pWorld = &m_IntroWorld;
 		World::m_pWorld->btnintro = false;
+		//I_ObjectMgr.Release();
+		//m_ResultWorld.Release();
+		//m_IntroWorld.Init();
+		//m_IntroWorld.m_pd3dDevice = m_pd3dDevice.Get();
+		//m_IntroWorld.m_pContext = m_pImmediateContext.Get();
+		//m_IntroWorld.Load(L"intro.txt");
+		//World::m_pWorld = &m_IntroWorld;
+		//World::m_pWorld->m_bLoadZone = false;
+		
 	}
+
 	if (World::m_pWorld->btnrule == true)
 	{
 		I_ObjectMgr.Release();
@@ -98,10 +104,11 @@ bool Sample::Frame()
 		m_GameWorld.m_gamestart = false;
 		m_GameWorld.m_PlayerObj.m_life = 3;
 		m_GameWorld.m_pBackGroundMusic->Stop();
-		
+		World::m_pWorld->m_bLoadZone = false;
 
 		m_GameWorld.m_score = (int)m_GameTimer.m_fTimer * 100;
 		I_ObjectMgr.Release();
+		m_GameWorld.Release();
 		//I_ObjectMgr.Release();
 		//World::m_pWorld->hardmode = false;
 		//m_GameWorld.hard = false;

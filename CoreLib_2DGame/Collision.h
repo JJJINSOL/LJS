@@ -6,7 +6,7 @@ struct Rect2D
 {
 	Vector2 vMin;
 	Vector2 vMax;
-	Vector2 vMiddle;
+	Vector2 vCenter;
 	Vector2 vSize;
 	bool operator == (const Rect2D& v)
 	{
@@ -24,7 +24,7 @@ struct Rect2D
 	{
 		this->vMin = vMin;
 		this->vMax = vMax;
-		vMiddle = (vMax + vMin) / 2.0f;
+		vCenter = (vMax + vMin) / 2.0f;
 		vSize.x = vMax.x - vMin.x;
 		vSize.y = vMax.y - vMin.y;
 	}
@@ -32,7 +32,7 @@ struct Rect2D
 	{
 		this->vMin = v;
 		this->vMax = vMin + Vector2(w, h);
-		vMiddle = (vMax + vMin) / 2.0f;
+		vCenter = (vMax + vMin) / 2.0f;
 		this->vSize.x = w;
 		this->vSize.y = h;
 	}
@@ -42,7 +42,7 @@ struct Rect
 {
 	Vector2 vMin;
 	Vector2 vMax;
-	Vector2 vMiddle;
+	Vector2 vCenter;
 	Vector2 vSize;
 	bool operator == (const Rect& v)
 	{
@@ -60,15 +60,15 @@ struct Rect
 	{
 		this->vMin = vMin;
 		this->vMax = vMax;
-		vMiddle = (vMax + vMin) / 2.0f;
+		vCenter = (vMax + vMin) / 2.0f;
 		vSize.x = vMax.x - vMin.x;
 		vSize.y = vMax.y - vMin.y;
 	}
 	Rect(Vector2 pos, float w, float h)
 	{
-		vMiddle = pos;
-		this->vMin = vMiddle - Vector2(w / 2.0f, h / 2.0f);
-		this->vMax = vMiddle + Vector2(w / 2.0f, h / 2.0f);
+		vCenter = pos;
+		this->vMin = vCenter - Vector2(w / 2.0f, h / 2.0f);
+		this->vMax = vCenter + Vector2(w / 2.0f, h / 2.0f);
 		this->vSize.x = w;
 		this->vSize.y = h;
 	}
@@ -79,7 +79,7 @@ class Box
 public:
 	Vector3 vMin;
 	Vector3 vMax;
-	Vector3 vMiddle;
+	Vector3 vCenter;
 	Vector3 vSize;
 
 	bool operator == (const Box& v)
@@ -98,7 +98,7 @@ public:
 	{
 		vMin = Min;
 		vMax = Max;
-		vMiddle = (Max + Min) / 2.0f;
+		vCenter = (Max + Min) / 2.0f;
 		vSize.x = Max.x - Min.x;
 		vSize.y = Max.y - Min.y;
 		vSize.z = Max.z - Min.z;
@@ -107,7 +107,7 @@ public:
 	{
 		vMin = v;
 		vMax = vMin + Vector3(w, h, q);
-		vMiddle = (vMax + vMin) / 2.0f;
+		vCenter = (vMax + vMin) / 2.0f;
 		vSize.x = w;
 		vSize.y = h;
 		vSize.z = q;

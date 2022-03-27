@@ -29,38 +29,38 @@ void Octree::BuildTree(Node* parent)
 	BuildTree(parent->m_Child[0]);
 	parent->m_Child[1] = CreateNode(
 		parent,
-		parent->m_box.vMiddle.x, parent->m_box.vMin.y, parent->m_box.vMin.z,
+		parent->m_box.vCenter.x, parent->m_box.vMin.y, parent->m_box.vMin.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[1]);
 	parent->m_Child[2] = CreateNode(
 		parent,
-		parent->m_box.vMiddle.x, parent->m_box.vMiddle.y, parent->m_box.vMin.z,
+		parent->m_box.vCenter.x, parent->m_box.vCenter.y, parent->m_box.vMin.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[2]);
 	parent->m_Child[3] = CreateNode(
 		parent,
-		parent->m_box.vMin.x, parent->m_box.vMiddle.y, parent->m_box.vMin.z,
+		parent->m_box.vMin.x, parent->m_box.vCenter.y, parent->m_box.vMin.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[3]);
 
 	parent->m_Child[4] = CreateNode(
 		parent,
-		parent->m_box.vMin.x, parent->m_box.vMin.y, parent->m_box.vMiddle.z,
+		parent->m_box.vMin.x, parent->m_box.vMin.y, parent->m_box.vCenter.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[4]);
 	parent->m_Child[5] = CreateNode(
 		parent,
-		parent->m_box.vMiddle.x, parent->m_box.vMin.y, parent->m_box.vMiddle.z,
+		parent->m_box.vCenter.x, parent->m_box.vMin.y, parent->m_box.vCenter.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[5]);
 	parent->m_Child[6] = CreateNode(
 		parent,
-		parent->m_box.vMiddle.x, parent->m_box.vMiddle.y, parent->m_box.vMiddle.z,
+		parent->m_box.vCenter.x, parent->m_box.vCenter.y, parent->m_box.vCenter.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[6]);
 	parent->m_Child[7] = CreateNode(
 		parent,
-		parent->m_box.vMin.x, parent->m_box.vMiddle.y, parent->m_box.vMiddle.z,
+		parent->m_box.vMin.x, parent->m_box.vCenter.y, parent->m_box.vCenter.z,
 		parent->m_box.vSize.x / 2.0f, parent->m_box.vSize.y / 2.0f, parent->m_box.vSize.z / 2.0f);
 	BuildTree(parent->m_Child[7]);
 }

@@ -46,7 +46,7 @@ Rect Collision::UnionRect(Rect rt1, Rect rt2)
 	unirect.vMax.y = rt1.vMax.y < rt2.vMax.y ? rt2.vMax.y : rt1.vMax.y;
 
 	unirect.vSize = unirect.vMax - unirect.vMin;
-	unirect.vMiddle = (unirect.vMin + unirect.vMax) / 2.0f;
+	unirect.vCenter = (unirect.vMin + unirect.vMax) / 2.0f;
 	return unirect;
 }
 bool Collision::IntersectRect(Rect rt1, Rect rt2, Rect* rt)
@@ -64,7 +64,7 @@ bool Collision::IntersectRect(Rect rt1, Rect rt2, Rect* rt)
 			rt->vMax.y = rt1.vMax.y < rt2.vMax.y ? rt1.vMax.y : rt2.vMax.y;
 
 			rt->vSize = rt->vMax - rt->vMin;
-			rt->vMiddle = (rt->vMax + rt->vMin) / 2.0f;
+			rt->vCenter = (rt->vMax + rt->vMin) / 2.0f;
 		}
 		return true;
 	}
@@ -87,8 +87,8 @@ Type Collision::ToRect(Rect rt1, Rect rt2)
 	// 거리 판정
 	float fDistanceX;
 	float fDistanceY;
-	fDistanceX = fabs(rt1.vMiddle.x - rt2.vMiddle.x);
-	fDistanceY = fabs(rt1.vMiddle.y - rt2.vMiddle.y);
+	fDistanceX = fabs(rt1.vCenter.x - rt2.vCenter.x);
+	fDistanceY = fabs(rt1.vCenter.y - rt2.vCenter.y);
 	float fToX = rt1.vSize.x / 2.0f + rt2.vSize.x / 2.0f;
 	float fToY = rt1.vSize.y / 2.0f + rt2.vSize.y / 2.0f;
 	if (fDistanceX < fToX && fDistanceY < fToY)
@@ -131,7 +131,7 @@ Box Collision::UnionBox(Box rt1, Box rt2)
 	unibox.vMax.z = rt1.vMax.z < rt2.vMax.z ? rt2.vMax.z : rt1.vMax.z;
 
 	unibox.vSize = unibox.vMax - unibox.vMin;
-	unibox.vMiddle = (unibox.vMin + unibox.vMax) / 2.0f;
+	unibox.vCenter = (unibox.vMin + unibox.vMax) / 2.0f;
 	return unibox;
 }
 bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
@@ -152,7 +152,7 @@ bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
 			rt->vMax.z = rt1.vMax.z < rt2.vMax.z ? rt1.vMax.z : rt2.vMax.z;
 
 			rt->vSize = rt->vMax - rt->vMin;
-			rt->vMiddle = (rt->vMax + rt->vMin) / 2.0f;
+			rt->vCenter = (rt->vMax + rt->vMin) / 2.0f;
 		}
 		return true;
 	}

@@ -6,7 +6,7 @@ class Box
 public:
 	Vector vMin;
 	Vector vMax;
-	Vector vMiddle;
+	Vector vCenter;
 	Vector vSize;
 
 	bool operator == (const Box& v)
@@ -25,7 +25,7 @@ public:
 	{
 		vMin = Min;
 		vMax = Max;
-		vMiddle = (Max + Min) / 2.0f;
+		vCenter = (Max + Min) / 2.0f;
 		vSize.x = Max.x - Min.x;
 		vSize.y = Max.y - Min.y;
 		vSize.z = Max.z - Min.z;
@@ -34,7 +34,7 @@ public:
 	{
 		vMin = v;
 		vMax = vMin + Vector(w, h, q);
-		vMiddle = (vMax + vMin) / 2.0f;
+		vCenter = (vMax + vMin) / 2.0f;
 		vSize.x = w;
 		vSize.y = h;
 		vSize.z = q;

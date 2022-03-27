@@ -42,9 +42,9 @@ public:
 		m_box.vMax.y = y + h;
 		m_box.vMax.z = z + q;
 
-		m_box.vMiddle.x = x + (w / 2.0f);
-		m_box.vMiddle.y = y + (h / 2.0f);
-		m_box.vMiddle.z = z + (q / 2.0f);
+		m_box.vCenter.x = x + (w / 2.0f);
+		m_box.vCenter.y = y + (h / 2.0f);
+		m_box.vCenter.z = z + (q / 2.0f);
 
 		m_box.vSize.x = w;
 		m_box.vSize.y = h;

@@ -1,14 +1,14 @@
 #include "Collision.h"
-bool Collision::SphereToPoint(Sphere sp, int x, int y)
+bool Collision::SphereToPoint(Sphere sp, float x, float y, float z)
 {
-	float fDistance = (sp.vCenter - Vector2(x, y)).Length();
+	float fDistance = (sp.vCenter - T::TVector3(x, y, z)).Length();
 	if (fDistance <= sp.fRadius)
 	{
 		return true;
 	}
 	return false;
 }
-bool Collision::SphereToPoint(Sphere sp, Vector2 v)
+bool Collision::SphereToPoint(Sphere sp, T::TVector3 v)
 {
 	float fDistance = (sp.vCenter - v).Length();
 	if (fDistance <= sp.fRadius)
@@ -26,7 +26,7 @@ bool Collision::RectToPoint(Rect rt, int x, int y)
 	}
 	return false;
 }
-bool Collision::RectToPoint(Rect rt, Vector2 v)
+bool Collision::RectToPoint(Rect rt, T::TVector2 v)
 {
 	if (rt.vMin.x <= v.x && rt.vMax.x >= v.x &&
 		rt.vMin.y <= v.y && rt.vMax.y >= v.y )
@@ -46,7 +46,8 @@ Rect Collision::UnionRect(Rect rt1, Rect rt2)
 	unirect.vMax.y = rt1.vMax.y < rt2.vMax.y ? rt2.vMax.y : rt1.vMax.y;
 
 	unirect.vSize = unirect.vMax - unirect.vMin;
-	unirect.vMiddle = (unirect.vMin + unirect.vMax) / 2.0f;
+	unirect.vCenter = (unirect.vMin + unirect.vMax);
+	unirect.vCenter /= 2.0f;
 	return unirect;
 }
 bool Collision::IntersectRect(Rect rt1, Rect rt2, Rect* rt)
@@ -64,7 +65,8 @@ bool Collision::IntersectRect(Rect rt1, Rect rt2, Rect* rt)
 			rt->vMax.y = rt1.vMax.y < rt2.vMax.y ? rt1.vMax.y : rt2.vMax.y;
 
 			rt->vSize = rt->vMax - rt->vMin;
-			rt->vMiddle = (rt->vMax + rt->vMin) / 2.0f;
+			rt->vCenter = (rt->vMax + rt->vMin);
+			rt->vCenter /= 2.0f;
 		}
 		return true;
 	}
@@ -87,8 +89,8 @@ Type Collision::ToRect(Rect rt1, Rect rt2)
 	// 거리 판정
 	float fDistanceX;
 	float fDistanceY;
-	fDistanceX = fabs(rt1.vMiddle.x - rt2.vMiddle.x);
-	fDistanceY = fabs(rt1.vMiddle.y - rt2.vMiddle.y);
+	fDistanceX = fabs(rt1.vCenter.x - rt2.vCenter.x);
+	fDistanceY = fabs(rt1.vCenter.y - rt2.vCenter.y);
 	float fToX = rt1.vSize.x / 2.0f + rt2.vSize.x / 2.0f;
 	float fToY = rt1.vSize.y / 2.0f + rt2.vSize.y / 2.0f;
 	if (fDistanceX < fToX && fDistanceY < fToY)
@@ -108,7 +110,7 @@ bool Collision::BoxToPoint(Box rt, int x, int y, int z)
 	}
 	return false;
 }
-bool Collision::BoxToPoint(Box rt, Vector3 v)
+bool Collision::BoxToPoint(Box rt, T::TVector3 v)
 {
 	if (rt.vMin.x <= v.x && rt.vMax.x >= v.x &&
 		rt.vMin.y <= v.y && rt.vMax.y >= v.y &&
@@ -131,7 +133,8 @@ Box Collision::UnionBox(Box rt1, Box rt2)
 	unibox.vMax.z = rt1.vMax.z < rt2.vMax.z ? rt2.vMax.z : rt1.vMax.z;
 
 	unibox.vSize = unibox.vMax - unibox.vMin;
-	unibox.vMiddle = (unibox.vMin + unibox.vMax) / 2.0f;
+	unibox.vCenter = (unibox.vMin + unibox.vMax);
+	unibox.vCenter /= 2.0f;
 	return unibox;
 }
 bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
@@ -152,7 +155,8 @@ bool Collision::IntersectBox(Box rt1, Box rt2, Box* rt)
 			rt->vMax.z = rt1.vMax.z < rt2.vMax.z ? rt1.vMax.z : rt2.vMax.z;
 
 			rt->vSize = rt->vMax - rt->vMin;
-			rt->vMiddle = (rt->vMax + rt->vMin) / 2.0f;
+			rt->vCenter = (rt->vMax + rt->vMin);
+			rt->vCenter /= 2.0f;
 		}
 		return true;
 	}
