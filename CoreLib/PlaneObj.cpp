@@ -1,4 +1,5 @@
 #include "PlaneObj.h"
+
 bool PlaneObj::SetVertexData()
 {
 	// Local Coord
@@ -34,7 +35,7 @@ bool PlaneObj::SetVertexData()
 bool PlaneObj::SetIndexData()
 {
 	m_IndexList.push_back(0); m_IndexList.push_back(1); m_IndexList.push_back(2);
-	m_IndexList.push_back(2); m_IndexList.push_back(1); m_IndexList.push_back(3);
+	m_IndexList.push_back(3); m_IndexList.push_back(2); m_IndexList.push_back(1);
 	return true;
 }
 PlaneObj::PlaneObj()

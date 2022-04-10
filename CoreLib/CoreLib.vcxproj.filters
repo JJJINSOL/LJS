@@ -31,6 +31,15 @@
     <Filter Include="math\헤더 파일">
       <UniqueIdentifier>{8bc073e1-7de4-4704-84b3-16402f5c96dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="fbx">
+      <UniqueIdentifier>{60705054-57c3-4538-a6f1-7f137b906e7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="map">
+      <UniqueIdentifier>{988f1eda-692d-4f14-af77-8fa7cb900f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="object">
+      <UniqueIdentifier>{9db80b30-b6e5-4fce-b2dc-cbabb880520e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -99,6 +108,33 @@
     <ClInclude Include="TMath.h">
       <Filter>math\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="TFbxImporter.h">
+      <Filter>fbx</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="Quadtree.h">
+      <Filter>map</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaneObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyObj.h">
+      <Filter>object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
@@ -164,5 +200,41 @@
     <ClCompile Include="TMath.cpp">
       <Filter>math\소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="TFbxImporter.cpp">
+      <Filter>fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxModel.cpp">
+      <Filter>fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxVertexLoader.cpp">
+      <Filter>fbx</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="Quadtree.cpp">
+      <Filter>map</Filter>
+    </ClCompile>
+    <ClCompile Include="BoxObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyObj.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\data\shader\Character.hlsl" />
   </ItemGroup>
 </Project>

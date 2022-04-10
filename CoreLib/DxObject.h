@@ -110,6 +110,17 @@ struct ConstantData
 	T::TVector4 Timer;
 };
 //=================================================================
+struct BoneWorld  //캐릭터 뼈대
+{
+	T::TMatrix  matBoneWorld[255];
+};
+//=================================================================
+struct LightData  //조명
+{
+	T::TVector4   vLightDir;
+	T::TVector4   vLightPos;
+};
+//=================================================================
 class DxObject : public BaseObject
 {
 public:
@@ -130,7 +141,10 @@ public:
 	ID3D11Buffer* m_pIndexBuffer = nullptr;
 
 	ConstantData    m_ConstantList;
-	ID3D11Buffer* m_pConstantBuffer = nullptr;
+	ID3D11Buffer*	m_pConstantBuffer = nullptr;
+
+	LightData		m_LightConstantList;
+	ID3D11Buffer*	m_pLightConstantBuffer = nullptr;
 
 	ID3D11InputLayout* m_pVertexLayout = nullptr;
 	ID3D11Device* m_pd3dDevice = nullptr;
@@ -158,8 +172,9 @@ public:
 public:
 	virtual bool Init();
 	virtual bool Frame();
-	virtual bool PreRender();
 	virtual bool Render();
+	virtual bool PreRender();
+	virtual bool Draw();
 	virtual bool PostRender();
 	virtual bool Release();
 public:

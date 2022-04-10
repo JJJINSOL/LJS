@@ -33,9 +33,18 @@
     <ClInclude Include="ShaderMgr.h" />
     <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="Std.h" />
+    <ClInclude Include="BoxObj.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="TextureMgr.h" />
+    <ClInclude Include="TFbxImporter.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="TMath.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="PlaneObj.h" />
+    <ClInclude Include="SkyObj.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Window.h" />
@@ -56,14 +65,30 @@
     <ClCompile Include="ObjectMgr.cpp" />
     <ClCompile Include="ShaderMgr.cpp" />
     <ClCompile Include="SoundMgr.cpp" />
+    <ClCompile Include="BoxObj.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="TextureMgr.cpp" />
+    <ClCompile Include="TFbxImporter.cpp" />
+    <ClCompile Include="FbxModel.cpp" />
+    <ClCompile Include="FbxVertexLoader.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="TMath.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="PlaneObj.cpp" />
+    <ClCompile Include="SkyObj.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="WriteFont.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\data\shader\Character.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -167,7 +192,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/dxtk;../../include/fmod;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/dxtk;../../include/fmod;../../include/fbx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>

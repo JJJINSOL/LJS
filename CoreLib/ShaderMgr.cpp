@@ -5,17 +5,15 @@ bool Shader::CreateVertexShader(ID3D11Device* pd3dDevice,std::wstring filename,s
 	// 쉐이더 컴파일->오브젝트 파일을 통해서 쉐이더객체 생성 
 	// 
 	//D3DCompileFromFile = 이 함수를 통해 shader를 컴파일할 수 있음 / vs_5_0 = 컴파일러 지정
-	HRESULT hr = D3DCompileFromFile(
-		filename.c_str(),
-		NULL,
-		NULL,
-		entry.c_str(),
-		"vs_5_0",
-		0,
-		0,
-		&m_pVSCodeResult,
-		&m_pErrorMsgs
-	);
+	HRESULT hr = D3DCompileFromFile( filename.c_str(),
+									 NULL,
+									 NULL,
+									 entry.c_str(),
+									 "vs_5_0",
+									 0,
+									 0,
+									 &m_pVSCodeResult,
+									 &m_pErrorMsgs );
 	if (FAILED(hr))
 	{
 		if (m_pErrorMsgs)
@@ -26,11 +24,10 @@ bool Shader::CreateVertexShader(ID3D11Device* pd3dDevice,std::wstring filename,s
 		}
 		return false;
 	}
-	hr = pd3dDevice->CreateVertexShader(
-		m_pVSCodeResult->GetBufferPointer(),
-		m_pVSCodeResult->GetBufferSize(),
-		NULL,
-		&m_pVertexShader);
+	hr = pd3dDevice->CreateVertexShader( m_pVSCodeResult->GetBufferPointer(),
+										 m_pVSCodeResult->GetBufferSize(),
+										 NULL,
+										 &m_pVertexShader);
 	if (FAILED(hr))
 	{
 		return false;
@@ -39,33 +36,28 @@ bool Shader::CreateVertexShader(ID3D11Device* pd3dDevice,std::wstring filename,s
 }
 bool Shader::CreatePixelShader(ID3D11Device* pd3dDevice,std::wstring filename,std::string entry)
 {
-	HRESULT hr = D3DCompileFromFile(
-		filename.c_str(),
-		NULL,
-		NULL,
-		entry.c_str(),
-		"ps_5_0",
-		0,
-		0,
-		&m_pPSCodeResult,
-		&m_pErrorMsgs
-	);
+	HRESULT hr = D3DCompileFromFile( filename.c_str(),
+									 NULL,
+									 NULL,
+									 entry.c_str(),
+								 	 "ps_5_0",
+									 0,
+									 0,
+									 &m_pPSCodeResult,
+									 &m_pErrorMsgs);
 	if (FAILED(hr))
 	{
 		if (m_pErrorMsgs)
 		{
-			MessageBoxA(NULL,
-						(char*)m_pErrorMsgs->GetBufferPointer(),
-						"ERROR", MB_OK);
+			MessageBoxA(NULL,(char*)m_pErrorMsgs->GetBufferPointer(),"ERROR", MB_OK);
 			m_pErrorMsgs->Release();
 		}
 		return false;
 	}
-	hr = pd3dDevice->CreatePixelShader(
-		m_pPSCodeResult->GetBufferPointer(),
-		m_pPSCodeResult->GetBufferSize(),
-		NULL,
-		&m_pPixelShader);
+	hr = pd3dDevice->CreatePixelShader( m_pPSCodeResult->GetBufferPointer(),
+										m_pPSCodeResult->GetBufferSize(),
+										NULL,
+										&m_pPixelShader);
 	if (FAILED(hr))
 	{
 		return false;

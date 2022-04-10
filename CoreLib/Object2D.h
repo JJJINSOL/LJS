@@ -4,8 +4,8 @@ class Object2D : public DxObject
 {
 public:
 	std::vector<SimpleVertex> m_VertexList2D;
-	RECT		m_rtSource;//소스 이미지의 u,v 좌표/텍스쳐
-	RECT		m_rtDraw;//화면의 드로우 영역
+	RECT			m_rtSource;//소스 이미지의 u,v 좌표/텍스쳐
+	RECT			m_rtDraw;//화면의 드로우 영역
 	T::TVector4		m_vColor;
 	T::TVector2		m_vPos;
 	T::TVector2		m_vDirection;//방향

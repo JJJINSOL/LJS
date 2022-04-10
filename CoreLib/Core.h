@@ -4,9 +4,13 @@
 #include "Input.h"
 #include "Timer.h"
 #include "WriteFont.h"
+#include "Camera.h"
 class Core : public Device
 {
 public:
+	Camera*		m_pMainCamera = nullptr;
+	Camera		m_DefaultCamera;
+
 	Timer		m_GameTimer;
 	WriteFont   m_dxWrite;
 	bool		m_bWireFrame = false;

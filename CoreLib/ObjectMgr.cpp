@@ -137,3 +137,12 @@ bool ObjectMgr::Release()
 	m_SelectList.clear();
 	return true;
 }
+ObjectMgr::ObjectMgr()
+{
+	m_iExcueteCollisionID = 0;
+	m_iExcueteSelectID = 0;
+};
+ObjectMgr::~ObjectMgr()
+{
+	Release();
+};

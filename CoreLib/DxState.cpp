@@ -9,7 +9,8 @@ ID3D11RasterizerState* DxState::g_pRSBackCullWireFrame = nullptr;
 ID3D11RasterizerState* DxState::g_pRSNoneCullWireFrame = nullptr;
 ID3D11DepthStencilState* DxState::g_pDSSDepthEnable = nullptr;
 ID3D11DepthStencilState* DxState::g_pDSSDepthDisable = nullptr;
-
+ID3D11DepthStencilState* DxState::g_pDSSDepthEnableWriteDisable = nullptr;
+ID3D11DepthStencilState* DxState::g_pDSSDepthDisableWriteDisable = nullptr;
 bool DxState::SetState(ID3D11Device* pd3dDevice)
 {
 	HRESULT hr;
@@ -124,6 +125,20 @@ bool DxState::SetState(ID3D11Device* pd3dDevice)
 		return hr;
 	}
 
+	dsDescDepth.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	if (FAILED(hr = pd3dDevice->CreateDepthStencilState(&dsDescDepth,
+		&g_pDSSDepthDisableWriteDisable)))
+	{
+		return hr;
+	}
+	dsDescDepth.DepthEnable = TRUE;
+	dsDescDepth.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	if (FAILED(hr = pd3dDevice->CreateDepthStencilState(&dsDescDepth,
+		&g_pDSSDepthEnableWriteDisable)))
+	{
+		return hr;
+	}
+
 	return true;
 }
 bool DxState::Release()
@@ -138,6 +153,10 @@ bool DxState::Release()
 
 	if (m_AlphaBlend) m_AlphaBlend->Release();
 	if (m_AlphaBlendDisable) m_AlphaBlendDisable->Release();
+
+	if (g_pDSSDepthEnableWriteDisable) g_pDSSDepthEnableWriteDisable->Release();
+	if (g_pDSSDepthDisableWriteDisable) g_pDSSDepthDisableWriteDisable->Release();
+
 	m_AlphaBlend = nullptr;
 	m_AlphaBlendDisable = nullptr;
 

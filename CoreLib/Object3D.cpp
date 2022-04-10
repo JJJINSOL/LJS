@@ -64,25 +64,33 @@ void Object3D::GenAABB()
 		m_BoxCollision.vMin.y,
 		m_BoxCollision.vMax.z);
 }
-void Object3D::SetMatrix(T::TMatrix* matWorld, T::TMatrix* matView, T::TMatrix* matProj)
+void Object3D::SetMatrix(T::TMatrix* matWorld,T::TMatrix* matView, T::TMatrix* matProj)
 {
+
 	m_ConstantList.matWorld = m_matWorld.Transpose();
 	if (matWorld != nullptr)
 	{
+		m_matWorld = *matWorld;
 		m_ConstantList.matWorld = matWorld->Transpose();
 	}
 	if (matView != nullptr)
 	{
+		m_matView = *matView;
 		m_ConstantList.matView = matView->Transpose();
 	}
 	if (matProj != nullptr)
 	{
+		m_matProj = *matProj;
 		m_ConstantList.matProj = matProj->Transpose();
 	}
-
-	m_vRight.x = m_matWorld._11;
-	m_vRight.y = m_matWorld._12;
-	m_vRight.z = m_matWorld._13;
+	UpdateData();
+	UpdateCollision();
+}
+void Object3D::UpdateData()
+{
+	m_vLight.x = m_matWorld._11;
+	m_vLight.y = m_matWorld._12;
+	m_vLight.z = m_matWorld._13;
 	m_vUp.x = m_matWorld._21;
 	m_vUp.y = m_matWorld._22;
 	m_vUp.z = m_matWorld._23;
@@ -90,11 +98,13 @@ void Object3D::SetMatrix(T::TMatrix* matWorld, T::TMatrix* matView, T::TMatrix* 
 	m_vLook.y = m_matWorld._32;
 	m_vLook.z = m_matWorld._33;
 
-	T::D3DXVec3Normalize(&m_vRight, &m_vRight);
+	T::D3DXVec3Normalize(&m_vLight, &m_vLight);
 	T::D3DXVec3Normalize(&m_vUp, &m_vUp);
 	T::D3DXVec3Normalize(&m_vLook, &m_vLook);
-
-	m_BoxCollision.vAxis[0] = m_vRight;
+}
+void Object3D::UpdateCollision()
+{
+	m_BoxCollision.vAxis[0] = m_vLight;
 	m_BoxCollision.vAxis[1] = m_vUp;
 	m_BoxCollision.vAxis[2] = m_vLook;
 
@@ -132,7 +142,7 @@ void Object3D::SetMatrix(T::TMatrix* matWorld, T::TMatrix* matView, T::TMatrix* 
 		}
 	}
 
-T:TVector3 vHalf = m_BoxCollision.vMax - m_BoxCollision.vCenter;
+	T:TVector3 vHalf = m_BoxCollision.vMax - m_BoxCollision.vCenter;
 	m_BoxCollision.vSize.x = fabs(T::D3DXVec3Dot(&m_BoxCollision.vAxis[0], &vHalf));
 	m_BoxCollision.vSize.y = fabs(T::D3DXVec3Dot(&m_BoxCollision.vAxis[1], &vHalf));
 	m_BoxCollision.vSize.z = fabs(T::D3DXVec3Dot(&m_BoxCollision.vAxis[2], &vHalf));
@@ -208,9 +218,9 @@ Object3D::Object3D()
 {
 	m_fAlpha = 1.0f;
 	m_vColor = T::TVector4(1, 1, 1, 1);
-	m_vRight.x = 1;
-	m_vRight.y = 0;
-	m_vRight.z = 0;
+	m_vLight.x = 1;
+	m_vLight.y = 0;
+	m_vLight.z = 0;
 	m_vUp.x = 0;
 	m_vUp.y = 1;
 	m_vUp.z = 0;

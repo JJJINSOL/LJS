@@ -4,7 +4,7 @@ class World
 {
 public:
 	enum WorldID { T_LOADING, T_LOGIN, T_LOBBY, T_ZONE, T_RESULT, };
-	ID3D11Device* m_pd3dDevice;	// 디바이스 객체
+	ID3D11Device*		m_pd3dDevice;	// 디바이스 객체
 	ID3D11DeviceContext* m_pContext;// 다비이스 컨텍스트 객체
 	bool m_bLoadZone = false;
 public:

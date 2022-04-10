@@ -23,6 +23,25 @@ bool Core::CoreInit()
 			if (pSurface) pSurface->Release();
 		}
 	}
+
+	m_DefaultCamera.Init();
+	m_DefaultCamera.CreateViewMatrix(T::TVector3(0, 500.0f, -100.0f),T::TVector3(0, 0.0f, 0));
+	m_DefaultCamera.CreateProjMatrix(XM_PI * 0.25f,(float)g_rtClient.right / (float)g_rtClient.bottom, 0.1f, 5000.0f);
+	
+	m_DefaultCamera.m_pColorTex = I_Texture.Load(L"../../data/charport.bmp");
+	
+	m_DefaultCamera.m_pVShader = I_Shader.CreateVertexShader(m_pd3dDevice.Get(), L"../../data/shader/Box.hlsl", "VSColor");;
+	m_DefaultCamera.m_pPShader = I_Shader.CreatePixelShader(m_pd3dDevice.Get(), L"../../data/shader/Box.hlsl", "PSColor");;
+	
+	m_DefaultCamera.SetPosition(T::TVector3(0.0f, 1.0f, 0.0f));
+	if (!m_DefaultCamera.Create(m_pd3dDevice.Get(), m_pImmediateContext.Get()))
+	{
+		return false;
+	}
+
+	//메인 카메라에 디폴트 카메라 넣어줌 다른 카메라로 전환하고 싶으면 메인카메라에 넣어주기
+	m_pMainCamera = &m_DefaultCamera;
+
 	Init();
 
 	return true;
@@ -49,6 +68,7 @@ bool Core::CoreFrame()
 	}
 	m_GameTimer.Frame();
 	Input::Get().Frame();
+	m_pMainCamera->Frame();
 	I_ObjectMgr.Frame();
 	I_Sound.Frame();
 	Frame();
@@ -96,6 +116,7 @@ bool Core::CoreRelease()
 
 	m_dxWrite.Release();
 	m_GameTimer.Release();
+	m_DefaultCamera.Release();
 
 	Input::Get().Release();
 

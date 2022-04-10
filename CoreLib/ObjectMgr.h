@@ -1,13 +1,14 @@
 #pragma once
 #include "Object2D.h"
-//충돌시스템을 위해
+#include "TFbxImporter.h"
 //function을 사용하면 virtual 기능이 작동
 //                                      <반환값(인자들)>
 using CollisionFunction = std::function<void(BaseObject*, DWORD)>;//충돌처리
 using SelectFunction = std::function<void(BaseObject*, DWORD)>;//마우스가 오브젝트 선택하는거
 //오브젝트 충돌처리
-class ObjectMgr : public Singleton< ObjectMgr>//객체 생성은 부모에서
+class ObjectMgr : public BaseMgr<TFbxImporter, ObjectMgr>//객체 생성은 부모에서
 {
+	friend class Singleton<TextureMgr>;
 private:
 	int	m_iExcueteCollisionID;
 	int	m_iExcueteSelectID;
@@ -34,15 +35,9 @@ public://부모가 자식을 만들어서 쓸수 잇도록 friend로 해줌
 	void  CallRecursive(BaseObject* pSrcObj, DWORD dwState);
 
 private://외부에서는 절대로 객체 생성 불가능
-	ObjectMgr() 
-	{
-		m_iExcueteCollisionID = 0; 
-		m_iExcueteSelectID = 0;
-	};
+	ObjectMgr();
 public:
-	virtual ~ObjectMgr() 
-	{
-		Release();
-	};
+	virtual ~ObjectMgr();
+
 };
 #define I_ObjectMgr ObjectMgr::Get()//그래서 객체 생성하고 싶으면 이거 써야댐

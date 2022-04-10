@@ -8,10 +8,12 @@ public:
 	T::TVector4			m_vColor;
 
 	T::TMatrix			m_matWorld;
+	T::TMatrix			m_matView;
+	T::TMatrix			m_matProj;
 
-	T::TVector3			m_vRight; //x	
-	T::TVector3			m_vUp; //y 
-	T::TVector3			m_vLook; // z	
+	T::TVector3			m_vLight;	//x	
+	T::TVector3			m_vUp;		//y 
+	T::TVector3			m_vLook;	// z	
 public:
 	float  m_fAlpha = 0.0f;
 	bool   m_bFadeIn = false;
@@ -30,9 +32,11 @@ public:
 		return true;
 	};
 	virtual void SetMatrix(T::TMatrix* matWorld, T::TMatrix* matView, T::TMatrix* matProj);
-	virtual void UpdateData() {}
 
 	virtual void GenAABB();
+
+	virtual void UpdateData();
+	virtual void UpdateCollision();
 
 public:
 	Object3D();
