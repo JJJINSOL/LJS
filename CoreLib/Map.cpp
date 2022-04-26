@@ -60,15 +60,14 @@ float Map::GetHeight(float fPosX, float fPosZ)
 	}
 	return fHeight;
 }
-float Map::Lerp(float fStart, float fEnd, float fTangent)
+float Map::Lerp(float fStart, float fEnd, float fTangent) 
 {
+	//선형보간
 	return fStart - (fStart * fTangent) + (fEnd * fTangent);
 }
 bool Map::Frame()
 {
-	T::TVector3 vLight(cosf(g_fGameTimer)*100.0f, 
-					   100, 
-					   sinf(g_fGameTimer) * 100.0f);
+	T::TVector3 vLight(cosf(g_fGameTimer)*100.0f, 100, sinf(g_fGameTimer) * 100.0f);
 
 	T::D3DXVec3Normalize(&vLight, &vLight);
 	vLight = vLight * -1.0f;
@@ -85,14 +84,14 @@ bool Map::CreateHeightMap(const TCHAR* strHeightMapTex)
 	ComPtr<ID3D11Resource> pTexture;
 	size_t maxsize = 0;
 	if (FAILED(hr = CreateWICTextureFromFileEx(m_pd3dDevice,
-		strHeightMapTex,
-		maxsize,
-		D3D11_USAGE_STAGING,
-		0,
-		D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ,
-		0,
-		DirectX::WIC_LOADER_DEFAULT,
-		pTexture.GetAddressOf(), nullptr)))
+				strHeightMapTex,
+				maxsize,
+				D3D11_USAGE_STAGING,
+				0,
+				D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ,
+				0,
+				DirectX::WIC_LOADER_DEFAULT,
+				pTexture.GetAddressOf(), nullptr)))
 	{
 		return false;
 	}
@@ -134,8 +133,7 @@ bool Map::CreateHeightMap(const TCHAR* strHeightMapTex)
 	if(pTexture2D) pTexture2D->Release();
 	return true;
 }
-bool Map::CreateMap(UINT width, UINT height,
-	float fDistance)
+bool Map::CreateMap(UINT width, UINT height, float fDistance)
 {
 	m_iNumCols = width;
 	m_iNumRows = height;

@@ -4,10 +4,10 @@
 
 struct PNCT
 {
-	T::TVector3 p;
-	T::TVector3 n;
-	T::TVector4 c;
-	T::TVector2 t;
+	T::TVector3 p; //정점 위치
+	T::TVector3 n; //정점 노말
+	T::TVector4 c; //정점 컬러
+	T::TVector2 t; //정점 텍스쳐 좌표
 };
 struct VertexIW
 {
@@ -27,9 +27,9 @@ struct Track
 	UINT	iFrame;
 	TMatrix matTrack;
 	// SRT
-	T::TVector3	   s;
-	T::TQuaternion r;
-	T::TVector3    t;
+	T::TVector3	   s; //크기
+	T::TQuaternion r; //회전
+	T::TVector3    t; //이동
 };
 struct Weight
 {
@@ -58,6 +58,13 @@ struct Weight
 		weight.resize(8);
 	}
 };
+struct Scene
+{
+	UINT   iStart;		 //애니메이션 시작 프레임
+	UINT   iEnd;         //애니메이션 마지막 프레임
+	UINT   iFrameSpeed;  //애니메이션 프레임 속도
+};
+//=================================================================================
 class FbxModel : public Object3D
 {
 public:	
@@ -65,7 +72,7 @@ public:
 	bool		 m_bSkinned = false;
 	TMatrix		 m_matLocal;
 	TMatrix		 m_matAnim;
-	FbxNode*	 m_pFbxParent = nullptr;
+	FbxNode*	 m_pFbxParent = nullptr;  //트리 형태로 저장되어 있다 fbx는
 	FbxNode*	 m_pFbxNode = nullptr;
 	FbxModel*	 m_pParentObj = nullptr;
 	std::wstring m_szTexFileName;
@@ -78,7 +85,7 @@ public:
 	std::vector<SubVertex>      m_pSubVertexList;
 	std::vector<SubVertexIW>    m_pSubIWVertexList;
 
-	std::vector<Weight>			m_WeightList;
+	std::vector<Weight>			m_WeightList;  //가중치 리스트
 
 	std::vector<ID3D11Buffer*>   m_pVBList;
 	std::vector<ID3D11Buffer*>   m_pVBWeightList;
@@ -86,7 +93,7 @@ public:
 
 	std::vector<Track>					m_AnimTrack;
 	std::map<std::wstring, TMatrix>		m_dxMatrixBindPoseMap;
-	TMatrix aaa[255];
+	//TMatrix aaa[255];
 public:
 	virtual bool    SetVertexData() override;	
 	virtual bool	CreateVertexBuffer()override;
@@ -96,13 +103,8 @@ public:
 	virtual bool    Release() override;
 	
 };
-struct Scene
-{
-	UINT   iStart;
-	UINT   iEnd;
-	UINT   iFrameSpeed;
-};
-//FbxImporter 로 클래스 설정 안됨
+
+//FbxImporter 로 클래스 설정 안됨--------------------------------------------------
 class TFbxImporter : public Object3D
 {
 public:
@@ -112,9 +114,11 @@ public:
 	float		m_fSpeed = 1.0f;
 	BoneWorld	m_matBoneArray;
 public:
+	
 	FbxManager*		m_pFbxManager;
 	FbxImporter*	m_pFbxImporter;
 	FbxScene*		m_pFbxScene;
+
 	FbxNode*		m_pRootNode;
 
 	std::map<FbxNode*, int>				m_pFbxNodeMap;

@@ -113,14 +113,11 @@ bool Quadtree::Render()
 	m_pMap->PreRender();
 	m_pMap->Draw();
 
-	m_pMap->m_pContext->UpdateSubresource(
-		m_pIndexBuffer.Get(), 0, NULL, &m_IndexList.at(0), 0, 0);
-	m_pMap->m_pContext->IASetIndexBuffer(
-		m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	m_pMap->m_pContext->UpdateSubresource(m_pIndexBuffer.Get(), 0, NULL, &m_IndexList.at(0), 0, 0);
+	m_pMap->m_pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	m_pMap->m_pContext->DrawIndexed(m_iNumFace*3, 0, 0);
 
 	// 노드의 바운딩 박스를 랜더링
-	// 	   	// 노드의 바운딩 박스를 랜더링
 	/*for (int iNode = 0; iNode < g_pDrawLeafNodes.size(); iNode++)
 	{
 		DrawDebugRender(&g_pDrawLeafNodes[iNode]->m_Box);
@@ -327,10 +324,7 @@ void Quadtree::Build(Map* pMap, int iMaxDepth)
 	// 10 11 12 13 14
 	// 15 16 17 18 19
 	// 20 21 22 23 24
-	m_pRootNode = CreateNode(nullptr,	0, 
-										m_iWidth-1, 
-										m_iWidth*(m_iHeight-1), 
-										m_iWidth*m_iHeight-1);
+	m_pRootNode = CreateNode(nullptr, 0, m_iWidth-1, m_iWidth*(m_iHeight-1), m_iWidth*m_iHeight-1);
 	BuildTree(m_pRootNode);
 	FindNeighborNode();
 
@@ -668,10 +662,8 @@ int  Quadtree::SetLodIndexBuffer(Node* pNode,DWORD& dwCurentIndex,DWORD dwA, DWO
 void Quadtree::DrawDebugInit(ID3D11Device* pd3dDevice,ID3D11DeviceContext* pContext)
 {
 	m_BoxDebug.m_pColorTex = I_Texture.Load(L"../../data/charport.bmp");
-	m_BoxDebug.m_pVShader = I_Shader.CreateVertexShader(
-		pd3dDevice, L"Box.hlsl", "VSColor");
-	m_BoxDebug.m_pPShader = I_Shader.CreatePixelShader(
-		pd3dDevice, L"Box.hlsl", "PSColor");
+	m_BoxDebug.m_pVShader = I_Shader.CreateVertexShader(pd3dDevice, L"Box.hlsl", "VSColor");
+	m_BoxDebug.m_pPShader = I_Shader.CreatePixelShader(pd3dDevice, L"Box.hlsl", "PSColor");
 	m_BoxDebug.SetPosition(T::TVector3(0.0f, 1.0f, 0.0f));
 	if (!m_BoxDebug.Create(pd3dDevice, pContext))
 	{
@@ -681,31 +673,15 @@ void Quadtree::DrawDebugInit(ID3D11Device* pd3dDevice,ID3D11DeviceContext* pCont
 
 void Quadtree::DrawDebugRender(Box* pBox)
 {
-	pBox->vList[0] = T::TVector3(pBox->vMin.x,
-		pBox->vMax.y,
-		pBox->vMin.z);
-	pBox->vList[1] = T::TVector3(pBox->vMax.x,
-		pBox->vMax.y,
-		pBox->vMin.z);
-	pBox->vList[2] = T::TVector3(pBox->vMin.x,
-		pBox->vMin.y,
-		pBox->vMin.z);
-	pBox->vList[3] = T::TVector3(pBox->vMax.x,
-		pBox->vMin.y,
-		pBox->vMin.z);
+	pBox->vList[0] = T::TVector3(pBox->vMin.x, pBox->vMax.y, pBox->vMin.z);
+	pBox->vList[1] = T::TVector3(pBox->vMax.x, pBox->vMax.y, pBox->vMin.z);
+	pBox->vList[2] = T::TVector3(pBox->vMin.x, pBox->vMin.y, pBox->vMin.z);
+	pBox->vList[3] = T::TVector3(pBox->vMax.x, pBox->vMin.y, pBox->vMin.z);
 
-	pBox->vList[4] = T::TVector3(pBox->vMin.x,
-		pBox->vMax.y,
-		pBox->vMax.z);
-	pBox->vList[5] = T::TVector3(pBox->vMax.x,
-		pBox->vMax.y,
-		pBox->vMax.z);
-	pBox->vList[6] = T::TVector3(pBox->vMin.x,
-		pBox->vMin.y,
-		pBox->vMax.z);
-	pBox->vList[7] = T::TVector3(pBox->vMax.x,
-		pBox->vMin.y,
-		pBox->vMax.z);
+	pBox->vList[4] = T::TVector3(pBox->vMin.x, pBox->vMax.y, pBox->vMax.z);
+	pBox->vList[5] = T::TVector3(pBox->vMax.x, pBox->vMax.y, pBox->vMax.z);
+	pBox->vList[6] = T::TVector3(pBox->vMin.x, pBox->vMin.y, pBox->vMax.z);
+	pBox->vList[7] = T::TVector3(pBox->vMax.x, pBox->vMin.y, pBox->vMax.z);
 	// 4      5
 	// 6      7
 
@@ -840,8 +816,7 @@ void Quadtree::DrawDebugRender(Box* pBox)
 	m_BoxDebug.SetMatrix(NULL, &m_pCamera->m_matView, &m_pCamera->m_matProj);
 	m_BoxDebug.PreRender();
 	m_BoxDebug.Draw();
-	m_BoxDebug.m_pContext->UpdateSubresource(
-		m_BoxDebug.m_pVertexBuffer, 0, NULL, &m_BoxDebug.m_VertexList.at(0), 0, 0);
+	m_BoxDebug.m_pContext->UpdateSubresource(m_BoxDebug.m_pVertexBuffer, 0, NULL, &m_BoxDebug.m_VertexList.at(0), 0, 0);
 	m_BoxDebug.PostRender();
 }
 #endif

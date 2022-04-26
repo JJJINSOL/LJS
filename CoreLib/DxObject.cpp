@@ -107,7 +107,7 @@ bool DxObject::CreateIndexBuffer()
 
 	D3D11_SUBRESOURCE_DATA sd;
 	ZeroMemory(&sd, sizeof(D3D11_SUBRESOURCE_DATA));
-	sd.pSysMem = &m_IndexList.at(0);
+	sd.pSysMem = &m_IndexList.at(0);//at() -> 픽셀 값에 접근
 
 	if (FAILED(hr = m_pd3dDevice->CreateBuffer(&bd, &sd, &m_pIndexBuffer)))
 	{
@@ -118,7 +118,7 @@ bool DxObject::CreateIndexBuffer()
 bool DxObject::CreateConstantBuffer()
 {
 	HRESULT hr;
-	//gpu메모리에 버퍼 할당(원하는 할당 크기)
+	//gpu메모리에 버퍼 할당(원하는 할당 크기)===============================
 	D3D11_BUFFER_DESC bd;
 
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
@@ -134,13 +134,15 @@ bool DxObject::CreateConstantBuffer()
 	{
 		return false;
 	}
-
+	//=======================================================================
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 	bd.ByteWidth = sizeof(ConstantData);
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
 	ZeroMemory(&sd, sizeof(D3D11_SUBRESOURCE_DATA));
 	sd.pSysMem = &m_LightConstantList;
+
 	if (FAILED(hr = m_pd3dDevice->CreateBuffer(&bd, &sd, &m_pLightConstantBuffer)))
 	{
 		return false;
@@ -164,12 +166,11 @@ bool DxObject::CreateInputLayout()
 	};
 	//입력 요소의 배열의 입력 데이터 형식의 수
 	UINT NumElements = sizeof(layout) / sizeof(layout[0]);
-	HRESULT hr = m_pd3dDevice->CreateInputLayout(
-		layout,
-		NumElements,
-		m_pVShader->m_pVSCodeResult->GetBufferPointer(),
-		m_pVShader->m_pVSCodeResult->GetBufferSize(),
-		&m_pVertexLayout);
+	HRESULT hr = m_pd3dDevice->CreateInputLayout( layout,
+												  NumElements,
+												  m_pVShader->m_pVSCodeResult->GetBufferPointer(),
+												  m_pVShader->m_pVSCodeResult->GetBufferSize(),
+												  &m_pVertexLayout);
 	if (FAILED(hr))
 	{
 		return false;
@@ -249,6 +250,8 @@ bool DxObject::Draw()
 {
 	m_pContext->UpdateSubresource(m_pConstantBuffer, 0, NULL, &m_ConstantList, 0, 0);
 
+	m_pContext->UpdateSubresource(m_pLightConstantBuffer, 0, NULL, &m_LightConstantList, 0, 0);
+
 	m_pContext->GSSetShader(nullptr, NULL, 0);
 	m_pContext->HSSetShader(nullptr, NULL, 0);
 	m_pContext->DSSetShader(nullptr, NULL, 0);
@@ -279,16 +282,18 @@ bool DxObject::Draw()
 	UINT Offsets = 0;
 
 	m_pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer, &Strides, &Offsets);
-
 	m_pContext->IASetIndexBuffer(m_pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+
 	m_pContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 	m_pContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
 
-	m_pContext->IASetPrimitiveTopology(
-		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
-		//D3D_PRIMITIVE_TOPOLOGY_POINTLIST
-		//D3D_PRIMITIVE_TOPOLOGY_LINELIST
-	);
+	m_pContext->VSSetConstantBuffers(1, 1, &m_pLightConstantBuffer);
+	m_pContext->PSSetConstantBuffers(1, 1, &m_pLightConstantBuffer);
+
+	m_pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
+										//D3D_PRIMITIVE_TOPOLOGY_POINTLIST
+										//D3D_PRIMITIVE_TOPOLOGY_LINELIST
+									  );
 
 	return true;
 }
@@ -330,10 +335,12 @@ bool	DxObject::Release()
 	if (m_pVertexBuffer) m_pVertexBuffer->Release();
 	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 	if (m_pConstantBuffer) m_pConstantBuffer->Release();
+	if (m_pLightConstantBuffer) m_pLightConstantBuffer->Release();
 	if (m_pVertexLayout) m_pVertexLayout->Release();
 	m_pVertexBuffer = nullptr;
 	m_pIndexBuffer = nullptr;
 	m_pConstantBuffer = nullptr;
+	m_pLightConstantBuffer = nullptr;
 	m_pVertexLayout = nullptr;
 	return true;
 }

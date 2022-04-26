@@ -5,6 +5,7 @@ void Camera::CreateViewMatrix(T::TVector3 p,T::TVector3 t, 	T::TVector3 u )
 	m_vCamera = p;
 	m_vTarget = t;
 	m_vUp = u;
+	//왼손 좌표계(DX) 뷰행렬 계산 함수 - D3DXMatrixLookAtLH
 	T::D3DXMatrixLookAtLH(&m_matView, &m_vCamera, &m_vTarget, &m_vUp);	
 	UpdateVector();
 }
@@ -12,6 +13,7 @@ void Camera::CreateProjMatrix(float fovy, float Aspect, float zn, float zf)
 {
 	m_fFarDistance = zf;
 	m_fNearDistance = zn;
+	//투영 행렬 계산 함수
 	T::D3DXMatrixPerspectiveFovLH(&m_matProj,fovy,Aspect,zn, zf);
 }
 bool Camera::Init()
@@ -26,16 +28,12 @@ bool Camera::Init()
 bool Camera::Update(T::TVector4 vDirValue)
 {
 	T::TMatrix matRotation;
-	T::D3DXQuaternionRotationYawPitchRoll(&m_qRotation,
-										  vDirValue.y,
-										  vDirValue.x,
-										  vDirValue.z);
+	T::D3DXQuaternionRotationYawPitchRoll(&m_qRotation, vDirValue.y, vDirValue.x, vDirValue.z);
 
 	m_vCamera += m_vLook * vDirValue.w;
 	m_fRadius += vDirValue.w;
 
-	T::D3DXMatrixAffineTransformation(&matRotation, 1.0f, NULL, 
-		&m_qRotation, &m_vCamera);
+	T::D3DXMatrixAffineTransformation(&matRotation, 1.0f, NULL,&m_qRotation, &m_vCamera);
 	T::D3DXMatrixInverse(&m_matView, NULL, &matRotation);
 
 	return UpdateVector();

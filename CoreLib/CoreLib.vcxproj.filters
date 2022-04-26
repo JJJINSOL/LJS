@@ -237,4 +237,7 @@
   <ItemGroup>
     <FxCompile Include="..\..\data\shader\Character.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

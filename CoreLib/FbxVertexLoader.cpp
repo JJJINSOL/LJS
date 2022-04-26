@@ -8,20 +8,23 @@ FbxVector4 TFbxImporter::ReadNormal(const FbxMesh* mesh,int controlPointIndex,in
 	// 노말 획득 
 	FbxVector4 result;
 	// 노말 벡터를 저장할 벡터 
-	switch (vertexNormal->GetMappingMode()) 	// 매핑 모드 
+	switch (vertexNormal->GetMappingMode())// 요소가 표면에 매핑되는 방식 결정- 매핑 모드 
 	{
-		// 제어점 마다 1개의 매핑 좌표가 있다.
+	// eByControlPoint - 표면 제어점에 1개의 매핑 좌표가 있다. -> 상속X
 	case FbxGeometryElement::eByControlPoint:
 	{
 		// control point mapping 
-		switch (vertexNormal->GetReferenceMode())
+		switch (vertexNormal->GetReferenceMode())//매핑 정보가 좌표 배열에 저장되는 방식
 		{
+		//n번째 요소의 매핑 정보가 배열의 n번째 위치에 있음
 		case FbxGeometryElement::eDirect:
 		{
 			result[0] = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[0]);
 			result[1] = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[1]);
 			result[2] = static_cast<float>(vertexNormal->GetDirectArray().GetAt(controlPointIndex).mData[2]);
 		} break;
+		//일반적으로 eByPolygonVertex 매핑 모드 요소 좌표를 저장하는 데 유용
+		//n번째 요소의 매핑 정보가 배열의 인덱스가 포함되어 있음
 		case FbxGeometryElement::eIndexToDirect:
 		{
 			int index = vertexNormal->GetIndexArray().GetAt(controlPointIndex);
@@ -33,6 +36,7 @@ FbxVector4 TFbxImporter::ReadNormal(const FbxMesh* mesh,int controlPointIndex,in
 		}break;
 	}break;
 	// 정점 마다 1개의 매핑 좌표가 있다.
+	// 정점은 자신이 속한 다각형 만큼 많은 매핑 좌표를 갖게된다.
 	case FbxGeometryElement::eByPolygonVertex:
 	{
 		switch (vertexNormal->GetReferenceMode())
@@ -101,7 +105,7 @@ FbxColor TFbxImporter::ReadColor(const FbxMesh* mesh,
 	}
 	return Value;
 }
-
+//파일 읽어서 구문 읽음----------------------------------------------------------
 std::string TFbxImporter::ParseMaterial(FbxSurfaceMaterial* pMtrl)
 {
 	std::string name = pMtrl->GetName();
@@ -119,7 +123,7 @@ std::string TFbxImporter::ParseMaterial(FbxSurfaceMaterial* pMtrl)
 			_splitpath(szFileName, Drive, Dir, FName, Ext);
 			std::string texName = FName;
 			std::string ext = Ext;
-			if (ext == ".tga" || ext == ".TGA")
+			if (ext == ".tga" || ext == ".TGA")//이 파일 형식 지원 X
 			{
 				ext.clear();
 				ext = ".dds";
@@ -130,10 +134,13 @@ std::string TFbxImporter::ParseMaterial(FbxSurfaceMaterial* pMtrl)
 	}
 	return std::string("");
 }
+//----------------------------------------------------------------------------------
 void TFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet,int vertexIndex, int uvIndex, FbxVector2& uv)
 {
 	FbxLayerElementUV* pFbxLayerElementUV = pUVSet;
-	if (pFbxLayerElementUV == nullptr) {
+
+	if (pFbxLayerElementUV == nullptr) 
+	{
 		return;
 	}
 
@@ -178,15 +185,16 @@ void TFbxImporter::ReadTextureCoord(FbxMesh* pFbxMesh, FbxLayerElementUV* pUVSet
 	}
 	}
 }
-
+//서브 material 인덱스 얻기 + 0번 레이어만 사용할 것이다(?)
 int TFbxImporter::GetSubMaterialIndex(int iPoly,FbxLayerElementMaterial* pMaterialSetList)
 {
 	// 매핑방식
 	//eNone,
 	//eByControlPoint,  // 제어점
 	//eByPolygonVertex, //  
-	//eByPolygon, // 폴리곤마다 다를수 있다.
+	//eByPolygon,		// 폴리곤마다 다를수 있다.
 	//eAllSame - 전체표면에 1개의 매핑좌표가 있다.
+
 	int iSubMtrl = 0;
 	if (pMaterialSetList != nullptr)
 	{

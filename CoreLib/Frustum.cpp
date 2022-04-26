@@ -9,6 +9,8 @@ bool Frustum::SetVertexData()
 	m_VertexList.resize(24);
 
 	int index = 0;
+
+	//육면체 밖에서 각 면을 바라볼때를 생각하고 정점 위치 벡터 생각하기
 	// +Z plane
 	// 0       1
 	// 2       3
@@ -16,14 +18,17 @@ bool Frustum::SetVertexData()
 	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
 	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
 	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
 	m_VertexList[++index].p = T::TVector3(-1.0f, 1.0f, 1.0f);
 	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
 	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
 	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
 	m_VertexList[++index].p = T::TVector3(1.0f, -1.0f, 1.0f);
 	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
 	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
 	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
 	m_VertexList[++index].p = T::TVector3(-1.0f, -1.0f, 1.0f);
 	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
 	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
@@ -168,7 +173,9 @@ bool Frustum::SetIndexData()
 bool Frustum::PostRender()
 {
 	if (m_IndexList.size() <= 0)
+	{
 		m_pContext->Draw(m_VertexList.size(), 0);
+	}
 	else
 	{		
 		m_pContext->DrawIndexed(m_IndexList.size(), 0, 0);
@@ -194,7 +201,6 @@ bool Frustum::Init()
 	m_vFrustum[5] = TVector3(-1.0f, 1.0f, 1.0f);
 	m_vFrustum[6] = TVector3(1.0f, 1.0f, 1.0f);
 	m_vFrustum[7] = TVector3(1.0f, -1.0f, 1.0f);
-
 	
 	return true;
 }
@@ -210,13 +216,12 @@ void Frustum::CreateFrustum(T::TMatrix& matView, T::TMatrix& matProj)
 	m_vFrustum[6] = TVector3(1.0f, 1.0f, 1.0f);
 	m_vFrustum[7] = TVector3(1.0f, -1.0f, 1.0f);
 
-	T::TMatrix matInverse;
+	T::TMatrix matInverse;//역행렬
 	T::D3DXMatrixMultiply(&matInverse, &matView, &matProj);
 	T::D3DXMatrixInverse(&matInverse, NULL, &matInverse);
 	for (int iVer = 0; iVer < 8; iVer++)
 	{
-		T::D3DXVec3TransformCoord(
-			&m_vFrustum[iVer], &m_vFrustum[iVer], &matInverse);
+		T::D3DXVec3TransformCoord(&m_vFrustum[iVer], &m_vFrustum[iVer], &matInverse);
 		//m_vFrustum[iVer] = m_vFrustum[iVer].xyz,w=1.0f * matInverse;
 	}
 	// 5     6 
@@ -259,8 +264,8 @@ void Frustum::CreateFrustum(T::TMatrix& matView, T::TMatrix& matProj)
 		m_VertexList[++index].p = m_vFrustum[6];
 		m_VertexList[++index].p = m_vFrustum[1];
 		m_VertexList[++index].p = m_vFrustum[2];
-		m_pContext->UpdateSubresource(
-			m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+
+		m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
 	}
 	//-z
 	m_Plane[0] = T::TPlane(m_vFrustum[0], m_vFrustum[1], m_vFrustum[2]);
@@ -280,10 +285,7 @@ BOOL Frustum::ClassifyPoint(T::TVector3* v)
 {
 	for (int i = 0; i < 6; i++)
 	{
-		float pToc = m_Plane[i].x * v->x +
-			m_Plane[i].y * v->y +
-			m_Plane[i].z * v->z +
-			m_Plane[i].w;
+		float pToc = m_Plane[i].x * v->x + m_Plane[i].y * v->y + m_Plane[i].z * v->z + m_Plane[i].w;
 		if (pToc > 0.0f)
 		{
 			return FALSE;
@@ -295,9 +297,7 @@ BOOL Frustum::ClassifySphere(Sphere* v)
 {
 	for (int i = 0; i < 6; i++)
 	{
-		float pToc = m_Plane[i].x * v->vCenter.x +
-			m_Plane[i].y * v->vCenter.y +
-			m_Plane[i].z * v->vCenter.z + m_Plane[i].w;
+		float pToc = m_Plane[i].x * v->vCenter.x + m_Plane[i].y * v->vCenter.y + m_Plane[i].z * v->vCenter.z + m_Plane[i].w;
 		if (pToc >= v->fRadius)
 		{
 			return FALSE;
@@ -312,21 +312,15 @@ BOOL Frustum::ClassifyOBB(Box* box)
 	for (int i = 0; i < 6; i++)
 	{
 		vDir = box->vAxis[0] * box->vSize.x;
-		sum = 	fabs(m_Plane[i].x * vDir.x +
-				m_Plane[i].y * vDir.y +
-				m_Plane[i].z * vDir.z);
-		vDir = box->vAxis[1] * box->vSize.y;
-		sum += fabs(m_Plane[i].x * vDir.x +
-			m_Plane[i].y * vDir.y +
-			m_Plane[i].z * vDir.z);
-		vDir = box->vAxis[2] * box->vSize.z;
-		sum += fabs(m_Plane[i].x * vDir.x +
-			m_Plane[i].y * vDir.y +
-			m_Plane[i].z * vDir.z);
+		sum = fabs(m_Plane[i].x * vDir.x + m_Plane[i].y * vDir.y + m_Plane[i].z * vDir.z);
 
-		float pToc = m_Plane[i].x * box->vCenter.x +
-			m_Plane[i].y * box->vCenter.y +
-			m_Plane[i].z * box->vCenter.z + m_Plane[i].w;
+		vDir = box->vAxis[1] * box->vSize.y;
+		sum += fabs(m_Plane[i].x * vDir.x + m_Plane[i].y * vDir.y + m_Plane[i].z * vDir.z);
+
+		vDir = box->vAxis[2] * box->vSize.z;
+		sum += fabs(m_Plane[i].x * vDir.x + m_Plane[i].y * vDir.y + m_Plane[i].z * vDir.z);
+
+		float pToc = m_Plane[i].x * box->vCenter.x + m_Plane[i].y * box->vCenter.y + m_Plane[i].z * box->vCenter.z + m_Plane[i].w;
 		if (pToc >= sum)
 		{
 			return FALSE;

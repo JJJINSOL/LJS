@@ -121,20 +121,22 @@ bool FbxModel::PostRender()
 
 	for (int iMtrl = 0; iMtrl < m_pSubVertexList.size(); iMtrl++)
 	{		
-		if (m_pTextureList.size() > 0 &&
-			m_pTextureList[iMtrl] != nullptr)
+		if (m_pTextureList.size() > 0 &&m_pTextureList[iMtrl] != nullptr)
 		{
-			m_pContext->PSSetShaderResources(0, 1,
-				m_pTextureList[iMtrl]->m_pSRV.GetAddressOf());
+			m_pContext->PSSetShaderResources(0, 1, m_pTextureList[iMtrl]->m_pSRV.GetAddressOf());
 		}
 
 		ID3D11Buffer* buffer[2] = { m_pVBList[iMtrl], m_pVBWeightList[iMtrl] };
 		m_pContext->IASetVertexBuffers(0, 2, buffer,Strides, Offsets);
 
 		if (m_IndexList.size() <= 0)
+		{
 			m_pContext->Draw(m_pSubVertexList[iMtrl].size(), 0);
+		}
 		else
+		{
 			m_pContext->DrawIndexed(m_IndexList.size(), 0, 0);
+		}
 	}
 	return true;
 }
