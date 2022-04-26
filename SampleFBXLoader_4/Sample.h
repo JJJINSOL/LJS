@@ -4,6 +4,8 @@
 class Sample : public Core
 {
 	std::vector<Fbx> m_FbxObj;
+	Texture* m_pLightTex;
+	Texture* m_pNormalMap;
 public:
 	virtual bool Init()  override;
 	virtual bool Frame()  override;
@@ -12,6 +14,9 @@ public:
 
 	virtual void CreateResizeDevice(UINT iWidth, UINT iHeight) override;
 	virtual void DeleteResizeDevice(UINT iWidth, UINT iHeight) override;
+
+	void	DisplayErrorBox(const WCHAR* lpszFunction);
+	DWORD	LoadAllPath(const TCHAR* argv, std::vector<std::wstring>& list);
 
 public:
 	Sample();
