@@ -2,10 +2,10 @@
 #include "Std.h"
 enum KeyState
 {
-	KEY_FREE = 0,//키 안눌림
-	KEY_UP,//눌러졌던 키에서 손 떼는 순간
-	KEY_PUSH,//눌러지는 순간
-	KEY_HOLD,//눌려있는 상태
+	KEY_FREE = 0,	//키 안눌림
+	KEY_UP,			//눌러졌던 키에서 손 떼는 순간
+	KEY_PUSH,		//눌러지는 순간
+	KEY_HOLD,		//눌려있는 상태
 };
 class Input
 {

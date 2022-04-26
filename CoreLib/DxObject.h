@@ -106,6 +106,7 @@ struct ConstantData
 	T::TMatrix  matWorld;
 	T::TMatrix  matView;
 	T::TMatrix  matProj;
+	T::TMatrix  matNormal;
 	T::TVector4 Color;
 	T::TVector4 Timer;
 };
@@ -119,6 +120,9 @@ struct LightData  //Α¶Έν
 {
 	T::TVector4   vLightDir;
 	T::TVector4   vLightPos;
+	T::TVector4   vCameraDir;
+	T::TVector4   vCameraPos;
+	T::TMatrix	  matLight;      // w*v*p*t
 };
 //=================================================================
 class DxObject : public BaseObject

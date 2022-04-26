@@ -6,7 +6,6 @@ public:
 	float				m_fNearDistance= 0.01f;
 	float				m_fFarDistance = 1000.0f;
 
-	float				m_fRadius=10.0f;
 	T::TQuaternion		m_qRotation;  //Quaternion - »ç¿ø¼ö
 	T::TVector3			m_vCamera;
 	T::TVector3			m_vTarget;
@@ -19,6 +18,11 @@ public:
 	T::TMatrix			m_matWorld;
 	T::TMatrix			m_matView;
 	T::TMatrix			m_matProj;
+
+	float				m_fPitch = 0.0f;
+	float				m_fYaw = 0.0f;
+	float				m_fRoll = 0.0f;
+	float				m_fRadius = 10.0f;
 public:
 
 	void CreateViewMatrix(T::TVector3 p,T::TVector3 t=T::TVector3(0, 0, 0), T::TVector3 u = T::TVector3(0,1,0));

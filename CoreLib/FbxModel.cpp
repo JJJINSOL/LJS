@@ -93,6 +93,8 @@ bool FbxModel::CreateInputLayout()
 
 		{"INDEX",0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{"WEIGHT",0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1,16,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{"TANGENT",0, DXGI_FORMAT_R32G32B32_FLOAT, 1,32,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
 	};
 	UINT NumElements = sizeof(layout) / sizeof(layout[0]);
 	HRESULT hr = m_pd3dDevice->CreateInputLayout(
@@ -139,4 +141,72 @@ bool FbxModel::PostRender()
 		}
 	}
 	return true;
+}
+void TFbxModel::GenAABB()
+{
+	// aabb 
+	m_BoxCollision.vMin = T::TVector3(100000, 100000, 100000);
+	m_BoxCollision.vMax = T::TVector3(-100000, -100000, -100000);
+	for (int iMtrl = 0; iMtrl < m_pSubVertexList.size(); iMtrl++)
+	{
+		for (int i = 0; i < m_pSubVertexList[iMtrl].size(); i++)
+		{
+			if (m_BoxCollision.vMin.x > m_pSubVertexList[iMtrl][i].p.x)
+			{
+				m_BoxCollision.vMin.x = m_pSubVertexList[iMtrl][i].p.x;
+			}
+			if (m_BoxCollision.vMin.y > m_pSubVertexList[iMtrl][i].p.y)
+			{
+				m_BoxCollision.vMin.y = m_pSubVertexList[iMtrl][i].p.y;
+			}
+			if (m_BoxCollision.vMin.z > m_pSubVertexList[iMtrl][i].p.z)
+			{
+				m_BoxCollision.vMin.z = m_pSubVertexList[iMtrl][i].p.z;
+			}
+
+			if (m_BoxCollision.vMax.x < m_pSubVertexList[iMtrl][i].p.x)
+			{
+				m_BoxCollision.vMax.x = m_pSubVertexList[iMtrl][i].p.x;
+			}
+			if (m_BoxCollision.vMax.y < m_pSubVertexList[iMtrl][i].p.y)
+			{
+				m_BoxCollision.vMax.y = m_pSubVertexList[iMtrl][i].p.y;
+			}
+			if (m_BoxCollision.vMax.z < m_pSubVertexList[iMtrl][i].p.z)
+			{
+				m_BoxCollision.vMax.z = m_pSubVertexList[iMtrl][i].p.z;
+			}
+		}
+	}
+
+	// 4      5
+	// 6      7
+
+	// 0     1
+	// 2     3
+	m_BoxCollision.vList[0] = T::TVector3(m_BoxCollision.vMin.x,
+		m_BoxCollision.vMax.y,
+		m_BoxCollision.vMin.z);
+	m_BoxCollision.vList[1] = T::TVector3(m_BoxCollision.vMax.x,
+		m_BoxCollision.vMax.y,
+		m_BoxCollision.vMin.z);
+	m_BoxCollision.vList[2] = T::TVector3(m_BoxCollision.vMin.x,
+		m_BoxCollision.vMin.y,
+		m_BoxCollision.vMin.z);
+	m_BoxCollision.vList[3] = T::TVector3(m_BoxCollision.vMax.x,
+		m_BoxCollision.vMin.y,
+		m_BoxCollision.vMin.z);
+
+	m_BoxCollision.vList[4] = T::TVector3(m_BoxCollision.vMin.x,
+		m_BoxCollision.vMax.y,
+		m_BoxCollision.vMax.z);
+	m_BoxCollision.vList[5] = T::TVector3(m_BoxCollision.vMax.x,
+		m_BoxCollision.vMax.y,
+		m_BoxCollision.vMax.z);
+	m_BoxCollision.vList[6] = T::TVector3(m_BoxCollision.vMin.x,
+		m_BoxCollision.vMin.y,
+		m_BoxCollision.vMax.z);
+	m_BoxCollision.vList[7] = T::TVector3(m_BoxCollision.vMax.x,
+		m_BoxCollision.vMin.y,
+		m_BoxCollision.vMax.z);
 }

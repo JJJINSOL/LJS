@@ -1,5 +1,5 @@
 #include "SkyObj.h"
-void SkyObj::SetMatrix(T::TMatrix* matWorld,T::TMatrix* matView, T::TMatrix* matProj)
+void SkyObj::SetMatrix(T::TMatrix* matWorld, T::TMatrix* matView, T::TMatrix* matProj)
 {
 	m_ConstantList.matWorld = m_matWorld.Transpose();
 	if (matWorld != nullptr)
@@ -22,16 +22,16 @@ void SkyObj::SetMatrix(T::TMatrix* matWorld,T::TMatrix* matView, T::TMatrix* mat
 	UpdateData();
 	UpdateCollision();
 }
-bool SkyObj::LoadTexture(const TCHAR* szColorFileName,const TCHAR* szMaskFileName)
+bool SkyObj::LoadTexture(const TCHAR* szColorFileName,	const TCHAR* szMaskFileName)
 {
 
-	m_pTexArray[0] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_front.bmp" );
-	m_pTexArray[1] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_back.bmp" );
-	m_pTexArray[2] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_right.bmp" );
-	m_pTexArray[3] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_left.bmp" );
-	m_pTexArray[4] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_up.bmp" );
-	m_pTexArray[5] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_down.bmp" );
-	
+	m_pTexArray[0] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_front.bmp");
+	m_pTexArray[1] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_back.bmp");
+	m_pTexArray[2] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_right.bmp");
+	m_pTexArray[3] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_left.bmp");
+	m_pTexArray[4] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_up.bmp");
+	m_pTexArray[5] = I_Texture.Load(L"..\\..\\data\\sky\\st00_cm_down.bmp");
+
 	m_pSRVArray[0] = m_pTexArray[0]->m_pSRV;
 	m_pSRVArray[1] = m_pTexArray[1]->m_pSRV;
 	m_pSRVArray[2] = m_pTexArray[2]->m_pSRV;
@@ -39,7 +39,7 @@ bool SkyObj::LoadTexture(const TCHAR* szColorFileName,const TCHAR* szMaskFileNam
 	m_pSRVArray[4] = m_pTexArray[4]->m_pSRV;
 	m_pSRVArray[5] = m_pTexArray[5]->m_pSRV;
 
-	m_pTexCube = I_Texture.Load(L"..\\..\\data\\sky\\LobbyCube.dds");
+	m_pTexCube = I_Texture.Load(szColorFileName);
 
 	m_TextureDesc = m_pTexArray[0]->m_TextureDesc;
 	return true;
@@ -138,7 +138,7 @@ bool SkyObj::PostRender()
 	// 2¹ø
 	m_pContext->PSSetShaderResources(3, 1,
 		m_pTexCube->m_pSRV.GetAddressOf());
-	m_pContext->DrawIndexed(36, 0, 0); 
+	m_pContext->DrawIndexed(36, 0, 0);
 	return true;
 }
 SkyObj::SkyObj()

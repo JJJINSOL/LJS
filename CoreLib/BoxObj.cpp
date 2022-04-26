@@ -173,6 +173,145 @@ bool BoxObj::PostRender()
 	}
 	return true;
 }
+void BoxObj::DrawDebugRender(Box* pBox)
+{
+	// 4      5
+	// 6      7
+
+	// 0     1
+	// 2     3
+	int index = 0;
+	// +z
+
+	m_VertexList[index].p = pBox->vList[5];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[4];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[7];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[6];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, 1.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[0];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, -1.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[1];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, -1.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[2];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, -1.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[3];
+	m_VertexList[index].n = T::TVector3(0.0f, 0.0f, -1.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+
+	m_VertexList[++index].p = pBox->vList[1];
+	m_VertexList[index].n = T::TVector3(1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[5];
+	m_VertexList[index].n = T::TVector3(1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[3];
+	m_VertexList[index].n = T::TVector3(1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[7];
+	m_VertexList[index].n = T::TVector3(1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+
+	m_VertexList[++index].p = pBox->vList[4];
+	m_VertexList[index].n = T::TVector3(-1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[0];
+	m_VertexList[index].n = T::TVector3(-1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[6];
+	m_VertexList[index].n = T::TVector3(-1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[2];
+	m_VertexList[index].n = T::TVector3(-1.0f, 0.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+
+	m_VertexList[++index].p = pBox->vList[2];
+	m_VertexList[index].n = T::TVector3(0.0f, -1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[3];
+	m_VertexList[index].n = T::TVector3(0.0f, -1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[6];
+	m_VertexList[index].n = T::TVector3(0.0f, -1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[7];
+	m_VertexList[index].n = T::TVector3(0.0f, -1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(0.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[4];
+	m_VertexList[index].n = T::TVector3(0.0f, 1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[5];
+	m_VertexList[index].n = T::TVector3(0.0f, 1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 0.0f);
+
+	m_VertexList[++index].p = pBox->vList[0];
+	m_VertexList[index].n = T::TVector3(0.0f, 1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(0.0f, 1.0f);
+
+	m_VertexList[++index].p = pBox->vList[1];
+	m_VertexList[index].n = T::TVector3(0.0f, 1.0f, 0.0f);
+	m_VertexList[index].c = T::TVector4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_VertexList[index].t = T::TVector2(1.0f, 1.0f);
+
+	//SetMatrix(&m_matWorld, &matView, &matProj);
+	PreRender();
+	Draw();
+	m_pContext->UpdateSubresource(m_pVertexBuffer, 0, NULL, &m_VertexList.at(0), 0, 0);
+	PostRender();
+}
 BoxObj::BoxObj()
 {
 

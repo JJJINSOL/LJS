@@ -60,14 +60,15 @@ float Map::GetHeight(float fPosX, float fPosZ)
 	}
 	return fHeight;
 }
-float Map::Lerp(float fStart, float fEnd, float fTangent) 
+float Map::Lerp(float fStart, float fEnd, float fTangent)
 {
-	//선형보간
 	return fStart - (fStart * fTangent) + (fEnd * fTangent);
 }
 bool Map::Frame()
 {
-	T::TVector3 vLight(cosf(g_fGameTimer)*100.0f, 100, sinf(g_fGameTimer) * 100.0f);
+	T::TVector3 vLight(cosf(g_fGameTimer) * 100.0f,
+		100,
+		sinf(g_fGameTimer) * 100.0f);
 
 	T::D3DXVec3Normalize(&vLight, &vLight);
 	vLight = vLight * -1.0f;
@@ -79,19 +80,19 @@ bool Map::Frame()
 }
 bool Map::CreateHeightMap(const TCHAR* strHeightMapTex)
 {
-	HRESULT hr;	
+	HRESULT hr;
 	ID3D11ShaderResourceView* pSRV = nullptr;
 	ComPtr<ID3D11Resource> pTexture;
 	size_t maxsize = 0;
 	if (FAILED(hr = CreateWICTextureFromFileEx(m_pd3dDevice,
-				strHeightMapTex,
-				maxsize,
-				D3D11_USAGE_STAGING,
-				0,
-				D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ,
-				0,
-				DirectX::WIC_LOADER_DEFAULT,
-				pTexture.GetAddressOf(), nullptr)))
+		strHeightMapTex,
+		maxsize,
+		D3D11_USAGE_STAGING,
+		0,
+		D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ,
+		0,
+		DirectX::WIC_LOADER_DEFAULT,
+		pTexture.GetAddressOf(), nullptr)))
 	{
 		return false;
 	}
@@ -112,7 +113,7 @@ bool Map::CreateHeightMap(const TCHAR* strHeightMapTex)
 		if (SUCCEEDED(m_pContext->Map((ID3D11Resource*)pTexture2D, D3D11CalcSubresource(0, 0, 1), D3D11_MAP_READ, 0, &MappedFaceDest)))
 		{
 			UCHAR* pTexels = (UCHAR*)MappedFaceDest.pData;
-			Vertex v;
+			Vertex	v;
 			for (UINT row = 0; row < desc.Height; row++)
 			{
 				UINT rowStart = row * MappedFaceDest.RowPitch;
@@ -130,18 +131,19 @@ bool Map::CreateHeightMap(const TCHAR* strHeightMapTex)
 	m_iNumRows = desc.Height;
 	m_iNumCols = desc.Width;
 
-	if(pTexture2D) pTexture2D->Release();
+	if (pTexture2D) pTexture2D->Release();
 	return true;
 }
-bool Map::CreateMap(UINT width, UINT height, float fDistance)
+bool Map::CreateMap(UINT width, UINT height,
+	float fDistance)
 {
 	m_iNumCols = width;
 	m_iNumRows = height;
 	m_fCellDistance = fDistance;
 	m_iNumVertices = m_iNumCols * m_iNumRows;
-	m_iNumCellCols = m_iNumCols-1;
-	m_iNumCellRows = m_iNumRows-1;
-	m_iNumFaces = m_iNumCellCols* m_iNumCellRows*2;
+	m_iNumCellCols = m_iNumCols - 1;
+	m_iNumCellRows = m_iNumRows - 1;
+	m_iNumFaces = m_iNumCellCols * m_iNumCellRows * 2;
 
 	m_BoxCollision.vMax.x = (m_iNumCols / 2 * m_fCellDistance);
 	m_BoxCollision.vMin.x = -m_BoxCollision.vMax.x;
@@ -151,7 +153,7 @@ bool Map::CreateMap(UINT width, UINT height, float fDistance)
 }
 bool Map::SetVertexData()
 {
-	m_VertexList.resize(m_iNumVertices);	
+	m_VertexList.resize(m_iNumVertices);
 	float  hHalfCol = (m_iNumCols - 1) / 2.0f;
 	float  hHalfRow = (m_iNumRows - 1) / 2.0f;
 	float  ftxOffetU = 1.0f / (m_iNumCols - 1);
@@ -161,35 +163,35 @@ bool Map::SetVertexData()
 		for (int iCol = 0; iCol < m_iNumCols; iCol++)
 		{
 			int index = iRow * m_iNumCols + iCol;
-			m_VertexList[index].p.x = (iCol- hHalfCol)* m_fCellDistance;
-			m_VertexList[index].p.y = m_fHeightList[index]*3.0f;
-			m_VertexList[index].p.z = -((iRow - hHalfRow)* m_fCellDistance);
+			m_VertexList[index].p.x = (iCol - hHalfCol) * m_fCellDistance;
+			m_VertexList[index].p.y = m_fHeightList[index] * 5.0f;
+			m_VertexList[index].p.z = -((iRow - hHalfRow) * m_fCellDistance);
 			m_VertexList[index].n = T::TVector3(0, 1, 0);
-			m_VertexList[index].c = T::TVector4(randstep(0.0f, 1.0f), 
-				randstep(0.0f, 1.0f), 
+			m_VertexList[index].c = T::TVector4(randstep(0.0f, 1.0f),
+				randstep(0.0f, 1.0f),
 				randstep(0.0f, 1.0f), 1);
-			m_VertexList[index].t = 
-				T::TVector2(ftxOffetU*iCol, ftxOffetV * iRow);
+			m_VertexList[index].t =
+				T::TVector2(ftxOffetU * iCol, ftxOffetV * iRow);
 		}
 	}
 	return true;
 }
 bool Map::SetIndexData()
 {
-	m_IndexList.resize(m_iNumFaces*3);
+	m_IndexList.resize(m_iNumFaces * 3);
 	UINT iIndex = 0;
 	for (int iRow = 0; iRow < m_iNumCellRows; iRow++)
 	{
 		for (int iCol = 0; iCol < m_iNumCellCols; iCol++)
 		{
-			m_IndexList[iIndex+0] = iRow * m_iNumCols + iCol;
-			m_IndexList[iIndex+1] = (iRow * m_iNumCols + iCol)+1;
-			m_IndexList[iIndex+2] = (iRow+1)* m_iNumCols + iCol;
+			m_IndexList[iIndex + 0] = iRow * m_iNumCols + iCol;
+			m_IndexList[iIndex + 1] = (iRow * m_iNumCols + iCol) + 1;
+			m_IndexList[iIndex + 2] = (iRow + 1) * m_iNumCols + iCol;
 
 			m_IndexList[iIndex + 3] = m_IndexList[iIndex + 2];
 			m_IndexList[iIndex + 4] = m_IndexList[iIndex + 1];
-			m_IndexList[iIndex + 5] = m_IndexList[iIndex + 2]+1;
-			
+			m_IndexList[iIndex + 5] = m_IndexList[iIndex + 2] + 1;
+
 			iIndex += 6;
 		}
 	}
@@ -208,11 +210,11 @@ bool Map::SetIndexData()
 			face.v1 = m_IndexList[iIndex + 1];
 			face.v2 = m_IndexList[iIndex + 2];
 			T::TVector3 vNormal;
-			T::TVector3 vE0= m_VertexList[face.v1].p - m_VertexList[face.v0].p;
+			T::TVector3 vE0 = m_VertexList[face.v1].p - m_VertexList[face.v0].p;
 			T::D3DXVec3Normalize(&vE0, &vE0);
-			T::TVector3 vE1= m_VertexList[face.v2].p - m_VertexList[face.v0].p;
+			T::TVector3 vE1 = m_VertexList[face.v2].p - m_VertexList[face.v0].p;
 			T::D3DXVec3Normalize(&vE1, &vE1);
-			
+
 			T::D3DXVec3Cross(&face.vNomal, &vE0, &vE1);
 			T::D3DXVec3Normalize(&face.vNomal, &face.vNomal);
 
@@ -221,7 +223,7 @@ bool Map::SetIndexData()
 			m_VertexList[face.v2].n += face.vNomal;
 
 			float fDot = max(0.0f, T::D3DXVec3Dot(&vLight, &face.vNomal));
-			m_VertexList[face.v0].c = T::TVector4(fDot, fDot, fDot,1);
+			m_VertexList[face.v0].c = T::TVector4(fDot, fDot, fDot, 1);
 			m_VertexList[face.v1].c = T::TVector4(fDot, fDot, fDot, 1);
 			m_VertexList[face.v2].c = T::TVector4(fDot, fDot, fDot, 1);
 			m_FaceList.push_back(face);
@@ -263,6 +265,10 @@ bool Map::SetIndexData()
 		}
 	}
 	return true;
+}
+float Map::GetHeight(int index)
+{
+	return m_fHeightList[index];
 }
 Map::Map()
 {

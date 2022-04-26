@@ -7,6 +7,14 @@ void Camera::CreateViewMatrix(T::TVector3 p,T::TVector3 t, 	T::TVector3 u )
 	m_vUp = u;
 	//¿Þ¼Õ ÁÂÇ¥°è(DX) ºäÇà·Ä °è»ê ÇÔ¼ö - D3DXMatrixLookAtLH
 	T::D3DXMatrixLookAtLH(&m_matView, &m_vCamera, &m_vTarget, &m_vUp);	
+
+	T::TMatrix mInvView;
+	D3DXMatrixInverse(&mInvView, NULL, &m_matView);
+	TVector3* pZBasis = (TVector3*)&mInvView._31;
+	m_fYaw = atan2f(pZBasis->x, pZBasis->z); //arc tangent °è»ê
+	float fLen = sqrtf(pZBasis->z * pZBasis->z + pZBasis->x * pZBasis->x); //Á¦°ö±Ù
+	m_fPitch = -atan2f(pZBasis->y, fLen); //arc tangent °è»ê
+
 	UpdateVector();
 }
 void Camera::CreateProjMatrix(float fovy, float Aspect, float zn, float zf)
@@ -27,8 +35,12 @@ bool Camera::Init()
 // vValue.x : pitch, y=yaw, z= roll, w =radius
 bool Camera::Update(T::TVector4 vDirValue)
 {
+	m_fPitch += vDirValue.x;
+	m_fYaw += vDirValue.y;
+	m_fRoll += vDirValue.z;
+
 	T::TMatrix matRotation;
-	T::D3DXQuaternionRotationYawPitchRoll(&m_qRotation, vDirValue.y, vDirValue.x, vDirValue.z);
+	T::D3DXQuaternionRotationYawPitchRoll(&m_qRotation, m_fYaw, m_fPitch, m_fRoll);
 
 	m_vCamera += m_vLook * vDirValue.w;
 	m_fRadius += vDirValue.w;
@@ -69,21 +81,31 @@ bool Camera::Frame()
 	T::TVector2 dir = Input::Get().GetDelta();
 	if (Input::Get().GetKey('A') || Input::Get().GetKey(VK_LEFT))
 	{
-		MoveSide(-g_fSecPerFrame * 100.0f);
+		MoveSide(-g_fSecPerFrame * m_fSpeed);
 	}
 	if (Input::Get().GetKey('D') || Input::Get().GetKey(VK_RIGHT))
 	{
-		MoveSide(g_fSecPerFrame * 100.0f);
+		MoveSide(g_fSecPerFrame * m_fSpeed);
 	}
 	//m_Camera.MoveLook(10.0f);
 	if (Input::Get().GetKey('W'))
 	{
-		MoveLook(g_fSecPerFrame * 100.0f);
+		MoveLook(g_fSecPerFrame * m_fSpeed);
 	}
 	if (Input::Get().GetKey('S') || Input::Get().GetKey(VK_DOWN))
 	{
-		MoveLook(-g_fSecPerFrame * 100.0f);
+		MoveLook(-g_fSecPerFrame * m_fSpeed);
 	}
+
+	if (Input::Get().GetKey(VK_SPACE))
+	{
+		m_fSpeed += g_fSecPerFrame * 500.0f;
+	}
+	else
+	{
+		m_fSpeed -= g_fSecPerFrame * 1000.0f;
+	}
+	if (m_fSpeed < 100.0f) m_fSpeed = 100.0f;
 
 	Update(T::TVector4(-dir.x, -dir.y, 0, 0));
 	return true;
@@ -97,4 +119,5 @@ Camera::Camera()
 	m_vTarget.y = 0;
 	m_vTarget.z = 100;
 	m_vUp = m_vDefaultUp = T::TVector3(0, 1, 0);
+	m_fSpeed = 100.0f;
 }

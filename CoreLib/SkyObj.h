@@ -10,8 +10,7 @@ public:
 	virtual void		SetMatrix(T::TMatrix* matWorld,T::TMatrix* matView, T::TMatrix* matProj);
 	virtual bool		SetVertexData();
 	virtual bool		SetIndexData();
-	virtual bool		LoadTexture(const TCHAR* szColorFileName,
-							const TCHAR* szMaskFileName);
+	virtual bool		LoadTexture(const TCHAR* szColorFileName, const TCHAR* szMaskFileName);
 	bool	Render();
 	bool	PostRender();
 public:

@@ -1,6 +1,9 @@
 #include "Core.h"
 #include "ObjectMgr.h"
 #include "SoundMgr.h"
+
+BoxObj* g_pBoxDebug = nullptr;
+
 bool Core::CoreInit()
 {
 	m_GameTimer.Init();
@@ -42,6 +45,20 @@ bool Core::CoreInit()
 	//메인 카메라에 디폴트 카메라 넣어줌 다른 카메라로 전환하고 싶으면 메인카메라에 넣어주기
 	m_pMainCamera = &m_DefaultCamera;
 
+	m_SkyObj.Init();
+	m_SkyObj.SetPosition(T::TVector3(0.0f, 0.0f, 0.0f));
+
+	if (!m_SkyObj.Create(m_pd3dDevice.Get(),
+		m_pImmediateContext.Get(),
+		L"../../data/shader/sky.hlsl",
+		L"../../data/sky/skybox02.dds"))
+	{
+		return false;
+	}
+
+	DrawDebugInit(m_pd3dDevice.Get(), m_pImmediateContext.Get());
+	g_pBoxDebug = &m_BoxDebug;
+
 	Init();
 
 	return true;
@@ -56,7 +73,7 @@ bool Core::GameRun()
 	}
 	CoreRelease();
 
-	MemoryReporting();
+	//MemoryReporting();
 
 	return true;
 }
@@ -69,6 +86,7 @@ bool Core::CoreFrame()
 	m_GameTimer.Frame();
 	Input::Get().Frame();
 	m_pMainCamera->Frame();
+	m_SkyObj.Frame();
 	I_ObjectMgr.Frame();
 	I_Sound.Frame();
 	Frame();
@@ -99,6 +117,22 @@ bool Core::CoreRender()
 		m_pImmediateContext->RSSetState(DxState::g_pRSBackCullSolid);
 	}
 
+	//------------------------------------------------------------------
+	m_SkyObj.m_matView = m_pMainCamera->m_matView;
+	m_SkyObj.m_matView._41 = 0;
+	m_SkyObj.m_matView._42 = 0;
+	m_SkyObj.m_matView._43 = 0;
+	T::TMatrix matRotation, matScale;
+	/*T::D3DXMatrixScaling(&matScale, 3000.0f, 3000.0f, 3000.0f);
+	T::D3DXMatrixRotationY(&matRotation, g_fGameTimer * 0.00f);
+	m_SkyObj.m_matWorld = matScale * matRotation;*/
+	m_SkyObj.SetMatrix(NULL, &m_SkyObj.m_matView, &m_pMainCamera->m_matProj);
+	m_pImmediateContext->RSSetState(DxState::g_pRSNoneCullSolid);
+	//m_pImmediateContext->PSSetSamplers(0, 1, &TDxState::m_pSSLinear);
+	//m_pImmediateContext->PSSetSamplers(1, 1, &TDxState::m_pSSPoint);
+	m_SkyObj.Render();
+	m_pImmediateContext->RSSetState(DxState::g_pRSBackCullSolid);
+	// -----------------------------------------------------------------
 	// 백버퍼에 랜더링 한다.
 	Render();
 
@@ -112,14 +146,13 @@ bool Core::CoreRender()
 bool Core::CoreRelease()
 {
 	Release();
+	m_BoxDebug.Release();
+	m_SkyObj.Release();
+	m_DefaultCamera.Release();
 	DxState::Release();
-
 	m_dxWrite.Release();
 	m_GameTimer.Release();
-	m_DefaultCamera.Release();
-
 	Input::Get().Release();
-
 	CleanupDevice();
 	return true;
 }
@@ -143,4 +176,15 @@ void Core::ResizeDevice(UINT iWidth, UINT iHeight)
 	if (pSurface) pSurface->Release();
 
 	CreateResizeDevice(iWidth, iHeight);
+}
+void Core::DrawDebugInit(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pContext)
+{
+	m_BoxDebug.m_pColorTex = I_Texture.Load(L"../../data/charport.bmp");
+	m_BoxDebug.m_pVShader = I_Shader.CreateVertexShader(pd3dDevice, L"Box.hlsl", "VSColor");
+	m_BoxDebug.m_pPShader = I_Shader.CreatePixelShader(	pd3dDevice, L"Box.hlsl", "PSColor");
+	m_BoxDebug.SetPosition(T::TVector3(0.0f, 1.0f, 0.0f));
+	if (!m_BoxDebug.Create(pd3dDevice, pContext))
+	{
+		return;
+	}
 }

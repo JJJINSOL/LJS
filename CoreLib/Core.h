@@ -5,9 +5,12 @@
 #include "Timer.h"
 #include "WriteFont.h"
 #include "Camera.h"
+#include "SkyObj.h"
 class Core : public Device
 {
 public:
+	SkyObj	 m_SkyObj;
+
 	Camera*		m_pMainCamera = nullptr;
 	Camera		m_DefaultCamera;
 
@@ -31,6 +34,9 @@ public:
 	virtual bool Frame() { return true; };
 	virtual bool Render() { return true; };
 	virtual bool Release() { return true; };
+
+	BoxObj	m_BoxDebug;
+	void	DrawDebugInit(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pContext);
 
 	Core() {};
 	virtual ~Core() {};

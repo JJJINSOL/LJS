@@ -200,8 +200,27 @@ void TFbxImporter::ParseMesh(FbxModel* pObject)//datamesh를 가져와라
 	std::vector<FbxLayerElementUV*>				VertexUVSet;    //정점 UV
 	std::vector<FbxLayerElementVertexColor*>	VertexColorSet; //정점 컬러
 	std::vector<FbxLayerElementMaterial*>		MaterialSet;    //질감
+	std::vector<FbxLayerElementTangent*>		VertexTangentSet;
+	std::vector<FbxLayerElementNormal*>			VertexNormalSets;
 
 	int iLayerCount = pFbxMesh->GetLayerCount();
+
+	bool bFlag = false;
+
+	if (iLayerCount == 0 || pFbxMesh->GetLayer(0)->GetNormals() == nullptr)
+	{
+		pFbxMesh->InitNormals();
+#if (FBXSDK_VERSION_MAJOR >= 2015)
+		pFbxMesh->GenerateNormals();
+#else
+		pFbxMesh->ComputeVertexNormals();
+#endif
+	}
+
+	if (pFbxMesh->GetLayer(0)->GetTangents() == nullptr)
+	{
+		bFlag = pFbxMesh->GenerateTangentsData(0);
+	}
 
 	for (int iLayer = 0; iLayer < iLayerCount; iLayer++)
 	{
@@ -213,6 +232,14 @@ void TFbxImporter::ParseMesh(FbxModel* pObject)//datamesh를 가져와라
 		if (pFbxLayer->GetVertexColors() != nullptr)
 		{
 			VertexColorSet.push_back(pFbxLayer->GetVertexColors());
+		}
+		if (pFbxLayer->GetTangents() != nullptr)
+		{
+			VertexTangentSet.push_back(pFbxLayer->GetTangents());
+		}
+		if (pFbxLayer->GetNormals() != NULL)
+		{
+			VertexNormalSets.push_back(pFbxLayer->GetNormals());
 		}
 		if (pFbxLayer->GetMaterials() != nullptr)
 		{
@@ -291,21 +318,23 @@ void TFbxImporter::ParseMesh(FbxModel* pObject)//datamesh를 가져와라
 			CornerIndex[0] = pFbxMesh->GetPolygonVertex(iPoly, VertexIndex[0]);
 			CornerIndex[1] = pFbxMesh->GetPolygonVertex(iPoly, VertexIndex[1]);
 			CornerIndex[2] = pFbxMesh->GetPolygonVertex(iPoly, VertexIndex[2]);
+
+			// uv
+			int u[3];
+			u[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
+			u[1] = pFbxMesh->GetTextureUVIndex(iPoly, iFace + 2);
+			u[2] = pFbxMesh->GetTextureUVIndex(iPoly, iFace + 1);
+
 			for (int iIndex = 0; iIndex < 3; iIndex++)
 			{
+				int DCCIndex = CornerIndex[iIndex];
 				Vertex tVertex;	
 				// Max(x,z,y) ->(dx)x,y,z    
-				FbxVector4 v = pVertexPositions[CornerIndex[iIndex]];
-				v = geom.MultT(v);
+				auto v = geom.MultT(pVertexPositions[DCCIndex]);
 				tVertex.p.x = v.mData[0];
 				tVertex.p.y = v.mData[2];
 				tVertex.p.z = v.mData[1];
 
-				// uv
-				int u[3];
-				u[0] = pFbxMesh->GetTextureUVIndex(iPoly, VertexIndex[0]);
-				u[1] = pFbxMesh->GetTextureUVIndex(iPoly, VertexIndex[1]);
-				u[2] = pFbxMesh->GetTextureUVIndex(iPoly, VertexIndex[2]);
 				if (VertexUVSet.size() > 0)
 				{
 					FbxLayerElementUV* pUVSet = VertexUVSet[0];
@@ -331,18 +360,56 @@ void TFbxImporter::ParseMesh(FbxModel* pObject)//datamesh를 가져와라
 				tVertex.c.w = pObject->m_iIndex;
 
 
-				FbxVector4 normal = ReadNormal(pFbxMesh, CornerIndex[iIndex], iBasePolyIndex + VertexIndex[iIndex]);
-				normal = normalMatrix.MultT(normal);
-				tVertex.n.x = normal.mData[0]; // x
-				tVertex.n.y = normal.mData[2]; // z
-				tVertex.n.z = normal.mData[1]; // y
-
+				if (VertexNormalSets.size() <= 0)
+				{
+					FbxVector4 normal = ReadNormal(pFbxMesh, DCCIndex, iBasePolyIndex + VertexIndex[iIndex]);
+					normal = normalMatrix.MultT(normal);
+					normal.Normalize();
+					tVertex.n.x = normal.mData[0]; // x
+					tVertex.n.y = normal.mData[2]; // z
+					tVertex.n.z = normal.mData[1]; // y		
+					D3DXVec3Normalize(&tVertex.n, &tVertex.n);
+				}
+				else
+				{
+					// Store vertex normal
+					FbxVector4 finalNorm = ReadNormal(pFbxMesh, VertexNormalSets.size(),
+													  VertexNormalSets[0],
+												      DCCIndex,
+													  iBasePolyIndex + VertexIndex[iIndex]);// dwTriangleIndex * 3 + dwCornerIndex);
+					finalNorm.mData[3] = 0.0;
+					finalNorm = normalMatrix.MultT(finalNorm);
+					finalNorm.Normalize();
+					tVertex.n.x = finalNorm.mData[0];
+					tVertex.n.y = finalNorm.mData[2];
+					tVertex.n.z = finalNorm.mData[1];
+					D3DXVec3Normalize(&tVertex.n, &tVertex.n);
+				}
 
 				// 가중치
 				VertexIW iwVertex;
+
+				FbxGeometryElementTangent* vertexTangent = pFbxMesh->GetElementTangent(0);
+				if (vertexTangent != nullptr)
+				{
+					FbxVector4 tangent = ReadTangent(pFbxMesh,
+						VertexTangentSet.size(),
+						vertexTangent,
+						DCCIndex,
+						iBasePolyIndex + VertexIndex[iIndex]);
+					iwVertex.tan.x = (FLOAT)tangent.mData[0];
+					iwVertex.tan.y = (FLOAT)tangent.mData[2];
+					iwVertex.tan.z = (FLOAT)tangent.mData[1];
+				}
+				else
+				{
+					iwVertex.tan = { 0,0,0 };
+				}
+
+
 				if (pObject->m_bSkinned)
 				{
-					Weight* weight = &pObject->m_WeightList[CornerIndex[iIndex]];
+					Weight* weight = &pObject->m_WeightList[DCCIndex];
 					for (int i = 0; i < 4; i++)
 					{
 						iwVertex.i[i] = weight->Index[i];
@@ -389,8 +456,24 @@ bool TFbxImporter::Init()
 {
 	//fbx 초기화 작업
 	m_pFbxManager = FbxManager::Create();
+	//FbxIOSettings* ios = FbxIOSettings::Create(m_pFbxManager, IOSROOT);
+	//if (ios == nullptr) return false;
+	//m_pFbxManager->SetIOSettings(ios);
+	//bool bTangent = ios->GetBoolProp(IMP_FBX_TANGENT, true);
+	//ios->SetBoolProp(IMP_FBX_TANGENT, true);
+
 	m_pFbxImporter = FbxImporter::Create(m_pFbxManager, "");
-	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");	
+	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");
+
+	FbxAxisSystem m_SceneAxisSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
+	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene);
+	m_SceneAxisSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
+
+	FbxSystemUnit m_SceneSystemUnit = m_pFbxScene->GetGlobalSettings().GetSystemUnit();
+	if (m_SceneSystemUnit.GetScaleFactor() != 1.0f)
+	{
+		FbxSystemUnit::cm.ConvertScene(m_pFbxScene);
+	}
 	return true;
 }
 bool TFbxImporter::Frame()

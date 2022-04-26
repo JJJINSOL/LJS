@@ -1,6 +1,7 @@
 #pragma once
 #include "Object3D.h"
 #include <fbxsdk.h>
+#include "Camera.h"
 
 struct PNCT
 {
@@ -13,6 +14,7 @@ struct VertexIW
 {
 	float  i[4];
 	float  w[4];
+	T::TVector3 tan;
 	VertexIW()
 	{
 		i[0] = i[1] = i[2] = i[3] = 0;
@@ -76,6 +78,7 @@ public:
 	FbxNode*	 m_pFbxNode = nullptr;
 	FbxModel*	 m_pParentObj = nullptr;
 	std::wstring m_szTexFileName;
+
 	// submaterial
 	std::vector<std::wstring>  m_szTexFileList;
 
@@ -93,7 +96,9 @@ public:
 
 	std::vector<Track>					m_AnimTrack;
 	std::map<std::wstring, TMatrix>		m_dxMatrixBindPoseMap;
-	//TMatrix aaa[255];
+
+	Camera* m_pMainCamera;
+
 public:
 	virtual bool    SetVertexData() override;	
 	virtual bool	CreateVertexBuffer()override;
@@ -101,7 +106,7 @@ public:
 	virtual bool	CreateInputLayout() override;
 	virtual bool	PostRender() override;
 	virtual bool    Release() override;
-	
+	virtual void    GenAABB() override;
 };
 
 //FbxImporter 로 클래스 설정 안됨--------------------------------------------------
@@ -145,6 +150,13 @@ public:
 						FbxLayerElementVertexColor* pVertexColorSet,
 						DWORD dwDCCIndex, DWORD dwVertexIndex);
 	FbxVector4 ReadNormal(const FbxMesh* mesh,int controlPointIndex,int vertexCounter);
+
+	FbxVector4 ReadNormal(const FbxMesh* mesh,
+							DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,
+							int controlPointIndex, int iVertexIndex);
+	FbxVector4 ReadTangent(const FbxMesh* mesh,
+							DWORD dwVertexTangentCount, FbxGeometryElementTangent* VertexTangentSets,
+							DWORD dwDCCIndex, DWORD dwVertexIndex);
 
 	int		GetSubMaterialIndex(int iPlygon,FbxLayerElementMaterial* pMtrl);
 	bool	ParseMeshSkinning(FbxMesh* pFbxMesh, FbxModel* pObject);

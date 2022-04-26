@@ -33,7 +33,9 @@ public:
 	virtual bool CreateDetphStencilView();
 	virtual bool SetViewport();
 	virtual bool CleanupDevice();
+
 	void ResizeDevice(UINT iWidth, UINT iHeight);
+	void ClearD3D11DeviceContext(ID3D11DeviceContext* pd3dDeviceContext);
 public:
 	Device()
 	{

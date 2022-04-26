@@ -83,8 +83,6 @@ bool Input::Frame()
 		m_ptDeltaMouse.y = ptOffset.y - m_ptMouse.y;
 	}
 	return true;
-
-	return true;
 }
 bool Input::Render()
 {

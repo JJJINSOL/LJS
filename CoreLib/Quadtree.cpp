@@ -13,16 +13,16 @@ Node* Quadtree::CheckBoxtoPoint(T::TVector3 p)
 			node->m_Box.vMin.z <= p.z && node->m_Box.vMax.z >= p.z)
 		{
 			return node;
-		}		
+		}
 	}
 	return nullptr;
 }
-void Quadtree::FindNeighborNode()
-{	
+void   Quadtree::FindNeighborNode()
+{
 	for (auto node : g_pLeafNodes)
 	{
 		node->m_pNeighborList.resize(4);
-		T::TVector3 p;		
+		T::TVector3 p;
 		p.x = node->m_Box.vCenter.x;
 		p.y = 0.0f;
 		p.z = node->m_Box.vMax.z + node->m_Box.vSize.z;
@@ -37,7 +37,7 @@ void Quadtree::FindNeighborNode()
 
 		p.x = node->m_Box.vMax.x + node->m_Box.vSize.x;
 		node->m_pNeighborList[3] = CheckBoxtoPoint(p); // 동		
-		
+
 	}
 }
 void Quadtree::GetRatio(Node* pNode)
@@ -52,7 +52,7 @@ void Quadtree::GetRatio(Node* pNode)
 		pNode->m_iCurrentLod = m_iNumLOD - 1;
 	}
 }
-int Quadtree::GetLodType(Node* pNode)
+int	Quadtree::GetLodType(Node* pNode)
 {
 	if (pNode->m_pNeighborList.size() <= 0) return 0;
 	int dwType = 0;
@@ -78,11 +78,11 @@ void Quadtree::Update(Camera* pCamera)
 	// 보이는 노드들의 LOD 타입(0~ 15타입)을 결정
 	m_iNumFace = 0;
 	for (auto node : g_pDrawLeafNodes)
-	{		
+	{
 		GetLodType(node);
 		// 전체 인덱스 버퍼를 1개만 사용한다.
 		// LOD버퍼를 저장
-		m_iNumFace += UpdateIndexList(node,m_iNumFace * 3, node->m_iCurrentLod);
+		m_iNumFace += UpdateIndexList(node, m_iNumFace * 3, node->m_iCurrentLod);
 	}
 }
 void Quadtree::RenderTile(Node* pNode)
@@ -97,11 +97,11 @@ void Quadtree::RenderTile(Node* pNode)
 				m_ObjectList.push_back(obj);
 			}
 		}
-		if( pNode->m_bLeaf == true)
+		if (pNode->m_bLeaf == true)
 		{
 			g_pDrawLeafNodes.push_back(pNode);
 			return;
-		}		
+		}
 		for (int iNode = 0; iNode < pNode->m_pChild.size(); iNode++)
 		{
 			RenderTile(pNode->m_pChild[iNode]);
@@ -110,39 +110,57 @@ void Quadtree::RenderTile(Node* pNode)
 }
 bool Quadtree::Render()
 {
-	m_pMap->PreRender();
-	m_pMap->Draw();
-
-	m_pMap->m_pContext->UpdateSubresource(m_pIndexBuffer.Get(), 0, NULL, &m_IndexList.at(0), 0, 0);
-	m_pMap->m_pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	m_pMap->m_pContext->DrawIndexed(m_iNumFace*3, 0, 0);
-
-	// 노드의 바운딩 박스를 랜더링
-	/*for (int iNode = 0; iNode < g_pDrawLeafNodes.size(); iNode++)
+	PreRender();
+	PostRender();
+	return true;
+}
+bool Quadtree::PreRender()
+{
+	if (m_pMap)
 	{
-		DrawDebugRender(&g_pDrawLeafNodes[iNode]->m_Box);
-	}*/
-	//for (int iNode = 0; iNode < g_pDrawLeafNodes.size(); iNode++)
-	//{
-	//	DrawDebugRender(&g_pDrawLeafNodes[iNode]->m_Box);
-	//	/*m_pMap->m_ConstantList.Color = T::TVector4(1, 1, 0, 1);
-	//	m_pMap->m_pContext->UpdateSubresource(
-	//		m_pMap->m_pConstantBuffer, 0, NULL, &m_pMap->m_ConstantList, 0, 0);
+		m_pMap->PreRender();
+		m_pMap->Draw();
 
-	//	int iLod = g_pDrawLeafNodes[iNode]->m_iCurrentLod;
-	//	
-	//	m_pMap->m_pContext->IASetIndexBuffer(
-	//			g_pDrawLeafNodes[iNode]->m_pIndexBuffer[iLod].Get(), DXGI_FORMAT_R32_UINT, 0);
-	//	m_pMap->m_pContext->DrawIndexed(
-	//		g_pDrawLeafNodes[iNode]->m_IndexList[iLod].size(), 0, 0);*/
-	//}
-	for (auto obj : m_ObjectList)
+		m_pMap->m_pContext->UpdateSubresource(m_pIndexBuffer.Get(), 0, NULL, &m_IndexList.at(0), 0, 0);
+		m_pMap->m_pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+	}
+	return true;
+}
+bool Quadtree::PostRender()
+{
+	if (m_pMap)
 	{
-		obj->pObject->SetMatrix(&obj->matWorld,
-			&m_pMap->m_matView,
-			&m_pMap->m_matProj);
-		obj->pObject->m_ConstantList.Color = T::TVector4(1, 1, 1, 1);
-		obj->pObject->Render();
+		m_pMap->m_pContext->DrawIndexed(m_iNumFace * 3, 0, 0);
+
+		// 노드의 바운딩 박스를 랜더링
+		// 	   	// 노드의 바운딩 박스를 랜더링
+		/*for (int iNode = 0; iNode < g_pDrawLeafNodes.size(); iNode++)
+		{
+			DrawDebugRender(&g_pDrawLeafNodes[iNode]->m_Box);
+		}*/
+		//for (int iNode = 0; iNode < g_pDrawLeafNodes.size(); iNode++)
+		//{
+		//	DrawDebugRender(&g_pDrawLeafNodes[iNode]->m_Box);
+		//	/*m_pMap->m_ConstantList.Color = T::TVector4(1, 1, 0, 1);
+		//	m_pMap->m_pContext->UpdateSubresource(
+		//		m_pMap->m_pConstantBuffer, 0, NULL, &m_pMap->m_ConstantList, 0, 0);
+
+		//	int iLod = g_pDrawLeafNodes[iNode]->m_iCurrentLod;
+		//	
+		//	m_pMap->m_pContext->IASetIndexBuffer(
+		//			g_pDrawLeafNodes[iNode]->m_pIndexBuffer[iLod].Get(), DXGI_FORMAT_R32_UINT, 0);
+		//	m_pMap->m_pContext->DrawIndexed(
+		//		g_pDrawLeafNodes[iNode]->m_IndexList[iLod].size(), 0, 0);*/
+		//}
+		for (auto obj : m_ObjectList)
+		{
+			obj->pObject->SetMatrix(&obj->matWorld,
+				&m_pMap->m_matView,
+				&m_pMap->m_matProj);
+			obj->pObject->m_ConstantList.Color = T::TVector4(1, 1, 1, 1);
+			obj->pObject->Render();
+		}
 	}
 	return true;
 }
@@ -158,18 +176,18 @@ void Quadtree::DynamicDeleteObject(Node* pNode)
 Node* Quadtree::CreateNode(Node* pParent, float x, float y, float w, float h)
 {
 	// 0, 4, 20 ,24
-	Node* pNode = new Node(x,y,w,h);
+	Node* pNode = new Node(x, y, w, h);
 	pNode->m_iIndex = g_iCount++;
 	if (pParent != nullptr)
 	{
 		pNode->m_iDepth = pParent->m_iDepth + 1;
 	}
-	GenBoundingBox(pNode);	
+	GenBoundingBox(pNode);
 	//SetIndexData(pNode,1);
 	//CreateIndexBuffer(pNode);
 	return pNode;
 }
-Box Quadtree::GenBoundingBox(Node* pNode)
+Box	Quadtree::GenBoundingBox(Node* pNode)
 {
 	TVector3 v0, v4;
 	v0 = m_pMap->m_VertexList[pNode->m_CornerList[0]].p; // 0
@@ -180,15 +198,15 @@ Box Quadtree::GenBoundingBox(Node* pNode)
 	pNode->m_Box.vMax.z = v0.z;
 	TVector2 vHeight = GetHeightFromNode(
 		pNode->m_CornerList[0],
-		pNode->m_CornerList[1],	
-		pNode->m_CornerList[2], 
+		pNode->m_CornerList[1],
+		pNode->m_CornerList[2],
 		pNode->m_CornerList[3]);
 	pNode->m_Box.vMin.y = vHeight.y;
 	pNode->m_Box.vMax.y = vHeight.x;
 	pNode->m_Box.vAxis[0] = TVector3(1, 0, 0);
 	pNode->m_Box.vAxis[1] = TVector3(0, 1, 0);
 	pNode->m_Box.vAxis[2] = TVector3(0, 0, 1);
-	pNode->m_Box.vSize.x = (pNode->m_Box.vMax.x- pNode->m_Box.vMin.x) / 2.0f;
+	pNode->m_Box.vSize.x = (pNode->m_Box.vMax.x - pNode->m_Box.vMin.x) / 2.0f;
 	pNode->m_Box.vSize.y = (pNode->m_Box.vMax.y - pNode->m_Box.vMin.y) / 2.0f;
 	pNode->m_Box.vSize.z = (pNode->m_Box.vMax.z - pNode->m_Box.vMin.z) / 2.0f;
 	pNode->m_Box.vCenter = (pNode->m_Box.vMax + pNode->m_Box.vMin);
@@ -212,7 +230,7 @@ TVector2 Quadtree::GetHeightFromNode(DWORD dwTL, DWORD dwTR, DWORD dwBL, DWORD d
 
 	// 0,  4, 
 	// 20 ,24
-	
+
 	for (DWORD dwRow = dwStartRow; dwRow < dwEndRow; dwRow++)
 	{
 		for (DWORD dwCol = dwStartCol; dwCol < dwEndCol; dwCol++)
@@ -243,7 +261,7 @@ void Quadtree::SetIndexData(Node* pNode, int iLodLevel)
 
 	for (int iLod = 0; iLod < iLodLevel; iLod++)
 	{
-		int iOffset = pow(2,iLod);//; 0 ->1, 1-> 2, 2->4
+		int iOffset = pow(2, iLod);//; 0 ->1, 1-> 2, 2->4
 		DWORD dwStartRow = pNode->m_CornerList[0] / m_iWidth;
 		DWORD dwEndRow = pNode->m_CornerList[2] / m_iWidth;
 
@@ -254,12 +272,12 @@ void Quadtree::SetIndexData(Node* pNode, int iLodLevel)
 		DWORD dwCellHeight = (dwEndRow - dwStartRow);
 		// 0,  4, 
 		// 20 ,24
-		int iNumFace = (dwCellWidth * dwCellHeight * 2) /  pow(4,iLod);
+		int iNumFace = (dwCellWidth * dwCellHeight * 2) / pow(4, iLod);
 		pNode->m_IndexList[iLod].resize(iNumFace * 3);
 		UINT iIndex = 0;
-		for (DWORD iRow = dwStartRow; iRow < dwEndRow; iRow+= iOffset)
+		for (DWORD iRow = dwStartRow; iRow < dwEndRow; iRow += iOffset)
 		{
-			for (DWORD iCol = dwStartCol; iCol < dwEndCol; iCol+= iOffset)
+			for (DWORD iCol = dwStartCol; iCol < dwEndCol; iCol += iOffset)
 			{
 				pNode->m_IndexList[iLod][iIndex + 0] = iRow * m_iWidth + iCol;
 				pNode->m_IndexList[iLod][iIndex + 1] = (iRow * m_iWidth + iCol) + iOffset;
@@ -309,9 +327,9 @@ void Quadtree::Build(Map* pMap, int iMaxDepth)
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 	bd.ByteWidth = sizeof(DWORD) * m_IndexList.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;	
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	if (FAILED(hr = m_pMap->m_pd3dDevice->CreateBuffer(&bd, NULL,
-						m_pIndexBuffer.GetAddressOf())))
+		m_pIndexBuffer.GetAddressOf())))
 	{
 		return;
 	}
@@ -324,7 +342,10 @@ void Quadtree::Build(Map* pMap, int iMaxDepth)
 	// 10 11 12 13 14
 	// 15 16 17 18 19
 	// 20 21 22 23 24
-	m_pRootNode = CreateNode(nullptr, 0, m_iWidth-1, m_iWidth*(m_iHeight-1), m_iWidth*m_iHeight-1);
+	m_pRootNode = CreateNode(nullptr, 0,
+		m_iWidth - 1,
+		m_iWidth * (m_iHeight - 1),
+		m_iWidth * m_iHeight - 1);
 	BuildTree(m_pRootNode);
 	FindNeighborNode();
 
@@ -344,13 +365,13 @@ void Quadtree::Build(int iWidth, int iHeight, int iMaxDepth)
 	// d    -    m       b
 	//      3         2
 	// 0,100     c    100,100
-	m_pRootNode = CreateNode(nullptr, 
+	m_pRootNode = CreateNode(nullptr,
 		0, 0, m_iWidth, m_iHeight);
 	BuildTree(m_pRootNode);
 }
 void Quadtree::BuildTree(Node* pParent)
 {
-	if (pParent == nullptr )
+	if (pParent == nullptr)
 	{
 		return;
 	}
@@ -379,13 +400,13 @@ void Quadtree::BuildTree(Node* pParent)
 	int iR = (pParent->m_CornerList[1] + pParent->m_CornerList[3]) / 2; // 14
 	int iC = (pParent->m_CornerList[0] + pParent->m_CornerList[3]) / 2; // 12
 	// 0,2,10,12	
-	pParent->m_pChild[0] = CreateNode(pParent,	pParent->m_CornerList[0],iT,iL,iC);
+	pParent->m_pChild[0] = CreateNode(pParent, pParent->m_CornerList[0], iT, iL, iC);
 	// 2,4,12,14	
-	pParent->m_pChild[1] = CreateNode(pParent,iT,pParent->m_CornerList[1],iC,iR);
+	pParent->m_pChild[1] = CreateNode(pParent, iT, pParent->m_CornerList[1], iC, iR);
 	// 10,12, 20, 22	
-	pParent->m_pChild[2] = CreateNode(pParent,iL,iC,pParent->m_CornerList[2],iB);
+	pParent->m_pChild[2] = CreateNode(pParent, iL, iC, pParent->m_CornerList[2], iB);
 	// 12,14,22,24
-	pParent->m_pChild[3] = CreateNode(pParent,iC, iR, iB, pParent->m_CornerList[3]);
+	pParent->m_pChild[3] = CreateNode(pParent, iC, iR, iB, pParent->m_CornerList[3]);
 	for (int iChild = 0; iChild < pParent->m_pChild.size(); iChild++)
 	{
 		BuildTree(pParent->m_pChild[iChild]);
@@ -422,7 +443,8 @@ void Quadtree::RenderObject(Node* pNode)
 }
 bool Quadtree::AddDynamicObject(MapObject* obj)
 {
-	Node* pFindNode = FindNode(m_pRootNode, obj->box);
+	Node* pFindNode =
+		FindNode(m_pRootNode, obj->box);
 	if (pFindNode != nullptr)
 	{
 		//obj->m_iNodeIndex = pFindNode->m_iIndex;
@@ -446,20 +468,20 @@ bool Quadtree::CheckBox(Box& a, Box& b)
 	return false;
 }
 Node* Quadtree::FindNode(Node* pNode, Box& box)
-{	
-	do {		
+{
+	do {
 		for (int iNode = 0; iNode < 4; iNode++)
 		{
 			if (pNode->m_pChild[iNode] != nullptr)
 			{
 				if (CheckBox(pNode->m_pChild[iNode]->m_Box,
-							 box))
+					box))
 				{
 					g_Queue.push(pNode->m_pChild[iNode]);
 					break;
 				}
 			}
-		}		
+		}
 		if (g_Queue.empty()) break;
 		pNode = g_Queue.front();
 		g_Queue.pop();
@@ -476,7 +498,7 @@ void Quadtree::PrintObjectList(Node* pNode)
 	{
 		MapObject* pObj = *iter;
 		std::cout << "[" << pNode->m_iIndex << "]" <<
-			(int)pObj->vPos.x <<":"<< (int)pObj->vPos.y << " ";
+			(int)pObj->vPos.x << ":" << (int)pObj->vPos.y << " ";
 	}
 	std::cout << std::endl;
 	for (int iNode = 0; iNode < 4; iNode++)
@@ -486,7 +508,7 @@ void Quadtree::PrintObjectList(Node* pNode)
 }
 int Quadtree::UpdateIndexList(Node* pNode, DWORD dwCurentIndex, DWORD dwNumLevel)
 {
-	if (m_IndexList.size() <=0) return false;
+	if (m_IndexList.size() <= 0) return false;
 	int iNumFaces = 0;
 
 	DWORD dwTL = pNode->m_CornerList[0];
@@ -597,7 +619,7 @@ int Quadtree::UpdateIndexList(Node* pNode, DWORD dwCurentIndex, DWORD dwNumLevel
 	return iNumFaces;
 }
 
-int  Quadtree::SetLodIndexBuffer(Node* pNode,DWORD& dwCurentIndex,DWORD dwA, DWORD dwB, DWORD dwC, DWORD dwType)
+int  Quadtree::SetLodIndexBuffer(Node* pNode,DWORD& dwCurentIndex,DWORD dwA, DWORD dwB, DWORD dwC,DWORD dwType)
 {
 	int iNumFaces = 0;
 
@@ -662,8 +684,10 @@ int  Quadtree::SetLodIndexBuffer(Node* pNode,DWORD& dwCurentIndex,DWORD dwA, DWO
 void Quadtree::DrawDebugInit(ID3D11Device* pd3dDevice,ID3D11DeviceContext* pContext)
 {
 	m_BoxDebug.m_pColorTex = I_Texture.Load(L"../../data/charport.bmp");
-	m_BoxDebug.m_pVShader = I_Shader.CreateVertexShader(pd3dDevice, L"Box.hlsl", "VSColor");
-	m_BoxDebug.m_pPShader = I_Shader.CreatePixelShader(pd3dDevice, L"Box.hlsl", "PSColor");
+	m_BoxDebug.m_pVShader = I_Shader.CreateVertexShader(
+		pd3dDevice, L"Box.hlsl", "VSColor");
+	m_BoxDebug.m_pPShader = I_Shader.CreatePixelShader(
+		pd3dDevice, L"Box.hlsl", "PSColor");
 	m_BoxDebug.SetPosition(T::TVector3(0.0f, 1.0f, 0.0f));
 	if (!m_BoxDebug.Create(pd3dDevice, pContext))
 	{
@@ -816,7 +840,8 @@ void Quadtree::DrawDebugRender(Box* pBox)
 	m_BoxDebug.SetMatrix(NULL, &m_pCamera->m_matView, &m_pCamera->m_matProj);
 	m_BoxDebug.PreRender();
 	m_BoxDebug.Draw();
-	m_BoxDebug.m_pContext->UpdateSubresource(m_BoxDebug.m_pVertexBuffer, 0, NULL, &m_BoxDebug.m_VertexList.at(0), 0, 0);
+	m_BoxDebug.m_pContext->UpdateSubresource(
+		m_BoxDebug.m_pVertexBuffer, 0, NULL, &m_BoxDebug.m_VertexList.at(0), 0, 0);
 	m_BoxDebug.PostRender();
 }
 #endif

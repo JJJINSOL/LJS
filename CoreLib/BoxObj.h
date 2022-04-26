@@ -7,6 +7,7 @@ public:
 	virtual bool SetVertexData();
 	virtual bool SetIndexData();
 	bool	PostRender();
+	virtual void    DrawDebugRender(Box* pBox);
 public:
 	BoxObj();
 	virtual ~BoxObj();
