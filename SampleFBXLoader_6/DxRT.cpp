@@ -1,8 +1,7 @@
 #include "DxRT.h"
 #include "DxState.h"
 
-void DxRT::Set(ID3D11Device* pDevice, FLOAT TopLeftX, FLOAT TopLeftY, FLOAT Width, FLOAT Height,
-	FLOAT MinDepth, FLOAT MaxDepth)
+void DxRT::Set(ID3D11Device* pDevice, FLOAT TopLeftX, FLOAT TopLeftY, FLOAT Width, FLOAT Height,FLOAT MinDepth, FLOAT MaxDepth)
 {
 	m_vp.TopLeftX = TopLeftX;
 	m_vp.TopLeftY = TopLeftY;
@@ -231,8 +230,8 @@ void DxRT::Apply(ID3D11DeviceContext* pImmediateContext,ID3D11RenderTargetView* 
 }
 bool DxRT::Begin(ID3D11DeviceContext* pContext, TVector4 vColor, bool bTargetClear, bool bDepthClear, bool bStencilClear)
 {
-	m_nViewPorts = 1;
-	pContext->RSGetViewports(&m_nViewPorts, m_vpOld);
+	m_nViewPorts = 1;//뷰포트 개수
+	pContext->RSGetViewports(&m_nViewPorts, m_vpOld);//m_vpOld-배열
 	pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
 
 	ID3D11RenderTargetView* pNullRTV = NULL;
@@ -245,6 +244,7 @@ bool DxRT::Begin(ID3D11DeviceContext* pContext, TVector4 vColor, bool bTargetCle
 }
 bool DxRT::Clear(ID3D11DeviceContext* pContext, TVector4 vColor, bool bTargetClear, bool bDepthClear, bool bStencilClear)
 {
+	//매 프레임마다 랜더타겟과 깊이스텐실 clear 해줘야한다.
 	if (bTargetClear)
 	{
 		const FLOAT color[] = { vColor.x, vColor.y, vColor.z, vColor.w };

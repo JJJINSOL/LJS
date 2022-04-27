@@ -87,10 +87,10 @@ bool    Sample::LoadFbx()
 	m_FbxObj[0].m_pAnimImporter = m_FbxObj[1].m_pMeshImp;
 	return true;
 }
-bool	Sample::Init()
+bool Sample::Init()
 {
 	HRESULT hr;
-
+	// 래스터라이저
 	D3D11_RASTERIZER_DESC rsDesc;
 	ZeroMemory(&rsDesc, sizeof(rsDesc));
 	rsDesc.DepthClipEnable = TRUE;
@@ -106,6 +106,7 @@ bool	Sample::Init()
 		MessageBox(0, _T("m_QuadObj 실패"), _T("Fatal error"), MB_OK);
 		return 0;
 	}
+	//-------------------------------------------
 	m_pShadowPShader = I_Shader.CreatePixelShader(m_pd3dDevice.Get(), L"PlaneShadowCharacter.hlsl", "PSColor");
 
 	LoadMap();
@@ -159,7 +160,7 @@ bool	Sample::Frame()
 	{
 		m_FbxObj[iObj].Frame();
 	}
-
+	//-------------------------------------------------------------
 	TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	if (m_dxRT.Begin(m_pImmediateContext.Get(), vClearColor))
 	{
