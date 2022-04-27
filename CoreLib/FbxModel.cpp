@@ -142,7 +142,7 @@ bool FbxModel::PostRender()
 	}
 	return true;
 }
-void TFbxModel::GenAABB()
+void FbxModel::GenAABB()
 {
 	// aabb 
 	m_BoxCollision.vMin = T::TVector3(100000, 100000, 100000);

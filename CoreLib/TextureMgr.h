@@ -2,6 +2,9 @@
 #include "BaseMgr.h"
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
+#include <wincodec.h>
+#include <wincodecsdk.h>
+#include "ScreenGrab.h"
 #pragma comment	(lib, "d3dcompiler.lib")
 class Texture
 {
@@ -35,6 +38,9 @@ public:
 class TextureMgr : public BaseMgr<Texture, TextureMgr>
 {
 	friend class Singleton<TextureMgr>;
+public:
+	static HRESULT SaveFile(ID3D11DeviceContext* pContext, ID3D11Texture2D* pRes, T_STR name);
+	static HRESULT SaveFile(ID3D11DeviceContext* pContext, IDXGISwapChain* pSwapChain, T_STR name);
 private:
 	TextureMgr() {};
 public:
