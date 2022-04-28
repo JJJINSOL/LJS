@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="DepthShadow.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Character.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Quad.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="ProjShadow.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="MapRT.hlsl">
+      <Filter>HLSL</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="TFbxObj.cpp" />
+    <ClCompile Include="QuadObject.cpp" />
+    <ClCompile Include="DxRT.cpp">
+      <Filter>depth</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>depth</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TFbxObj.h" />
+    <ClInclude Include="QuadObject.h" />
+    <ClInclude Include="DxRT.h">
+      <Filter>depth</Filter>
+    </ClInclude>
+    <ClInclude Include="Sample.h">
+      <Filter>depth</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="fbxtexturelist.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{9b96732c-5a63-49e9-951d-a58671801432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="depth">
+      <UniqueIdentifier>{df172248-615d-4ec1-822a-dcc98f5a570e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

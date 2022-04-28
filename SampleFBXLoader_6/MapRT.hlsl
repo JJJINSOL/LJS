@@ -48,6 +48,7 @@ VS_OUTPUT VS( VS_INPUT v)
 	float3 vNormal = mul(v.n, (float3x3)g_matWorld);
 	pOut.n = normalize(vNormal);
 	pOut.t = v.t*10.0f;
+	//디퓨즈 조명
 	float fDot = max(0.2f, dot(pOut.n, -vLightDir.xyz));
 	pOut.c = v.c*float4(fDot, fDot, fDot,1);	
 	pOut.c.w = pOut.L.z / pOut.L.w;// (pOut.p.w - Color0.z) / (Color0.w - Color0.z);
@@ -60,18 +61,23 @@ Texture2D		g_txMask : register(t1);
 TextureCube	    g_txCubeMap : register(t3);
 SamplerState	g_Sample : register(s0);
 SamplerState	g_SampleClamp : register(s1);
+
+//비교 샘플링 -> SampleCmpLevelZero이 가능해진다 - 계단현상 완화
 SamplerComparisonState g_samComShadowMap: register (s2);
 
+//mrt 픽쉘 쉐이더 출력 구조
 struct PBUFFER_OUTPUT
 {
 	float4 color0 : SV_TARGET0;
 	float4 color1 : SV_TARGET1;
 };
 
-
+//PCF 알고리즘
 float PS_NO_CMP(float4 uvw)
 {
+	//한픽셀
 	float SMAP_SIZE = 4096 * 4;
+
 	float LightAmount = 0.0f;
 	float2 uv = uvw.xy / uvw.w;
 	float2 texelpos = SMAP_SIZE * uv;
@@ -82,28 +88,26 @@ float PS_NO_CMP(float4 uvw)
 	sourcevals[2] = (g_txMask.Sample(g_SampleClamp, uv + float2(0, 1.0 / SMAP_SIZE)) < uvw.z / uvw.w) ? 0.0f : 1.0f;
 	sourcevals[3] = (g_txMask.Sample(g_SampleClamp, uv + float2(1.0 / SMAP_SIZE, 1.0 / SMAP_SIZE)) < uvw.z / uvw.w) ? 0.0f : 1.0f;
 	LightAmount = lerp(lerp(sourcevals[0], sourcevals[1], lerps.x), 	lerp(sourcevals[2], sourcevals[3], lerps.x), lerps.y);
-	return  0.5f;// LightAmount;
+	return LightAmount; //0.5f;
 }
 
 PBUFFER_OUTPUT PS(VS_OUTPUT input) : SV_TARGET
 {
 	PBUFFER_OUTPUT output;
+
 	//텍스처에서 t좌표에 해당하는 컬러값(픽셀) 반환
 	float4 color = g_txColor.Sample(g_Sample, input.t);
+
 	float3 LightUV = float3( input.L.xyz / input.L.w);
-	//float4 mask = g_txMask.Sample(g_SampleClamp, LightUV.xy);
+	
+	//SampleCmpLevelZero -> 내부적으로 pcf 작업해서 리턴해줌
 	float mask = g_txMask.SampleCmpLevelZero(g_samComShadowMap,LightUV.xy,LightUV.z).r;
+	
 	mask = max(0.5f, mask);
-	/*if (mask.r < LightUV.z)
-	{
-		output.color0 = color * float4(0.5f, 0.5f,0.5f,1);
-	}
-	else
-	{
-		output.color0 = color;
-	}*/
 	output.color0 = color * float4(mask,mask,mask, 1);
+
 	float3 vNormal = input.n * 0.5f + 0.5f;
+
 	// 필수->알파블랜딩 =OFF;
 	output.color1 = float4(vNormal, input.c.a);
 	return output;

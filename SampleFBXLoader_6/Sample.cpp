@@ -2,16 +2,15 @@
 #include "ObjectMgr.h"
 #include <strsafe.h>
 #include "BoxObj.h"
-
-void	Sample::CreateResizeDevice(UINT iWidth, UINT iHeight)
+void Sample::CreateResizeDevice(UINT iWidth, UINT iHeight)
 {
 	int k = 0;
 }
-void	Sample::DeleteResizeDevice(UINT iWidth, UINT iHeight)
+void Sample::DeleteResizeDevice(UINT iWidth, UINT iHeight)
 {
 	int k = 0;
 }
-bool	Sample::LoadMap()
+bool Sample::LoadMap()
 {
 	m_MapObj.Init();
 	m_MapObj.SetDevice(m_pd3dDevice.Get(), m_pImmediateContext.Get());
@@ -30,7 +29,7 @@ bool	Sample::LoadMap()
 	}*/
 	return true;
 }
-bool    Sample::LoadFbx()
+bool Sample::LoadFbx()
 {
 	std::vector<std::wstring> listname;
 	// Greystone.fbx  LOD 메쉬 5개 
@@ -90,15 +89,21 @@ bool    Sample::LoadFbx()
 bool Sample::Init()
 {
 	HRESULT hr;
-	// 래스터라이저
+	// 래스터라이저->bias 값 계산
+	// 투영 앨리어싱 현상 완화를 위해 
+	// slope scaled depth bias(기울기 비례 편향치) 사용하는데 래스터라이저 스테이트 에서 관리
 	D3D11_RASTERIZER_DESC rsDesc;
 	ZeroMemory(&rsDesc, sizeof(rsDesc));
 	rsDesc.DepthClipEnable = TRUE;
 	rsDesc.FillMode = D3D11_FILL_SOLID;
 	rsDesc.CullMode = D3D11_CULL_BACK;
-	rsDesc.DepthBias = 10000;
-	rsDesc.DepthBiasClamp = 0.0f;
-	rsDesc.SlopeScaledDepthBias = 1.0f;
+	//----------------------------------
+	//같은 평면에 오브젝트가 두개 랜더링 될때(동일한 위치에 오브젝트 두개 랜더링)
+	//누가 앞이고 누가 뒤인지 모르니까 바이어스 값을 주어 계산
+	rsDesc.DepthBias = 10000;				//z값에 곱해서 계산
+	rsDesc.DepthBiasClamp = 0.0f;			//제한값
+	rsDesc.SlopeScaledDepthBias = 1.0f;		//기울기 비례 편향치
+	//--------------------------------------
 	if (FAILED(hr = m_pd3dDevice->CreateRasterizerState(&rsDesc, m_pRSSlopeScaledDepthBias.GetAddressOf()))) return false;
 
 	if (FAILED(m_QuadObj.Create(m_pd3dDevice.Get(), m_pImmediateContext.Get(), L"Quad.hlsl")))
@@ -116,7 +121,7 @@ bool Sample::Init()
 	m_QuadObj.SetBuffer(m_pd3dDevice.Get());
 	m_QuadObj.ComputeKernel(9);
 
-	m_pMainCamera->CreateViewMatrix(	T::TVector3(0, 3000.0f, -10.0f), T::TVector3(0, 0.0f, 0.0f));
+	m_pMainCamera->CreateViewMatrix(T::TVector3(-1000, 2000.0f, 0.0f), T::TVector3(-400.0f, 0.0f, 300.0f));
 	m_pMainCamera->CreateProjMatrix(XM_PI * 0.25f,(float)g_rtClient.right / (float)g_rtClient.bottom, 0.1f, 30000.0f);
 	
 	m_pLightTex = I_Texture.Load(L"../../data/pung00.dds");
@@ -138,6 +143,7 @@ bool Sample::Init()
 		m_pProjShadowPShader = I_Shader.CreatePixelShader(m_pd3dDevice.Get(), L"ProjShadow.hlsl", "PS");
 	}
 	
+	//텍스쳐 변환 행렬
 	m_matTex = TMatrix(   0.5f, 0.0f, 0.0f, 0.0f
 							, 0.0f, -0.5f, 0.0f, 0.0f
 							, 0.0f, 0.0f, 1.0f, 0.0f
@@ -147,6 +153,7 @@ bool Sample::Init()
 
 bool	Sample::Frame()
 {
+	//라이트 회전
 	TMatrix matRotation;
 	TVector3 vLight = m_vLightPos;
 	D3DXMatrixRotationY(&matRotation, 0);// g_fGameTimer);
@@ -172,8 +179,7 @@ bool	Sample::Frame()
 		TVector3 vUp = TVector3(0.0f, 1.0f, 0.0f);
 		D3DXMatrixLookAtLH(&m_matViewLight, &vEye, &vLookat, &vUp);
 		//D3DXMatrixPerspectiveFovLH(&m_matProjLight, XM_PI / 4, 1, 0.1f, 20000.0f);
-		D3DXMatrixOrthoOffCenterLH(&m_matProjLight,
-			-6000 / 2, 6000.0f / 2, -6000.0f / 2, 6000.0f / 2, 0.0f, 20000.0f);
+		D3DXMatrixOrthoOffCenterLH(&m_matProjLight,-6000 / 2, 6000.0f / 2, -6000.0f / 2, 6000.0f / 2, 0.0f, 20000.0f);
 		if (m_bDepthShadow)
 		{
 			RenderDepthShadow(&m_matViewLight, &m_matProjLight);
@@ -227,7 +233,7 @@ void Sample::RenderProjectionShadow(TMatrix* matView, TMatrix* matProj)
 		m_FbxObj[iObj].RenderShadow(m_pProjShadowPShader);
 	}
 }
-bool	Sample::Render()
+bool Sample::Render()
 {
 	ApplyRS(m_pImmediateContext.Get(), DxState::g_pRSBackCullSolid);
 	RenderIntoBuffer(m_pImmediateContext.Get());	
@@ -300,6 +306,9 @@ void Sample::RenderMRT(ID3D11DeviceContext* pContext)
 {
 	pContext->OMSetDepthStencilState(DxState::g_pDSSDepthEnable, 0x00);
 	ApplyBS(pContext, DxState::m_AlphaBlendDisable);
+
+	//g_samComShadowMap HLSL에 넘기기
+	//PCF 작업
 	ApplySS(pContext, DxState::g_pSSShadowMap, 2);
 
 	m_MapObj.m_bAlphaBlend = false;
