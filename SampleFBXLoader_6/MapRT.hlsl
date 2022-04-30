@@ -48,7 +48,7 @@ VS_OUTPUT VS( VS_INPUT v)
 	float3 vNormal = mul(v.n, (float3x3)g_matWorld);
 	pOut.n = normalize(vNormal);
 	pOut.t = v.t*10.0f;
-	//디퓨즈 조명
+	//디퓨즈 조명 계산
 	float fDot = max(0.2f, dot(pOut.n, -vLightDir.xyz));
 	pOut.c = v.c*float4(fDot, fDot, fDot,1);	
 	pOut.c.w = pOut.L.z / pOut.L.w;// (pOut.p.w - Color0.z) / (Color0.w - Color0.z);

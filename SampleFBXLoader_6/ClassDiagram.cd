@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SampleMap">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Sample.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sample">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgjAIAAABQAAwYAAIAGAhHQIAAAIAgEAFgCgBAAAAE=</HashCode>
+      <FileName>Sample.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DxRT">
+    <Position X="2.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUIAAAAAALAGBAAgAAAAEUAAAABQEFAABgEAIBBAAAg=</HashCode>
+      <FileName>DxRT.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fbx">
+    <Position X="4" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAABAICAEACAAgQAAAEAAAAAAAAAAAABAKARAgAAE=</HashCode>
+      <FileName>TFbxObj.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuadObject">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABgAAAIAAAAAAAQBAAQQEAADBqCAAAAJgABAAAIEE=</HashCode>
+      <FileName>QuadObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="TKernelMask">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>QuadObject.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="VSCB">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAABAACAAAAAAAAAAAAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>QuadObject.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

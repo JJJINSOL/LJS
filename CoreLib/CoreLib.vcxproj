@@ -88,6 +88,7 @@
   <ItemGroup>
     <FxCompile Include="..\..\data\shader\Character.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +159,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>../../output/Release</OutDir>
+    <IntDir>../../output/Release/CoreLib</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -205,7 +208,7 @@
     <PostBuildEvent>
       <Command>copy "*.h" "../../include/Core3D"
 copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\lib\\CoreLib_d.lib"
-</Command>
+copy "..\\..\\lib\\*.dll" "..\\..\\output\\debug"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -216,6 +219,7 @@ copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\lib\\CoreLib_d.lib"
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>../../include/dxtk;../../include/fmod;../../include/fbx</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -224,6 +228,11 @@ copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\lib\\CoreLib_d.lib"
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "*.h" "../../include/Core3D"
+copy "..\\..\\output\\Debug\\CoreLib.lib" "..\\..\\lib\\CoreLib_r.lib"
+copy "..\\..\\lib\\*.dll" "..\\..\\output\\release"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

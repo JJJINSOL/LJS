@@ -132,6 +132,7 @@ bool Sample::Init()
 	
 	if (m_bDepthShadow)
 	{
+		//깊이맵 텍스쳐 생성
 		m_dxRT.Create(m_pd3dDevice.Get(), 4096 * 4, 4096 * 4, DXGI_FORMAT_R24G8_TYPELESS);// DXGI_FORMAT_D32_FLOAT);
 		m_pDepthShadowVShader = I_Shader.CreateVertexShader(m_pd3dDevice.Get(), L"DepthShadow.hlsl", "VS");
 		m_pDepthShadowPShader = I_Shader.CreatePixelShader(m_pd3dDevice.Get(), L"DepthShadow.hlsl", "PS");
@@ -150,13 +151,12 @@ bool Sample::Init()
 							, 0.5f, 0.5f, 0.0f, 1.0f);
 	return true;
 }
-
-bool	Sample::Frame()
+bool Sample::Frame()
 {
 	//라이트 회전
 	TMatrix matRotation;
 	TVector3 vLight = m_vLightPos;
-	D3DXMatrixRotationY(&matRotation, 0);// g_fGameTimer);
+	D3DXMatrixRotationY(&matRotation, g_fGameTimer);// g_fGameTimer);
 	D3DXVec3TransformCoord(&vLight, &vLight, &matRotation);
 	D3DXVec3Normalize(&m_vLightDir, &vLight);
 
@@ -171,14 +171,12 @@ bool	Sample::Frame()
 	TVector4 vClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	if (m_dxRT.Begin(m_pImmediateContext.Get(), vClearColor))
 	{
-		//-----------------------------------------------------
-		// 1패스:그림자맵 생성
-		//-----------------------------------------------------		
+		//그림자맵 생성
 		TVector3 vEye = vLight;
 		TVector3 vLookat = { 0,0,0 };
 		TVector3 vUp = TVector3(0.0f, 1.0f, 0.0f);
 		D3DXMatrixLookAtLH(&m_matViewLight, &vEye, &vLookat, &vUp);
-		//D3DXMatrixPerspectiveFovLH(&m_matProjLight, XM_PI / 4, 1, 0.1f, 20000.0f);
+		//직교투영 행렬 생성 - D3DXMatrixOrthoOffCenterLH
 		D3DXMatrixOrthoOffCenterLH(&m_matProjLight,-6000 / 2, 6000.0f / 2, -6000.0f / 2, 6000.0f / 2, 0.0f, 20000.0f);
 		if (m_bDepthShadow)
 		{
@@ -199,6 +197,7 @@ bool	Sample::Frame()
 }
 void Sample::RenderDepthShadow(TMatrix* matView, TMatrix* matProj)
 {
+	//특정 상태 설정
 	ApplyDSS(m_pImmediateContext.Get(), DxState::g_pDSSDepthEnable);
 	ApplyRS(m_pImmediateContext.Get(), m_pRSSlopeScaledDepthBias.Get());// TDxState::g_pRSSlopeScaledDepthBias);
 
@@ -263,7 +262,7 @@ bool Sample::Render()
 	ClearD3D11DeviceContext(m_pImmediateContext.Get());
 	return true;
 }
-bool	Sample::Release()
+bool Sample::Release()
 {
 	m_dxRT.Release();
 	m_QuadObj.Release();
@@ -277,7 +276,7 @@ bool	Sample::Release()
 }
 void Sample::RenderIntoBuffer(ID3D11DeviceContext* pContext)
 {
-	// get the old render targets
+	//이전 랜더 타겟 가져오기
 	ID3D11RenderTargetView* pOldRTV;
 	ID3D11DepthStencilView* pOldDSV;
 	pContext->OMGetRenderTargets(1, &pOldRTV, &pOldDSV);
@@ -288,14 +287,14 @@ void Sample::RenderIntoBuffer(ID3D11DeviceContext* pContext)
 	pContext->ClearRenderTargetView(m_QuadObj.m_pNormalDepthRTV.Get(), color);
 	pContext->ClearDepthStencilView(m_QuadObj.m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0, 0);
 
-	// Set the new render targets
+	//새로운 랜더 타겟 세팅
 	ID3D11RenderTargetView* pViews[2];
 	pViews[0] = m_QuadObj.m_pColorRTV.Get();
 	pViews[1] = m_QuadObj.m_pNormalDepthRTV.Get();
 	pContext->OMSetRenderTargets(2, pViews, m_QuadObj.m_pDepthStencilView.Get());
-	// Render the particles
+	//랜더
 	RenderMRT(pContext);
-	// restore the original render targets
+	//원래 랜더 타겟 복원하기
 	pViews[0] = pOldRTV;
 	pViews[1] = NULL;
 	pContext->OMSetRenderTargets(2, pViews, pOldDSV);
@@ -314,11 +313,12 @@ void Sample::RenderMRT(ID3D11DeviceContext* pContext)
 	m_MapObj.m_bAlphaBlend = false;
 	m_MapObj.SetMatrix(nullptr, &m_pMainCamera->m_matView, &m_pMainCamera->m_matProj);
 	m_MapObj.m_LightConstantList.matLight = m_matViewLight * m_matProjLight *m_matTex;
-	T::D3DXMatrixTranspose( &m_MapObj.m_LightConstantList.matLight,&m_MapObj.m_LightConstantList.matLight);
+	T::D3DXMatrixTranspose(&m_MapObj.m_LightConstantList.matLight,&m_MapObj.m_LightConstantList.matLight);
+
 	m_pImmediateContext->PSSetSamplers(1, 1, &DxState::g_pSSClampLinear);
 	m_Quadtree.PreRender();	
-		pContext->PSSetShaderResources(1, 1,m_dxRT.m_pDsvSRV.GetAddressOf());
-		ApplySS(pContext, DxState::g_pSSShadowMap, 2);
+	pContext->PSSetShaderResources(1, 1,m_dxRT.m_pDsvSRV.GetAddressOf());
+	ApplySS(pContext, DxState::g_pSSShadowMap, 2);
 	m_Quadtree.PostRender();
 
 	if (m_pLightTex)	pContext->PSSetShaderResources(1, 1, m_pLightTex->m_pSRV.GetAddressOf());
@@ -331,18 +331,6 @@ void Sample::RenderMRT(ID3D11DeviceContext* pContext)
 		T::D3DXMatrixTranspose(&m_FbxObj[iObj].m_LightConstantList.matLight, &m_FbxObj[iObj].m_LightConstantList.matLight);
 		m_FbxObj[iObj].SetMatrix(nullptr, &m_pMainCamera->m_matView, &m_pMainCamera->m_matProj);
 		m_FbxObj[iObj].Render();
-		/// 평면쉐도우
-		/*TVector4 pLight = TVector4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 1.0f);
-		TPlane pPlane = TPlane(0, 1, 0, -(m_FbxObj[iObj].m_vPos.y+1.1f));
-		TVector4 p(pPlane.x, pPlane.y, pPlane.z, pPlane.w);
-		TMatrix matShadow;
-		D3DXMatrixShadow(&matShadow, &pLight, &pPlane);
-
-		TMatrix matSaveWorld = m_FbxObj[iObj].m_matWorld;
-			matShadow = m_FbxObj[iObj].m_matWorld * matShadow;
-			m_FbxObj[iObj].SetMatrix(&matShadow, &m_pMainCamera->m_matView, &m_pMainCamera->m_matProj);
-			m_FbxObj[iObj].RenderShadow(m_pShadowPShader);
-		m_FbxObj[iObj].m_matWorld = matSaveWorld;*/
 	}
 	ClearD3D11DeviceContext(pContext);
 }

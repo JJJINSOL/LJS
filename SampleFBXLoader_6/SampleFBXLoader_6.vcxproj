@@ -125,7 +125,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;../../fbx/lib/debug;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;../../lib/fbx/debug;</AdditionalLibraryDirectories>
       <AdditionalDependencies>DirectXTK.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -137,7 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../include/TCore3D;../../include/dxtk;../../include/TCoreNet;../../fbx/include;../../include/fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/Core3D;../../include/dxtk;../../include/CoreNet;../../include/fbx;../../include/fmod</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
@@ -145,7 +145,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../lib;../../fbx/lib/release;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../../lib;../../lib/fbx/release;</AdditionalLibraryDirectories>
       <AdditionalDependencies>DirectXTK_R.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -190,6 +190,9 @@
     <ProjectReference Include="..\CoreLib\CoreLib.vcxproj">
       <Project>{01d7e053-a5dd-423b-94f3-2638bc0bfd59}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
